@@ -49,7 +49,7 @@ export default function Landing({ onOpenApp, onOpenOps }: Props) {
         <div className="hero-overlay" />
         <div className="hero-content page-width">
           <div className="hero-copy">
-            <div className="eyebrow light"><span className="pulse-dot" /> Built for everyday Lagos commutes</div>
+            <div className="eyebrow light">Built for everyday Lagos commutes</div>
             <h1>Your route.<br />Your people.<br /><em>Your commute.</em></h1>
             <p>Match with verified people heading your way, share the cost, and turn your daily route into a commute you can count on.</p>
             <div className="hero-trust">
@@ -81,7 +81,7 @@ export default function Landing({ onOpenApp, onOpenOps }: Props) {
               </div>
               <label className="repeat-check"><span className="check-box"><Check size={13} /></span><span><strong>Make it my regular commute</strong><small>Get matched automatically every weekday</small></span></label>
               <button className="btn btn-primary btn-block" onClick={search}>{tripType === 'ride' ? 'Find people going my way' : 'Share my empty seats'} <ArrowRight size={18} /></button>
-              <p className="card-note"><ShieldCheck size={14} /> Identity-verified community · Secure payments</p>
+              <p className="card-note"><ShieldCheck size={14} /> Identity verified community · Secure payments</p>
             </div>
           </div>
         </div>
@@ -124,7 +124,7 @@ export default function Landing({ onOpenApp, onOpenOps }: Props) {
           <article>
             <span className="step-number">03</span><div className="icon-tile peach"><Repeat2 /></div>
             <h3>Make it your commute</h3><p>Book once or build a recurring group with people you enjoy travelling with.</p>
-            <span className="micro-example"><CalendarDays size={14} /> Mon—Fri · 7:00 AM</span>
+            <span className="micro-example"><CalendarDays size={14} /> Monday to Friday · 7:00 AM</span>
           </article>
         </div>
       </section>
@@ -195,7 +195,7 @@ export default function Landing({ onOpenApp, onOpenOps }: Props) {
           <div className="community-copy">
             <div className="eyebrow"><HeartHandshake size={15}/> Trust starts with context</div>
             <h2>Strangers become<br /><em>your community.</em></h2>
-            <p>Choose matches from groups you already have something in common with — without mistaking affiliation for verification.</p>
+            <p>Choose matches from groups you already have something in common with, without mistaking affiliation for verification.</p>
             <div className="community-types">
               <span><Building2/>Workplaces</span><span><Home/>Estates</span><span><GraduationCap/>Campuses</span><span><Users/>Associations</span>
             </div>
@@ -216,12 +216,12 @@ export default function Landing({ onOpenApp, onOpenOps }: Props) {
           <div>
             <div className="eyebrow light"><ShieldCheck size={15}/> Safety, designed in</div>
             <h2>Know who you're<br />riding with.</h2>
-            <p>Safety isn't a button added at the end. It's identity, vehicle, trip and response systems working together from sign-up to drop-off.</p>
+            <p>Safety isn't a button added at the end. It's identity, vehicle, trip and response systems working together from signup to arrival.</p>
             <button className="btn btn-lime" onClick={onOpenApp}>See our safety standard <ArrowRight size={17}/></button>
           </div>
           <div className="safety-cards">
             <article><span><BadgeCheck/></span><div><h3>Layered verification</h3><p>Identity, selfie, licence, vehicle and community signals shown clearly.</p></div></article>
-            <article><span><LocateFixed/></span><div><h3>Live trip protection</h3><p>Shareable tracking, pickup confirmation and route-deviation signals.</p></div></article>
+            <article><span><LocateFixed/></span><div><h3>Live trip protection</h3><p>Shareable tracking, pickup confirmation and route deviation signals.</p></div></article>
             <article><span><ShieldCheck/></span><div><h3>Human safety response</h3><p>SOS connects trip context to your contacts and PadiGo operations.</p></div></article>
           </div>
         </div>
