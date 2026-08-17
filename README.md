@@ -4,9 +4,9 @@ A polished, responsive product prototype for **Nigeria's trusted recurring carpo
 
 The repository currently presents three connected product surfaces:
 
-- **Marketing website** at `/` — positioning, commute search, popular corridors, recurring-carpool education, communities, safety, and driver acquisition.
-- **Rider/driver product** at `/app` — one responsive application with a role switcher, mobile bottom navigation, desktop shell, ride discovery, booking/payment flow, live trip, safety centre, communities, driver offers, passenger requests, and earnings.
-- **Operations centre** at `/ops` — live marketplace health, active trips, safety review, corridor liquidity, conversion funnel, verification queue, finance and support signals.
+- **Marketing website** at `/` with dedicated pages for how PadiGo works, safety, communities, drivers, company information, help, privacy and terms.
+- **Rider and driver product** under `/app` with browser addressable subpages, a role switcher, mobile bottom navigation, ride discovery, booking and payment flow, live trips, safety, communities, driver offers, passenger requests and earnings.
+- **Operations centre** under `/ops` with dedicated subpages for every major marketplace, trust, finance, reporting and administration module.
 
 ## Run locally
 
@@ -26,9 +26,29 @@ npm run preview
 
 | Path | Surface |
 | --- | --- |
-| `/` | Marketing website |
-| `/app` | Responsive rider/driver app |
-| `/ops` | Admin and operations centre |
+| `/` | Marketing home |
+| `/how-it-works` | Product method and matching |
+| `/safety` | Verification and trip safety |
+| `/communities` | Trusted community networks |
+| `/drivers` | Driver proposition and workflow |
+| `/about`, `/help`, `/privacy`, `/terms` | Company, support and policy pages |
+| `/app/rider/home` | Rider home |
+| `/app/rider/explore` | Ranked ride matches |
+| `/app/rider/trips` | Active and scheduled trips |
+| `/app/rider/communities` | Rider communities |
+| `/app/rider/profile` | Rider profile and trust |
+| `/app/driver/home` | Driver home |
+| `/app/driver/rides` | Driver schedule and trip controls |
+| `/app/driver/requests` | Passenger requests |
+| `/app/driver/earnings` | Earnings, settlements and payouts |
+| `/app/driver/profile` | Driver profile and verification |
+| `/ops/control-centre` | Operations overview |
+| `/ops/live-trips`, `/ops/analytics`, `/ops/reports` | Monitoring and intelligence |
+| `/ops/users`, `/ops/drivers`, `/ops/vehicles`, `/ops/trips`, `/ops/bookings` | Marketplace operations |
+| `/ops/communities`, `/ops/pricing`, `/ops/promotions` | Community and growth operations |
+| `/ops/verification`, `/ops/safety`, `/ops/disputes` | Trust and safety operations |
+| `/ops/payments`, `/ops/refunds`, `/ops/payouts` | Finance operations |
+| `/ops/settings`, `/ops/audit-logs` | Platform controls and accountability |
 
 ## Interactive flows
 
@@ -74,4 +94,10 @@ The UI is original, with product-pattern inspiration drawn from leading mobility
 - Local deterministic data for the prototype, with interaction state modelled in React
 - CSS-generated map and route previews to avoid exposing API keys in the client prototype
 
-The product is ready to connect to the proposed NestJS/PostGIS/Redis services. Payment, identity, live location, messaging and emergency actions are intentionally demonstrated without initiating real external transactions or emergency calls.
+The product is ready to connect to the proposed NestJS, PostGIS and Redis services. Payment, identity, live location, messaging and emergency actions are intentionally demonstrated without initiating real external transactions or emergency calls.
+
+## Cross platform mobile
+
+The production mobile client should be one Expo and React Native application for iOS and Android, with protected Rider and Driver route groups and a verified role switch. It should reuse API contracts and design tokens rather than wrapping the website or attempting to share DOM components.
+
+The implementation architecture, native capability choices, backend boundaries, navigation map and delivery sequence are documented in [`docs/cross-platform-mobile.md`](docs/cross-platform-mobile.md).

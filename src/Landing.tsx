@@ -8,15 +8,20 @@ import Brand from './components/Brand';
 import { Avatar, VerifiedBadge } from './components/UI';
 import { rides, formatNaira } from './data';
 
-type Props = { onOpenApp: () => void; onOpenOps: () => void };
+type Props = { onNavigate: (path: string) => void; onOpenApp: () => void; onOpenOps: () => void };
 
-export default function Landing({ onOpenApp, onOpenOps }: Props) {
+export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
   const [menu, setMenu] = useState(false);
   const [tripType, setTripType] = useState<'ride' | 'offer'>('ride');
   const [from, setFrom] = useState('Ajah, Lagos');
   const [to, setTo] = useState('Victoria Island');
 
   const search = () => onOpenApp();
+  const go = (path: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    setMenu(false);
+    onNavigate(path);
+  };
 
   return (
     <main className="landing">
@@ -25,12 +30,12 @@ export default function Landing({ onOpenApp, onOpenOps }: Props) {
         <button onClick={onOpenApp}>Join the early community <ArrowRight size={14} /></button>
       </div>
       <header className="site-header">
-        <a href="#" className="logo-link"><Brand /></a>
+        <a href="/" className="logo-link" onClick={go('/')}><Brand /></a>
         <nav className={menu ? 'open' : ''}>
-          <a href="#how" onClick={() => setMenu(false)}>How it works</a>
-          <a href="#safety" onClick={() => setMenu(false)}>Safety</a>
-          <a href="#communities" onClick={() => setMenu(false)}>Communities</a>
-          <a href="#drivers" onClick={() => setMenu(false)}>Drive with PadiGo</a>
+          <a href="/how-it-works" onClick={go('/how-it-works')}>How it works</a>
+          <a href="/safety" onClick={go('/safety')}>Safety</a>
+          <a href="/communities" onClick={go('/communities')}>Communities</a>
+          <a href="/drivers" onClick={go('/drivers')}>Drive with PadiGo</a>
           <button className="nav-ops" onClick={onOpenOps}>Operations demo</button>
           <div className="mobile-nav-actions">
             <button className="btn btn-light" onClick={onOpenApp}>Log in</button>
@@ -236,11 +241,11 @@ export default function Landing({ onOpenApp, onOpenOps }: Props) {
       <footer>
         <div className="page-width footer-main">
           <div className="footer-brand"><Brand inverse/><p>Trusted recurring carpools for the routes Nigerians travel every day.</p><span>Lagos, Nigeria 🇳🇬</span></div>
-          <div><h4>Ride</h4><a onClick={onOpenApp}>Find a ride</a><a onClick={onOpenApp}>My commute</a><a href="#communities">Communities</a><a href="#safety">Safety</a></div>
-          <div><h4>Drive</h4><a onClick={onOpenApp}>Offer a ride</a><a onClick={onOpenApp}>Driver requirements</a><a onClick={onOpenApp}>Earnings</a><a onClick={onOpenApp}>Verification</a></div>
-          <div><h4>PadiGo</h4><a>About</a><a>Help centre</a><a onClick={onOpenOps}>Operations</a><a>Contact</a></div>
+          <div><h4>Ride</h4><a onClick={onOpenApp}>Find a ride</a><a onClick={onOpenApp}>My commute</a><a href="/communities" onClick={go('/communities')}>Communities</a><a href="/safety" onClick={go('/safety')}>Safety</a></div>
+          <div><h4>Drive</h4><a href="/drivers" onClick={go('/drivers')}>Offer a ride</a><a href="/drivers" onClick={go('/drivers')}>Driver requirements</a><a onClick={onOpenApp}>Earnings</a><a href="/safety" onClick={go('/safety')}>Verification</a></div>
+          <div><h4>PadiGo</h4><a href="/about" onClick={go('/about')}>About</a><a href="/help" onClick={go('/help')}>Help centre</a><a onClick={onOpenOps}>Operations</a><a href="/help" onClick={go('/help')}>Contact</a></div>
         </div>
-        <div className="page-width footer-bottom"><span>© 2026 PadiGo Technologies Ltd.</span><div><a>Privacy</a><a>Terms</a><a>Accessibility</a></div><span className="ndpr"><ShieldCheck size={13}/> Privacy by design</span></div>
+        <div className="page-width footer-bottom"><span>© 2026 PadiGo Technologies Ltd.</span><div><a href="/privacy" onClick={go('/privacy')}>Privacy</a><a href="/terms" onClick={go('/terms')}>Terms</a><a href="/help" onClick={go('/help')}>Accessibility</a></div><span className="ndpr"><ShieldCheck size={13}/> Privacy by design</span></div>
       </footer>
     </main>
   );

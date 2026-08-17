@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   AlertTriangle, ArrowLeft, ArrowRight, BadgeCheck, Banknote, Bell, CalendarDays, Camera,
   CarFront, Check, CheckCircle2, ChevronDown, ChevronLeft, ChevronRight, CircleHelp,
@@ -11,9 +11,21 @@ import Brand from './components/Brand';
 import { Avatar, Modal, Stepper, Toast, VerifiedBadge } from './components/UI';
 import { communities, formatNaira, rides, type Ride } from './data';
 
-type Props = { onExit: () => void; onOps: () => void };
+type Props = { path: string; onNavigate: (path: string) => void; onExit: () => void; onOps: () => void };
 type RiderTab = 'home' | 'explore' | 'trips' | 'communities' | 'profile';
 type DriverTab = 'home' | 'rides' | 'requests' | 'earnings' | 'profile';
+
+const riderTabs: RiderTab[] = ['home', 'explore', 'trips', 'communities', 'profile'];
+const driverTabs: DriverTab[] = ['home', 'rides', 'requests', 'earnings', 'profile'];
+const readProductPath = (path: string) => {
+  const parts = path.split('/').filter(Boolean);
+  const role = parts[1] === 'driver' ? 'driver' : 'rider';
+  const requested = parts[2] ?? 'home';
+  const tab = role === 'rider'
+    ? (riderTabs.includes(requested as RiderTab) ? requested as RiderTab : 'home')
+    : (driverTabs.includes(requested as DriverTab) ? requested as DriverTab : 'home');
+  return { role, tab } as const;
+};
 
 const riderNavigation = [
   { id: 'home', label: 'Home', icon: Home },
@@ -30,10 +42,11 @@ const driverNavigation = [
   { id: 'profile', label: 'Profile', icon: User },
 ] as const;
 
-export default function ProductApp({ onExit, onOps }: Props) {
-  const [role, setRole] = useState<'rider' | 'driver'>('rider');
-  const [riderTab, setRiderTab] = useState<RiderTab>('home');
-  const [driverTab, setDriverTab] = useState<DriverTab>('home');
+export default function ProductApp({ path, onNavigate, onExit, onOps }: Props) {
+  const initialPath = readProductPath(path);
+  const [role, setRole] = useState<'rider' | 'driver'>(initialPath.role);
+  const [riderTab, setRiderTab] = useState<RiderTab>(initialPath.role === 'rider' ? initialPath.tab as RiderTab : 'home');
+  const [driverTab, setDriverTab] = useState<DriverTab>(initialPath.role === 'driver' ? initialPath.tab as DriverTab : 'home');
   const [menu, setMenu] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [offerOpen, setOfferOpen] = useState(false);
@@ -43,19 +56,28 @@ export default function ProductApp({ onExit, onOps }: Props) {
   const [toast, setToast] = useState('');
   const [requestStatus, setRequestStatus] = useState<'pending' | 'accepted'>('pending');
 
+  useEffect(() => {
+    const next = readProductPath(path);
+    setRole(next.role);
+    if (next.role === 'rider') setRiderTab(next.tab as RiderTab);
+    else setDriverTab(next.tab as DriverTab);
+  }, [path]);
+
   const currentTab = role === 'rider' ? riderTab : driverTab;
   const nav = role === 'rider' ? riderNavigation : driverNavigation;
-  const setTab = (id: string) => {
-    if (role === 'rider') setRiderTab(id as RiderTab); else setDriverTab(id as DriverTab);
+  const goTab = (nextRole: 'rider' | 'driver', id: string) => {
+    if (nextRole === 'rider') setRiderTab(id as RiderTab); else setDriverTab(id as DriverTab);
+    onNavigate(`/app/${nextRole}/${id}`);
     setMenu(false);
   };
+  const setTab = (id: string) => goTab(role, id);
   const notify = (message: string) => {
     setToast(message);
     window.setTimeout(() => setToast(''), 2600);
   };
   const switchRole = (next: 'rider' | 'driver') => {
     setRole(next);
-    setMenu(false);
+    goTab(next, 'home');
   };
   const openBooking = (ride: Ride) => { setSelectedRide(ride); setBookingStep(1); };
   const closeRide = () => { setSelectedRide(null); setBookingStep(0); };
@@ -94,7 +116,7 @@ export default function ProductApp({ onExit, onOps }: Props) {
         <div className="app-page">
           {role === 'rider' ? (
             <>
-              {riderTab === 'home' && <RiderHome onSearch={() => setSearchOpen(true)} onRide={openBooking} onTrips={() => setRiderTab('trips')} />}
+              {riderTab === 'home' && <RiderHome onSearch={() => setSearchOpen(true)} onRide={openBooking} onTrips={() => goTab('rider', 'trips')} />}
               {riderTab === 'explore' && <ExploreRides onRide={openBooking} onSearch={() => setSearchOpen(true)} />}
               {riderTab === 'trips' && <TripsView onSos={() => setSosOpen(true)} notify={notify} />}
               {riderTab === 'communities' && <CommunitiesView notify={notify} />}
@@ -102,7 +124,7 @@ export default function ProductApp({ onExit, onOps }: Props) {
             </>
           ) : (
             <>
-              {driverTab === 'home' && <DriverHome onOffer={() => setOfferOpen(true)} onRequests={() => setDriverTab('requests')} onTrip={() => setDriverTab('rides')} />}
+              {driverTab === 'home' && <DriverHome onOffer={() => setOfferOpen(true)} onRequests={() => goTab('driver', 'requests')} onTrip={() => goTab('driver', 'rides')} />}
               {driverTab === 'rides' && <DriverRides onOffer={() => setOfferOpen(true)} onSos={() => setSosOpen(true)} notify={notify} />}
               {driverTab === 'requests' && <RequestsView status={requestStatus} onAccept={() => {setRequestStatus('accepted'); notify('Tobi has been added to your ride');}} notify={notify} />}
               {driverTab === 'earnings' && <EarningsView notify={notify} />}
@@ -113,9 +135,9 @@ export default function ProductApp({ onExit, onOps }: Props) {
         <MobileNav nav={nav} current={currentTab} setTab={setTab} />
       </section>
 
-      <FindRideModal open={searchOpen} onClose={() => setSearchOpen(false)} onResults={() => {setSearchOpen(false); setRiderTab('explore'); notify('12 matching rides found');}} />
-      <OfferRideModal open={offerOpen} onClose={() => setOfferOpen(false)} onDone={() => {setOfferOpen(false); notify('Your recurring ride is now live'); setDriverTab('rides');}} />
-      <RideBookingModal ride={selectedRide} step={bookingStep} setStep={setBookingStep} onClose={closeRide} onDone={() => {closeRide(); notify('Seat confirmed with Ade for tomorrow'); setRiderTab('trips');}} />
+      <FindRideModal open={searchOpen} onClose={() => setSearchOpen(false)} onResults={() => {setSearchOpen(false); goTab('rider', 'explore'); notify('12 matching rides found');}} />
+      <OfferRideModal open={offerOpen} onClose={() => setOfferOpen(false)} onDone={() => {setOfferOpen(false); notify('Your recurring ride is now live'); goTab('driver', 'rides');}} />
+      <RideBookingModal ride={selectedRide} step={bookingStep} setStep={setBookingStep} onClose={closeRide} onDone={() => {closeRide(); notify('Seat confirmed with Ade for tomorrow'); goTab('rider', 'trips');}} />
       <SosModal open={sosOpen} onClose={() => setSosOpen(false)} />
       <Toast visible={!!toast} message={toast}/>
     </div>
@@ -270,7 +292,7 @@ function RequestsView({status,onAccept,notify}:{status:'pending'|'accepted';onAc
 
 function EarningsView({notify}:{notify:(s:string)=>void}){
  const bars=[42,64,38,81,70,94,52];
- return <><PageHeading eyebrow="DRIVER FINANCES" title="Earnings" subtitle="Transparent cost contributions, settlements and payouts." action={<button className="btn btn-primary" onClick={()=>notify('Payout request submitted')}><Banknote/>Withdraw funds</button>}/><section className="earnings-hero"><div><span>AVAILABLE TO WITHDRAW</span><strong>₦46,850</strong><small><CheckCircle2/>All trips reconciled</small></div><div><span>PENDING</span><strong>₦6,700</strong><small>From 3 upcoming trips</small></div><div><span>PAID OUT THIS MONTH</span><strong>₦81,400</strong><small>To GTBank ·••0294</small></div></section><div className="earnings-grid"><section className="earnings-chart"><div className="dash-section-head"><div><h2>Earnings activity</h2><p>11 to 17 August 2026</p></div><select><option>This week</option><option>This month</option></select></div><div className="bar-chart">{bars.map((h,i)=><div key={i}><span style={{height:`${h}%`}} className={i===5?'active':''}><em>{i===5?'₦6.8k':''}</em></span><small>{['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][i]}</small></div>)}</div><div className="chart-summary"><span><small>GROSS CONTRIBUTIONS</small><strong>₦27,000</strong></span><i/><span><small>PADIGO SERVICE</small><strong>−₦2,400</strong></span><i/><span><small>YOUR EARNINGS</small><strong>₦24,600</strong></span></div></section><aside className="payout-card"><span>NEXT AUTOMATIC PAYOUT</span><h3>Friday, 21 August</h3><strong>₦46,850</strong><div><span>GT</span><p><strong>Guaranty Trust Bank</strong><small>Olabisi Ojo · ••0294</small></p><BadgeCheck/></div><button className="btn btn-outline btn-block">Manage payout account</button></aside></div><section className="transactions"><div className="dash-section-head"><div><h2>Recent transactions</h2><p>All contributions, fees and payouts</p></div><button>Download statement</button></div>{['Ajah → Victoria Island','Victoria Island → Ajah','Weekly payout','Ajah → Victoria Island'].map((x,i)=><div className="transaction-row" key={i}><span className={i===2?'payout-icon':''}>{i===2?<Banknote/>:<CarFront/>}</span><div><strong>{x}</strong><small>{i===2?'14 August 2026 · GTBank ••0294':`${16-i} August 2026 · Trip #PG-${8824-i}`}</small></div><span className={i===2?'paid-tag':'settled-tag'}>{i===2?'Paid':'Settled'}</span><strong className={i===2?'debit':''}>{i===2?'−₦32,700':`+₦${[2850,4200,0,2700][i].toLocaleString()}`}</strong><ChevronRight/></div>)}</section></>;
+ return <><PageHeading eyebrow="DRIVER FINANCES" title="Earnings" subtitle="Transparent cost contributions, settlements and payouts." action={<button className="btn btn-primary" onClick={()=>notify('Payout request submitted')}><Banknote/>Withdraw funds</button>}/><section className="earnings-hero"><div><span>AVAILABLE TO WITHDRAW</span><strong>₦46,850</strong><small><CheckCircle2/>All trips reconciled</small></div><div><span>PENDING</span><strong>₦6,700</strong><small>From 3 upcoming trips</small></div><div><span>PAID OUT THIS MONTH</span><strong>₦81,400</strong><small>To GTBank ·••0294</small></div></section><div className="earnings-grid"><section className="earnings-chart"><div className="dash-section-head"><div><h2>Earnings activity</h2><p>11 to 17 August 2026</p></div><select><option>This week</option><option>This month</option></select></div><div className="bar-chart">{bars.map((h,i)=><div key={i}><span style={{height:`${h}%`}} className={i===5?'active':''}><em>{i===5?'₦6.8k':''}</em></span><small>{['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][i]}</small></div>)}</div><div className="chart-summary"><span><small>GROSS CONTRIBUTIONS</small><strong>₦27,000</strong></span><i/><span><small>PADIGO SERVICE</small><strong>−₦2,400</strong></span><i/><span><small>YOUR EARNINGS</small><strong>₦24,600</strong></span></div></section><aside className="payout-card"><span>NEXT AUTOMATIC PAYOUT</span><h3>Friday, 21 August</h3><strong>₦46,850</strong><div><span>GT</span><p><strong>Guaranty Trust Bank</strong><small>Olabisi Ojo · ••0294</small></p><BadgeCheck/></div><button className="btn btn-outline btn-block">Manage payout account</button></aside></div><section className="transactions"><div className="dash-section-head"><div><h2>Recent transactions</h2><p>All contributions, fees and payouts</p></div><button>Download statement</button></div>{['Ajah → Victoria Island','Victoria Island → Ajah','Weekly payout','Ajah → Victoria Island'].map((x,i)=><div className="transaction-row" key={i}><span className={i===2?'payout-icon':''}>{i===2?<Banknote/>:<CarFront/>}</span><div><strong>{x}</strong><small>{i===2?'14 August 2026 · GTBank ••0294':`${16-i} August 2026 · Trip #PG${8824-i}`}</small></div><span className={i===2?'paid-tag':'settled-tag'}>{i===2?'Paid':'Settled'}</span><strong className={i===2?'debit':''}>{i===2?'−₦32,700':`+₦${[2850,4200,0,2700][i].toLocaleString()}`}</strong><ChevronRight/></div>)}</section></>;
 }
 
 function FindRideModal({open,onClose,onResults}:{open:boolean;onClose:()=>void;onResults:()=>void}){
