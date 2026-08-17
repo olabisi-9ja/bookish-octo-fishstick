@@ -1,0 +1,13 @@
+{
+  "name": "PadiGo — Trusted recurring carpools",
+  "short_name": "PadiGo",
+  "description": "Find verified people travelling your route and build a commute you can count on.",
+  "start_url": "/app",
+  "display": "standalone",
+  "background_color": "#f4f5f1",
+  "theme_color": "#0c392c",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/padigo-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
