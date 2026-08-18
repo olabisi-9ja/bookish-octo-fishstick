@@ -1,7 +1,10 @@
 import type { ReactNode } from 'react';
 import { X, CheckCircle2 } from 'lucide-react';
 
-export function Avatar({ initials, color = '#d96e4b', size = 44 }: { initials: string; color?: string; size?: number }) {
+export function Avatar({ initials, color = '#d96e4b', size = 44, photo }: { initials: string; color?: string; size?: number; photo?: string }) {
+  if (photo) {
+    return <span className="avatar photo" style={{ width: size, height: size }}><img src={photo} alt={initials} loading="lazy" /></span>;
+  }
   return <span className="avatar" style={{ background: color, width: size, height: size, fontSize: size * 0.31 }}>{initials}</span>;
 }
 

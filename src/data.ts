@@ -17,6 +17,7 @@ export type Ride = {
   plate: string;
   community: string;
   recurring: boolean;
+  photo?: string;
 };
 
 export const rides: Ride[] = [
@@ -24,16 +25,19 @@ export const rides: Ride[] = [
     id: 'PG2841', driver: 'Ade Bamidele', initials: 'AB', avatarColor: '#db6b46', rating: 4.9, trips: 184,
     from: 'Ajah', pickup: 'Sangotedo, Novare Mall', to: 'Victoria Island', time: '7:05 AM', eta: '42 mins',
     price: 1500, seats: 2, match: 96, car: 'Toyota Corolla · Silver', plate: 'APP 412 GH', community: 'PadiGo at Sterling', recurring: true,
+    photo: '/images/people/ade.jpg',
   },
   {
     id: 'PG3027', driver: 'Ifeoma Nwosu', initials: 'IN', avatarColor: '#7656b8', rating: 4.8, trips: 96,
     from: 'Ajah', pickup: 'Abraham Adesanya', to: 'Victoria Island', time: '6:55 AM', eta: '47 mins',
     price: 1350, seats: 1, match: 91, car: 'Honda Accord · Black', plate: 'KJA 208 FT', community: 'Lekki Gardens', recurring: true,
+    photo: '/images/people/ifeoma.jpg',
   },
   {
     id: 'PG1913', driver: 'Musa Lawal', initials: 'ML', avatarColor: '#257769', rating: 4.9, trips: 231,
     from: 'Sangotedo', pickup: 'Monastery Road', to: 'Oniru', time: '7:15 AM', eta: '39 mins',
     price: 1250, seats: 3, match: 87, car: 'Kia Rio · Blue', plate: 'GGE 774 BX', community: 'VI Tech Circle', recurring: false,
+    photo: '/images/people/musa.jpg',
   },
 ];
 
