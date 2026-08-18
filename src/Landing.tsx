@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import {
   ArrowRight, BadgeCheck, CalendarDays, CarFront, Check, ChevronDown, Clock3, Coins,
-  HeartHandshake, LocateFixed, MapPin, Menu, Repeat2, Route, Search, ShieldCheck,
+  HeartHandshake, LocateFixed, MapPin, Menu, Quote, Repeat2, Route, Search, ShieldCheck,
   Sparkles, Star, Users, X, Zap, Building2, GraduationCap, Home,
 } from 'lucide-react';
 import Brand from './components/Brand';
 import { Avatar, VerifiedBadge } from './components/UI';
+import { BlurReveal, FaceDock, ManifestoHighlight, PhotoRail, SpreadWord } from './components/ScrollEffects';
 import { rides, formatNaira } from './data';
 
 type Props = { onNavigate: (path: string) => void; onOpenApp: () => void; onOpenOps: () => void };
@@ -58,8 +59,8 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
             <h1>Your route.<br />Your people.<br /><em>Your commute.</em></h1>
             <p>Match with verified people heading your way, share the cost, and turn your daily route into a commute you can count on.</p>
             <div className="hero-trust">
-              <div className="avatar-stack"><Avatar initials="AO" color="#cc795c" size={38} /><Avatar initials="TN" color="#7160a5" size={38} /><Avatar initials="DL" color="#347968" size={38} /><span className="more-avatar">+2k</span></div>
-              <div><div className="stars"><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /></div><span>People building better commutes</span></div>
+              <div className="avatar-stack"><Avatar initials="Tolu" photo="/images/people/tolu.jpg" size={38} /><Avatar initials="Chidi" photo="/images/people/chidi.jpg" size={38} /><Avatar initials="Amaka" photo="/images/people/amaka.jpg" size={38} /><Avatar initials="Seyi" photo="/images/people/seyi.jpg" size={38} /><span className="more-avatar">+2k</span></div>
+              <div><div className="stars"><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /></div><span>Trusted by 2,000+ commuters building better routines</span></div>
             </div>
           </div>
 
@@ -109,6 +110,13 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
         </div>
       </section>
 
+      <section className="manifesto-section">
+        <div className="page-width">
+          <div className="eyebrow light"><Sparkles size={15} /> Why PadiGo exists</div>
+          <ManifestoHighlight text="Every morning, millions of Lagosians crawl through the same traffic, on the same routes, in half-empty cars. PadiGo exists to change that — matching neighbours, colleagues and coursemates seat by seat, so the city moves together and nobody rides alone." />
+        </div>
+      </section>
+
       <section className="how-section page-width" id="how">
         <div className="section-heading centered">
           <div className="eyebrow"><Route size={15} /> Built around your routine</div>
@@ -147,7 +155,7 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
                 <div className="phone-commute-card">
                   <div className="phone-route-map"><span className="map-road r1"/><span className="map-road r2"/><i className="point p1"/><i className="point p2"/><span className="map-car">⌁</span></div>
                   <div className="mini-route"><span><i /> Ajah</span><b>→</b><span><i /> Victoria Island</span></div>
-                  <div className="mini-ride-row"><Avatar initials="AB" color="#cf7652" size={34} /><div><strong>Ade's carpool</strong><small>7:05 AM · 2 seats</small></div><strong>₦1,500</strong></div>
+                  <div className="mini-ride-row"><Avatar initials="AB" photo="/images/people/ade.jpg" size={34} /><div><strong>Ade's carpool</strong><small>7:05 AM · 2 seats</small></div><strong>₦1,500</strong></div>
                   <button onClick={onOpenApp}>View my commute</button>
                 </div>
                 <div className="mini-community"><Users size={18} /><span><strong>8 people</strong> from your area are going your way</span></div>
@@ -185,13 +193,52 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
                 <span className="match-pill">{ride.match}% match</span>
               </div>
               <div className="ride-card-content">
-                <div className="ride-driver"><Avatar initials={ride.initials} color={ride.avatarColor} size={43} /><div><strong>{ride.driver}</strong><span><Star size={13} fill="currentColor" /> {ride.rating} · {ride.trips} trips</span></div><VerifiedBadge /></div>
+                <div className="ride-driver"><Avatar initials={ride.initials} color={ride.avatarColor} size={43} photo={ride.photo} /><div><strong>{ride.driver}</strong><span><Star size={13} fill="currentColor" /> {ride.rating} · {ride.trips} trips</span></div><VerifiedBadge /></div>
                 <div className="route-title"><strong>{ride.from}</strong><ArrowRight size={17}/><strong>{ride.to}</strong></div>
                 <div className="ride-meta"><span><Clock3 /> {ride.time}</span><span><CarFront /> {ride.seats} seats</span><span><Repeat2 /> {ride.recurring ? 'Weekdays' : 'Tomorrow'}</span></div>
                 <div className="ride-price"><span><small>Per seat</small><strong>{formatNaira(ride.price)}</strong></span><button onClick={onOpenApp}>View ride <ArrowRight size={15}/></button></div>
               </div>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="voices-section page-width" id="stories">
+        <div className="section-heading centered">
+          <div className="eyebrow"><Quote size={15} /> Loved by everyday commuters</div>
+          <BlurReveal>
+            <h2>Real people. Real routes.<br />Every single <em>morning.</em></h2>
+          </BlurReveal>
+          <p>Behind every seat on PadiGo is a neighbour, a colleague or a coursemate. Here's what sharing the road actually feels like.</p>
+        </div>
+        <PhotoRail />
+        <div className="voices-grid">
+          <article className="voice-card">
+            <div className="stars"><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /></div>
+            <blockquote>"I was spending almost ₦110k a month on ride-hailing. Now I split my Ajah run with three neighbours from my estate — and we take turns buying puff-puff on Fridays."</blockquote>
+            <div className="voice-person"><Avatar initials="TA" photo="/images/people/tolu.jpg" size={44} /><div><strong>Tolu Adeyemi</strong><small>Rider · Ajah → Victoria Island</small></div><VerifiedBadge /></div>
+          </article>
+          <figure className="voice-photo">
+            <img src="/images/people/carpool-crew.jpg" alt="A PadiGo carpool crew laughing together on their morning commute through Lagos" loading="lazy" />
+            <div className="photo-bubble"><Avatar initials="IN" photo="/images/people/ifeoma.jpg" size={30} /><span>We're outside Novare Mall 🚗 saved you the window seat!</span></div>
+            <figcaption><span className="crew-chip"><Users size={13} /> The Lekki Sunrise Crew</span><span>Same four people, weekdays at 6:45 AM — 11 months running.</span></figcaption>
+          </figure>
+          <article className="voice-card">
+            <div className="stars"><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /></div>
+            <blockquote>"Same three faces every morning, so there's nothing to negotiate at 6 AM. My mum follows the live trip link — she knows my crew by name now."</blockquote>
+            <div className="voice-person"><Avatar initials="CO" photo="/images/people/chidi.jpg" size={44} /><div><strong>Chidi Okafor</strong><small>Rider · Yaba → Lekki Phase 1</small></div><VerifiedBadge /></div>
+          </article>
+        </div>
+        <div className="voices-trust">
+          <FaceDock faces={[
+            { src: '/images/people/ade.jpg', name: 'Ade B. · Verified driver' },
+            { src: '/images/people/amaka.jpg', name: 'Amaka E. · Verified rider' },
+            { src: '/images/people/seyi.jpg', name: 'Seyi O. · Verified rider' },
+            { src: '/images/people/musa.jpg', name: 'Musa L. · Verified driver' },
+            { src: '/images/people/tolu.jpg', name: 'Tolu A. · Verified rider' },
+          ]} />
+          <p><strong>4.9/5 average trust rating</strong> from 1,200+ ride reviews last month — every face above is an identity-verified member.</p>
+          <button className="btn btn-primary" onClick={onOpenApp}>Join your commute crew <ArrowRight size={17} /></button>
         </div>
       </section>
 
@@ -232,9 +279,14 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
         </div>
       </section>
 
+      <div className="together-band" aria-hidden="true">
+        <SpreadWord word="TOGETHER" />
+        <p>One city. One route. One crew at a time.</p>
+      </div>
+
       <section className="driver-cta page-width" id="drivers">
         <div className="driver-pattern" />
-        <div className="driver-copy"><div className="eyebrow light"><CarFront size={15}/> Already going that way?</div><h2>Your empty seats can<br />help pay for the journey.</h2><p>Share your regular route with verified riders. You set the schedule, seats and fair cost contribution.</p><button className="btn btn-white" onClick={onOpenApp}>Offer a ride <ArrowRight size={17}/></button></div>
+        <div className="driver-copy"><div className="eyebrow light"><CarFront size={15}/> Already going that way?</div><h2>Your empty seats can<br />help pay for the journey.</h2><p>Share your regular route with verified riders. You set the schedule, seats and fair cost contribution.</p><button className="btn btn-white" onClick={onOpenApp}>Offer a ride <ArrowRight size={17}/></button><div className="driver-voice"><Avatar initials="AB" photo="/images/people/ade.jpg" size={40}/><span>"My fuel money halves itself every week — and the gist in traffic isn't bad either."<b>Ade B. · Shares his Ajah → VI route, 184 trips</b></span></div></div>
         <div className="earn-card"><span className="earn-label">THIS WEEK</span><strong>₦24,600</strong><small>Cost contributions from 9 shared seats</small><div className="earn-bars"><i/><i/><i/><i/><i className="high"/><i className="med"/><i/></div><div className="earn-foot"><span>Mon</span><span>Sun</span></div></div>
       </section>
 
