@@ -17,7 +17,10 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
   const [from, setFrom] = useState('Ajah, Lagos');
   const [to, setTo] = useState('Victoria Island');
 
-  const search = () => onOpenApp();
+  const search = () => {
+    sessionStorage.setItem('padigo.search', JSON.stringify({ from, to, tripType }));
+    onOpenApp();
+  };
   const go = (path: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     setMenu(false);

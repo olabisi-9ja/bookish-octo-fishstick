@@ -1,12 +1,16 @@
 # PadiGo
 
-A polished, responsive product prototype for **Nigeria's trusted recurring carpool network**.
+**PadiGo** is Nigeria's trusted recurring carpool network: *Your people. Your route. Half the cost.*
 
-The repository currently presents three connected product surfaces:
+This repository is a working web MVP of the rider app, driver app and operations centre, with a client-side marketplace engine (matching, pricing, bookings, trip PIN, chat, SOS and an immutable wallet ledger).
 
-- **Marketing website** at `/` with dedicated pages for how PadiGo works, safety, communities, drivers, company information, help, privacy and terms.
-- **Rider and driver product** under `/app` with browser addressable subpages, a role switcher, mobile bottom navigation, ride discovery, booking and payment flow, live trips, safety, communities, driver offers, passenger requests and earnings.
-- **Operations centre** under `/ops` with dedicated subpages for every major marketplace, trust, finance, reporting and administration module.
+- **Marketing website** at `/`
+- **Product** at `/app` — phone/OTP auth, rider + driver workspaces
+- **Operations centre** at `/ops`
+
+### Demo login
+
+Continue as **Olabisi**, or sign in with any Nigerian number. Prototype OTP is always **`4827`**.
 
 ## Run locally
 
