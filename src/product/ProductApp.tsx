@@ -66,7 +66,20 @@ export default function ProductApp({ path, onNavigate, onExit, onOps }: Props) {
   const [selectedRide, setSelectedRide] = useState<RideCard>(matchedRides[0]);
 
   // Mobile Device Frame view toggle (lets reviewer see realistic phone bezel or full layout)
-  const [isPhoneFrame, setIsPhoneFrame] = useState(false);
+  const [isPhoneFrame, setIsPhoneFrame] = useState(true);
+
+  // Real-time ticking clock for mobile status bar
+  const [currentTime, setCurrentTime] = useState(() => {
+    const d = new Date();
+    return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  });
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const d = new Date();
+      setCurrentTime(d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   // Figma Spec Viewer modal
   const [figmaOpen, setFigmaOpen] = useState(false);
@@ -213,7 +226,7 @@ export default function ProductApp({ path, onNavigate, onExit, onOps }: Props) {
         <main className={`mobile-device-shell ${isPhoneFrame ? 'with-bezel' : 'full-viewport'}`}>
           {isPhoneFrame && (
             <div className="phone-notch-bar">
-              <span className="notch-time">07:00</span>
+              <span className="notch-time">{currentTime}</span>
               <span className="notch-island" />
               <div className="notch-icons">
                 <span className="signal">●●●</span>

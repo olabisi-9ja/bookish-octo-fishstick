@@ -374,7 +374,12 @@ const atRiskInterventions: AtRiskIntervention[] = [
 export function createSeedState(): PlatformState {
   return {
     version: 1,
-    session: null,
+    session: {
+      memberId: DEMO_USER_ID,
+      role: 'rider',
+      onboarded: true,
+      driverOnboarded: true,
+    },
     members,
     vehicles,
     rides,

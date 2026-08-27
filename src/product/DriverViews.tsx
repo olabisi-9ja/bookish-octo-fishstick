@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   AlertTriangle, ArrowRight, BadgeCheck, Calendar, CalendarDays, CarFront, Check, CheckCircle2,
   ChevronRight, Clock3, Coins, DollarSign, HelpCircle, Navigation, Phone, Plus, RefreshCw,
@@ -41,6 +41,19 @@ export function DriverHome({
   const nextCommute = state.rides.find((r) => r.driverId === me?.id) ?? state.rides[0];
   const isConfirmed = nextCommute.confirmedByDriver;
 
+  const [secondsLeft, setSecondsLeft] = useState(6138); // 01:42:18
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSecondsLeft((s) => (s > 0 ? s - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const hours = Math.floor(secondsLeft / 3600);
+  const minutes = Math.floor((secondsLeft % 3600) / 60);
+  const seconds = secondsLeft % 60;
+  const formattedCountdown = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
   return (
     <div className="driver-home-container">
       {/* Header */}
@@ -63,7 +76,7 @@ export function DriverHome({
         <div className="t8-badge-strip">
           <span className="t8-tag">T-8 COMMITMENT</span>
           <span className="t8-deadline">
-            {isConfirmed ? '✓ COMMITTED FOR TOMORROW' : 'CONFIRM WITHIN 01:42:18'}
+            {isConfirmed ? '✓ COMMITTED FOR TOMORROW' : `CONFIRM WITHIN ${formattedCountdown}`}
           </span>
         </div>
 
@@ -172,6 +185,19 @@ export function DriverCommitmentView({
   const [cancelling, setCancelling] = useState(false);
   const [reason, setReason] = useState('');
 
+  const [secondsLeft, setSecondsLeft] = useState(6138); // 01:42:18
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSecondsLeft((s) => (s > 0 ? s - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const hours = Math.floor(secondsLeft / 3600);
+  const minutes = Math.floor((secondsLeft % 3600) / 60);
+  const seconds = secondsLeft % 60;
+  const formattedCountdown = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
   const handleConfirm = () => {
     confirmDriverCommitment('CM-DRV-01');
     confirmDriverCommitment('CM-IKR-01');
@@ -224,7 +250,7 @@ export function DriverCommitmentView({
       <div className="commitment-card">
         <div className="t8-urgency-banner">
           <Clock3 size={18} />
-          <span>Confirm within <strong>01:42:18</strong></span>
+          <span>Confirm within <strong>{formattedCountdown}</strong></span>
         </div>
 
         <div className="commitment-header-text">

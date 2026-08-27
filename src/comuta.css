@@ -24,7 +24,123 @@
   --comuta-shadow-pop: 0 20px 60px rgba(12, 57, 44, 0.16);
 }
 
-/* Brand header tweaks */
+/* Global Quick Surface Switcher Bar */
+.comuta-root-environment {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.global-surface-switcher-bar {
+  height: 42px;
+  background: #081d17;
+  color: #ffffff;
+  border-bottom: 1px solid #133a2e;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  font-family: 'DM Sans', sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 300;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.gss-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.gss-brand {
+  font: 800 13px 'Manrope', sans-serif;
+  letter-spacing: 0.08em;
+  color: var(--comuta-lime);
+}
+.gss-tagline {
+  font: 500 11px 'DM Sans', sans-serif;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.gss-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gss-btn {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font: 700 11px/1 'DM Sans', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.gss-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.gss-btn.active {
+  background: var(--comuta-lime);
+  color: #082d23;
+  border-color: var(--comuta-lime);
+  font-weight: 800;
+}
+
+.gss-btn.figma-spec {
+  background: #1e293b;
+  border-color: #334155;
+  color: #38bdf8;
+}
+.gss-btn.figma-spec:hover {
+  background: #334155;
+}
+
+.gss-btn.reset-btn {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+}
+.gss-btn.reset-btn:hover {
+  background: rgba(239, 68, 68, 0.25);
+}
+
+.sub-badge {
+  font: 800 9px 'DM Sans', sans-serif;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.25);
+  color: #d1fae5;
+}
+.sub-badge.danger {
+  background: #dc2626;
+  color: #ffffff;
+}
+.sub-badge.locked {
+  background: #0284c7;
+  color: #ffffff;
+}
+
+.surface-viewport {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .gss-tagline {
+    display: none;
+  }
+  .global-surface-switcher-bar {
+    overflow-x: auto;
+  }
+}
+
 .brand-text {
   display: flex;
   flex-direction: column;

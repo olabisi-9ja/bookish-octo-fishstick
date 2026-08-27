@@ -105,6 +105,14 @@ function loadState(): PlatformState {
     if (!raw) return createSeedState();
     const parsed = JSON.parse(raw) as PlatformState;
     if (parsed?.version !== 1 || !Array.isArray(parsed.rides) || !Array.isArray(parsed.recurringCommutes)) return createSeedState();
+    if (!parsed.session) {
+      parsed.session = {
+        memberId: DEMO_USER_ID,
+        role: 'rider',
+        onboarded: true,
+        driverOnboarded: true,
+      };
+    }
     return parsed;
   } catch {
     return createSeedState();
