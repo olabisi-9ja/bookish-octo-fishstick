@@ -1,107 +1,78 @@
-# PadiGo
+# COMUTA
 
-**PadiGo** is Nigeria's trusted recurring carpool network: *Your people. Your route. Half the cost.*
+> **“My daily commute is already taken care of.”**  
+> *Not: “Find a driver right now.”*
 
-This repository is a working web MVP of the rider app, driver app and operations centre, with a client-side marketplace engine (matching, pricing, bookings, trip PIN, chat, SOS and an immutable wallet ledger).
+**COMUTA** is Nigeria’s corridor-based shared commute platform designed for scheduled, predictable daily travel between major Lagos transit hubs (featuring the flagship **Ikorodu Hub ↔ Victoria Island Hub** arterial corridor).
 
-- **Marketing website** at `/`
-- **Product** at `/app` — phone/OTP auth, rider + driver workspaces
-- **Operations centre** at `/ops`
+---
 
-### Demo login
+## 1. Product Architecture
 
-Continue as **Olabisi**, or sign in with any Nigerian number. Prototype OTP is always **`4827`**.
+COMUTA is built as **three experiences on one design system**:
 
-## Run locally
+1. **Mobile Application (Single codebase, Rider + Driver modes)**
+   - **Rider Mode**: Home, Plan commute, Search (Available trips with 35–40% corridor map), Trip detail, Booking review, Paystack payment, Confirmed illustration, Meet driver / Pickup (Trip PIN `4827`), Active trip (ETA 32 min, SOS & Share), Completion, Recurring commute calendar subscription, and At-risk recovery.
+   - **Driver Mode**: Home, T-8 Commitment (deadline countdown & "You're committed" motion), Publish commute, Passenger management, Pickup PIN verification, 98% Operational reliability, and Cost recovery ledger.
+   - **Shared Core**: Auth, NIN KYC, Safety, Escrow payments, and Trip states.
+2. **Operations Dashboard (Operations-First)**
+   - Answering *“What needs intervention?”*: 12 active trips, 3 at-risk trips, 7 unconfirmed drivers, 2 incidents, 4 failed payments.
+   - Live corridor dispatch map, at-risk recovery workbench, and 7 navigation families (Operations, Marketplace, Money, Safety, Quality, Intelligence, Configuration).
+3. **Public Web Platform**
+   - Hero: *"Your commute. Shared. Simpler."*
+   - Visual storytelling: *Plan → Match → Reserve → Commute*
+   - Driver acquisition with interactive Cost Recovery Calculator (*“Turn your empty seats into commute savings”*)
+   - Designated well-lit hub directory and safety center.
+
+---
+
+## 2. Core Commute Journey
+
+$$\text{Plan} \longrightarrow \text{Compare} \longrightarrow \text{Trust} \longrightarrow \text{Reserve} \longrightarrow \text{Confirm} \longrightarrow \text{Prepare} \longrightarrow \text{Pickup} \longrightarrow \text{Track} \longrightarrow \text{Complete} \longrightarrow \text{Repeat}$$
+
+---
+
+## 3. Figma File Structure & Build Spec (Embedded ❖)
+
+The application includes a built-in **Figma Spec & Design System Inspector** accessible directly from the top navigation bar, mapping all 10 pages:
+
+```text
+00 — Cover / UX Principles
+01 — Foundations (Colors, Typography, Spacing, Radius, Elevation, Motion)
+02 — Components (Buttons, Inputs, Cards, Chips, Status, Bottom Sheets, Navigation, Maps, Trip Cards)
+03 — Illustrations (Geometric minimal SVG library: Mobility, People, Trust, States, Safety)
+04 — Mobile / Auth (Splash, Onboarding, Login, Signup, OTP 4827, KYC, Role)
+05 — Mobile / Rider (Home, Planning, Search, Trip, Booking, Payment, Pickup, Active Trip, Completion, Recurring)
+06 — Mobile / Driver (Home, Publish, Routes, Bookings, T-8, Pickup, Active Trip, Reliability, Cost Recovery)
+07 — Mobile / Shared (Notifications, Safety, Support, Recovery Philosophy)
+08 — Operations Dashboard (Intervention Queue, 7 Navigation Families)
+09 — Public Web (Brand, Visual Storytelling, Economics Calculator, Hubs)
+10 — Prototype / User Flows (Interactive MVP Spines)
+```
+
+---
+
+## 4. Key Interactions & Signatures
+
+- **Trip Card Hierarchy (3-Second Decision Rule)**:
+  `TIME (7:00 AM ~8:05 AM) → TRUST (Adebayo K. · 98% completion) → VEHICLE (Toyota Corolla · ABC 123 XY) → PRICE (₦1,500/seat) → AVAILABILITY (2 seats left)`
+- **T-8 Driver Commitment**: Evening confirmation with countdown timer before 11:00 PM cutoff, triggering verified lock or immediate passenger recovery.
+- **COMUTA Recovery Philosophy**: *“Don't report a failure without presenting the next action.”* If a driver is delayed or cancels, old route fades, verified alternative is presented with 1-click reassignment or instant refund.
+- **Designated Well-Lit Hubs**: Gate-specific meeting points (e.g. Ikorodu Hub Main Gate) with 4-digit departure PIN (`4827`).
+
+---
+
+## 5. Development & Running Locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-The Vite server binds to `0.0.0.0:4173`.
+The Vite dev server binds to `0.0.0.0:4173` or `0.0.0.0:5173`.
 
 ```bash
+npm run typecheck
 npm run build
 npm run preview
 ```
-
-## Product paths
-
-| Path | Surface |
-| --- | --- |
-| `/` | Marketing home |
-| `/how-it-works` | Product method and matching |
-| `/safety` | Verification and trip safety |
-| `/communities` | Trusted community networks |
-| `/drivers` | Driver proposition and workflow |
-| `/about`, `/help`, `/privacy`, `/terms` | Company, support and policy pages |
-| `/app/rider/home` | Rider home |
-| `/app/rider/explore` | Ranked ride matches |
-| `/app/rider/trips` | Active and scheduled trips |
-| `/app/rider/communities` | Rider communities |
-| `/app/rider/profile` | Rider profile and trust |
-| `/app/driver/home` | Driver home |
-| `/app/driver/rides` | Driver schedule and trip controls |
-| `/app/driver/requests` | Passenger requests |
-| `/app/driver/earnings` | Earnings, settlements and payouts |
-| `/app/driver/profile` | Driver profile and verification |
-| `/ops/control-centre` | Operations overview |
-| `/ops/live-trips`, `/ops/analytics`, `/ops/reports` | Monitoring and intelligence |
-| `/ops/users`, `/ops/drivers`, `/ops/vehicles`, `/ops/trips`, `/ops/bookings` | Marketplace operations |
-| `/ops/communities`, `/ops/pricing`, `/ops/promotions` | Community and growth operations |
-| `/ops/verification`, `/ops/safety`, `/ops/disputes` | Trust and safety operations |
-| `/ops/payments`, `/ops/refunds`, `/ops/payouts` | Finance operations |
-| `/ops/settings`, `/ops/audit-logs` | Platform controls and accountability |
-
-## Interactive flows
-
-### Rider
-
-1. Select **Find a ride**.
-2. Confirm Ajah → Victoria Island and a recurring schedule.
-3. Compare route matches in **Explore**.
-4. Open a driver, inspect verification and vehicle details.
-5. Request a seat, choose payment, and reach confirmation.
-6. Open **Trips** for live tracking, masked communication, sharing and safety tools.
-
-### Driver
-
-1. Switch to **Driver** in the sidebar or profile.
-2. Select **Offer a ride**.
-3. Complete route, recurring schedule, seats and contribution.
-4. Review incoming passenger requests.
-5. Inspect upcoming rides and earnings/payout activity.
-
-### Operations
-
-Open `/ops` to review live trips, route-deviation alerts, corridor demand/supply, verification applications, payment signals and marketplace conversion.
-
-## Design direction
-
-PadiGo deliberately avoids looking like a generic instant-ride clone. The visual system uses:
-
-- deep forest green for trust and operational confidence;
-- fresh lime for shared-route and live-state emphasis;
-- warm orange for human/community accents;
-- cream and soft greys for an approachable Nigerian commuter product;
-- route-first cards, explicit verification signals and recurring-commute language throughout.
-
-The UI is original, with product-pattern inspiration drawn from leading mobility platforms while retaining PadiGo's own positioning: **Your route. Your people. Your commute.**
-
-## Technical notes
-
-- React + TypeScript + Vite
-- Responsive/PWA-ready web application
-- Lucide icon system
-- URL-based surface switching with browser history support
-- Local deterministic data for the prototype, with interaction state modelled in React
-- CSS-generated map and route previews to avoid exposing API keys in the client prototype
-
-The product is ready to connect to the proposed NestJS, PostGIS and Redis services. Payment, identity, live location, messaging and emergency actions are intentionally demonstrated without initiating real external transactions or emergency calls.
-
-## Cross platform mobile
-
-The production mobile client should be one Expo and React Native application for iOS and Android, with protected Rider and Driver route groups and a verified role switch. It should reuse API contracts and design tokens rather than wrapping the website or attempting to share DOM components.
-
-The implementation architecture, native capability choices, backend boundaries, navigation map and delivery sequence are documented in [`docs/cross-platform-mobile.md`](docs/cross-platform-mobile.md).

@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
-import { ArrowRight, BadgeCheck, ChevronLeft, Phone, ShieldCheck, Smartphone, Star, Users } from 'lucide-react';
+import {
+  ArrowRight, BadgeCheck, ChevronLeft, Phone, ShieldCheck, Smartphone, Star, Users,
+} from 'lucide-react';
 import Brand from './components/Brand';
 import { Avatar } from './components/UI';
 import { DEMO_OTP, DEMO_PHONE, prettyPhone, usePlatform } from './platform';
@@ -49,174 +51,228 @@ export default function AuthApp({ onEnter }: { onEnter: () => void }) {
   };
 
   const finish = () => {
-    if (!canEmergency) return setError('Add someone we can reach in an emergency.');
+    if (!canEmergency) return setError('Add at least one emergency contact.');
     addEmergencyContact(contactName.trim(), contactPhone.trim(), relation);
+    setError('');
     onEnter();
   };
 
   const demo = () => {
-    const result = login(DEMO_PHONE, DEMO_OTP);
-    if (result.ok) onEnter();
+    login(DEMO_PHONE, DEMO_OTP);
+    onEnter();
   };
 
   return (
-    <main className="auth-app">
-      <section className="auth-story">
-        <div className="auth-story-bg" />
-        <div className="auth-story-copy">
-          <Brand inverse />
-          <p className="auth-kicker">Nigeria's trusted recurring carpool network</p>
-          <h1>Your people.<br />Your route.<br /><em>Half the cost.</em></h1>
-          <p>Match with verified commuters heading your way, share the journey, and build a crew you can count on every weekday.</p>
-          <div className="auth-faces">
-            <Avatar initials="Ade" photo="/images/people/ade.jpg" size={36} />
-            <Avatar initials="Tolu" photo="/images/people/tolu.jpg" size={36} />
-            <Avatar initials="Amaka" photo="/images/people/amaka.jpg" size={36} />
-            <Avatar initials="Musa" photo="/images/people/musa.jpg" size={36} />
-            <span>2,000+ verified commuters</span>
-          </div>
-          <ul>
-            <li><ShieldCheck size={16} /> Identity, vehicle and trip safety built in</li>
-            <li><Users size={16} /> Workplace, estate and campus communities</li>
-            <li><Star size={16} /> Recurring Ajah → VI, Ikeja → VI, Yaba → Lekki</li>
+    <div className="auth-shell">
+      <header className="auth-header">
+        <Brand tagline />
+      </header>
+
+      <main className="auth-content">
+        <section className="auth-intro">
+          <span className="auth-kicker">MY DAILY COMMUTE IS TAKEN CARE OF</span>
+          <h1>Nigeria’s Corridor-Based Shared Commute Platform</h1>
+          <p>
+            Travel with verified drivers and riders along major Lagos transit corridors.
+            Book ahead, know your seat, and arrive without stress.
+          </p>
+          <ul className="auth-bullets">
+            <li><ShieldCheck size={16} /> Verified government NIN and driver licensing</li>
+            <li><BadgeCheck size={16} /> 98%+ driver on-time completion standard</li>
+            <li><Users size={16} /> Designated well-lit pickup hubs with waiting bays</li>
+            <li><Star size={16} /> Recurring Ikorodu ➔ Victoria Island arterial schedule</li>
           </ul>
-        </div>
-      </section>
+        </section>
 
-      <section className="auth-panel">
-        <div className="auth-card">
-          {step !== 'welcome' && (
-            <button className="auth-back" onClick={() => { setError(''); setStep(step === 'otp' ? 'phone' : step === 'profile' ? 'otp' : step === 'emergency' ? 'profile' : 'welcome'); }}>
-              <ChevronLeft size={18} /> Back
-            </button>
-          )}
-
-          {step === 'welcome' && (
-            <>
-              <span className="auth-step">START WITH TRUST</span>
-              <h2>Welcome to PadiGo</h2>
-              <p>Sign in with your phone. We'll send a one-time code — no passwords to remember.</p>
-              <button className="btn btn-primary btn-block" onClick={() => setStep('phone')}>Get started <ArrowRight size={18} /></button>
-              <button className="btn btn-outline btn-block" onClick={() => setStep('phone')}>I already have an account</button>
-              <button className="auth-demo" onClick={demo}>
-                <BadgeCheck size={16} /> Continue as Olabisi · demo account
+        <section className="auth-panel">
+          <div className="auth-card">
+            {step !== 'welcome' && (
+              <button
+                className="auth-back"
+                onClick={() => {
+                  setError('');
+                  setStep(step === 'otp' ? 'phone' : step === 'profile' ? 'otp' : step === 'emergency' ? 'profile' : 'welcome');
+                }}
+              >
+                <ChevronLeft size={18} /> Back
               </button>
-            </>
-          )}
+            )}
 
-          {step === 'phone' && (
-            <>
-              <span className="auth-step">STEP 1 OF 3</span>
-              <h2>What's your number?</h2>
-              <p>We'll text a 4-digit code. For this prototype, the code is always {DEMO_OTP}.</p>
-              <label className="auth-label">
-                Phone number
-                <div className="auth-input">
-                  <span>+234</span>
-                  <Phone size={16} />
+            {step === 'welcome' && (
+              <>
+                <span className="auth-step">START WITH TRUST</span>
+                <h2>Welcome to COMUTA</h2>
+                <p>Sign in with your phone. We'll send a one-time code — no passwords to remember.</p>
+                <button className="btn btn-primary btn-block" onClick={() => setStep('phone')}>
+                  Get started <ArrowRight size={18} />
+                </button>
+                <button className="btn btn-outline btn-block" onClick={() => setStep('phone')}>
+                  I already have an account
+                </button>
+                <button className="auth-demo" onClick={demo}>
+                  <BadgeCheck size={16} /> Continue as Olabisi · Demo Account (4827)
+                </button>
+              </>
+            )}
+
+            {step === 'phone' && (
+              <>
+                <span className="auth-step">STEP 1 OF 3</span>
+                <h2>What's your number?</h2>
+                <p>We'll text a 4-digit code. For this preview, the code is always <strong>{DEMO_OTP}</strong>.</p>
+                <label className="auth-label">
+                  Phone number
+                  <div className="auth-input">
+                    <span>+234</span>
+                    <Phone size={16} />
+                    <input
+                      autoFocus
+                      inputMode="tel"
+                      placeholder="803 111 2841"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && sendPhone()}
+                    />
+                  </div>
+                </label>
+                {error && <p className="auth-error">{error}</p>}
+                <button className="btn btn-primary btn-block" disabled={!canPhone} onClick={sendPhone}>
+                  Send code <ArrowRight size={18} />
+                </button>
+              </>
+            )}
+
+            {step === 'otp' && (
+              <>
+                <span className="auth-step">STEP 2 OF 3</span>
+                <h2>Enter your code</h2>
+                <p>Sent to {prettyPhone(phone) || 'your phone'}. Use <strong>{DEMO_OTP}</strong> to continue.</p>
+                <OtpBoxes value={otp} onChange={setOtp} onComplete={(value) => { setOtp(value); }} />
+                {error && <p className="auth-error">{error}</p>}
+                <button className="btn btn-primary btn-block" disabled={!canOtp || busy} onClick={verify}>
+                  <Smartphone size={16} /> Verify and continue
+                </button>
+                <button className="btn-resend" onClick={() => setError('A new code was generated: ' + DEMO_OTP)}>
+                  Resend code (4827)
+                </button>
+              </>
+            )}
+
+            {step === 'profile' && (
+              <>
+                <span className="auth-step">STEP 3 OF 3</span>
+                <h2>Complete your profile</h2>
+                <p>Use your real legal name as shown on your NIN or Driver's License.</p>
+                <label className="auth-label">
+                  First name
                   <input
-                    autoFocus
-                    inputMode="tel"
-                    placeholder="803 111 2841"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && sendPhone()}
+                    placeholder="e.g. Olabisi"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
                   />
-                </div>
-              </label>
-              {error && <p className="auth-error">{error}</p>}
-              <button className="btn btn-primary btn-block" disabled={!canPhone} onClick={sendPhone}>Send code <ArrowRight size={18} /></button>
-            </>
-          )}
+                </label>
+                <label className="auth-label">
+                  Last name
+                  <input
+                    placeholder="e.g. Ojo"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                  />
+                </label>
+                <label className="auth-label">
+                  Work or personal email (optional)
+                  <input
+                    type="email"
+                    placeholder="e.g. olabisi@company.ng"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </label>
+                {error && <p className="auth-error">{error}</p>}
+                <button className="btn btn-primary btn-block" disabled={!canProfile} onClick={saveProfile}>
+                  Next: Emergency Contact <ArrowRight size={18} />
+                </button>
+              </>
+            )}
 
-          {step === 'otp' && (
-            <>
-              <span className="auth-step">STEP 2 OF 3</span>
-              <h2>Enter your code</h2>
-              <p>Sent to {prettyPhone(phone) || 'your phone'}. Use <strong>{DEMO_OTP}</strong> to continue.</p>
-              <OtpBoxes value={otp} onChange={setOtp} onComplete={(value) => { setOtp(value); }} />
-              {error && <p className="auth-error">{error}</p>}
-              <button className="btn btn-primary btn-block" disabled={!canOtp || busy} onClick={verify}>
-                <Smartphone size={16} /> Verify and continue
-              </button>
-            </>
-          )}
-
-          {step === 'profile' && (
-            <>
-              <span className="auth-step">STEP 3 OF 3</span>
-              <h2>Tell us who you are</h2>
-              <p>Your name is shown to drivers and riders after a seat is confirmed.</p>
-              <div className="auth-grid">
-                <label className="auth-label">First name<input value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="Olabisi" /></label>
-                <label className="auth-label">Last name<input value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Ojo" /></label>
-              </div>
-              <label className="auth-label">Email <small>optional</small><input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" /></label>
-              {error && <p className="auth-error">{error}</p>}
-              <button className="btn btn-primary btn-block" disabled={!canProfile} onClick={saveProfile}>Continue <ArrowRight size={18} /></button>
-            </>
-          )}
-
-          {step === 'emergency' && (
-            <>
-              <span className="auth-step">SAFETY FIRST</span>
-              <h2>Add an emergency contact</h2>
-              <p>If you ever trigger SOS, PadiGo Safety and this person receive your live trip context.</p>
-              <label className="auth-label">Full name<input value={contactName} onChange={(e) => setContactName(e.target.value)} placeholder="Funmi Ojo" /></label>
-              <div className="auth-grid">
-                <label className="auth-label">Phone<input value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} placeholder="0805 441 2290" /></label>
-                <label className="auth-label">Relation
+            {step === 'emergency' && (
+              <>
+                <span className="auth-step">SAFETY FIRST</span>
+                <h2>Add trusted emergency contact</h2>
+                <p>If you ever trigger SOS, COMUTA Operations and this contact immediately receive live corridor context.</p>
+                <label className="auth-label">
+                  Contact full name
+                  <input
+                    placeholder="e.g. Funmi Ojo"
+                    value={contactName}
+                    onChange={(e) => setContactName(e.target.value)}
+                  />
+                </label>
+                <label className="auth-label">
+                  Phone number
+                  <input
+                    inputMode="tel"
+                    placeholder="e.g. 0805 441 2290"
+                    value={contactPhone}
+                    onChange={(e) => setContactPhone(e.target.value)}
+                  />
+                </label>
+                <label className="auth-label">
+                  Relationship
                   <select value={relation} onChange={(e) => setRelation(e.target.value)}>
-                    <option>Family</option>
-                    <option>Partner</option>
-                    <option>Friend</option>
+                    <option>Family / Spouse</option>
                     <option>Colleague</option>
+                    <option>Friend</option>
                   </select>
                 </label>
-              </div>
-              {error && <p className="auth-error">{error}</p>}
-              <button className="btn btn-primary btn-block" disabled={!canEmergency} onClick={finish}>Enter PadiGo <ArrowRight size={18} /></button>
-            </>
-          )}
-        </div>
-        <p className="auth-legal">By continuing you agree to PadiGo's terms and privacy policy. This prototype does not send real SMS.</p>
-      </section>
-    </main>
+                {error && <p className="auth-error">{error}</p>}
+                <button className="btn btn-primary btn-block" disabled={!canEmergency} onClick={finish}>
+                  Enter COMUTA <ArrowRight size={18} />
+                </button>
+              </>
+            )}
+
+            <p className="auth-legal">
+              By continuing you agree to COMUTA's terms and NDPR data privacy policy.
+            </p>
+          </div>
+        </section>
+      </main>
+    </div>
   );
 }
 
-function OtpBoxes({ value, onChange, onComplete }: { value: string; onChange: (v: string) => void; onComplete: (v: string) => void }) {
-  const digits = useMemo(() => (value.replace(/\D/g, '') + '    ').slice(0, 4).split(''), [value]);
+function OtpBoxes({ value, onChange, onComplete }: { value: string; onChange: (v: string) => void; onComplete?: (v: string) => void }) {
+  const digits = useMemo(() => {
+    const raw = value.replace(/\D/g, '').slice(0, 4);
+    return [raw[0] || '', raw[1] || '', raw[2] || '', raw[3] || ''];
+  }, [value]);
+
+  const handleChange = (index: number, char: string) => {
+    const clean = char.replace(/\D/g, '');
+    const current = value.replace(/\D/g, '').split('');
+    if (!clean) {
+      current[index] = '';
+    } else {
+      current[index] = clean[clean.length - 1];
+    }
+    const next = current.join('').slice(0, 4);
+    onChange(next);
+    if (next.length === 4 && onComplete) {
+      onComplete(next);
+    }
+  };
+
   return (
-    <div className="otp-boxes">
-      {digits.map((digit, index) => (
+    <div className="otp-container">
+      {digits.map((digit, idx) => (
         <input
-          key={index}
+          key={idx}
+          className={`otp-digit-input ${digit ? 'filled' : ''}`}
+          maxLength={1}
+          value={digit}
+          onChange={(e) => handleChange(idx, e.target.value)}
           inputMode="numeric"
-          maxLength={4}
-          value={digit.trim()}
-          onChange={(e) => {
-            const next = e.target.value.replace(/\D/g, '');
-            if (next.length > 1) {
-              const clipped = next.slice(0, 4);
-              onChange(clipped);
-              if (clipped.length === 4) onComplete(clipped);
-              return;
-            }
-            const chars = value.replace(/\D/g, '').split('');
-            chars[index] = next;
-            const joined = chars.join('').slice(0, 4);
-            onChange(joined);
-            const sibling = e.target.nextElementSibling as HTMLInputElement | null;
-            if (next && sibling) sibling.focus();
-            if (joined.length === 4) onComplete(joined);
-          }}
-          onKeyDown={(e) => {
-            if (e.key === 'Backspace' && !digit) {
-              const prev = (e.target as HTMLInputElement).previousElementSibling as HTMLInputElement | null;
-              prev?.focus();
-            }
-          }}
         />
       ))}
     </div>

@@ -1,5 +1,17 @@
 export type Role = 'rider' | 'driver';
 
+export type Hub = {
+  id: string;
+  name: string;
+  corridor: string;
+  area: string;
+  gateInfo: string;
+  lighting: 'well-lit' | 'standard';
+  lat: number;
+  lng: number;
+  verified: boolean;
+};
+
 export type Place = {
   id: string;
   name: string;
@@ -7,6 +19,8 @@ export type Place = {
   city: string;
   lat: number;
   lng: number;
+  isHub?: boolean;
+  hubGate?: string;
 };
 
 export type Community = {
@@ -23,6 +37,15 @@ export type EmergencyContact = {
   name: string;
   phone: string;
   relation: string;
+};
+
+export type DriverReliability = {
+  overallScore: number;
+  completionRate: number;
+  onTimeRate: number;
+  lateCancellations: number;
+  noShows: number;
+  tips: string[];
 };
 
 export type Member = {
@@ -43,6 +66,7 @@ export type Member = {
   bankName?: string;
   bankLast4?: string;
   cardLast4?: string;
+  driverReliability?: DriverReliability;
 };
 
 export type Vehicle = {
@@ -73,8 +97,10 @@ export type RideOffer = {
   recurring: boolean;
   days: number[];
   communityId?: string;
-  status: 'published' | 'cancelled' | 'completed';
+  status: 'published' | 'cancelled' | 'completed' | 'at_risk';
   when: 'today' | 'tomorrow' | 'friday';
+  confirmedByDriver?: boolean;
+  t8Deadline?: string;
 };
 
 export type BookingStatus =
@@ -82,7 +108,9 @@ export type BookingStatus =
   | 'declined'
   | 'accepted'
   | 'paid'
+  | 'confirmed'
   | 'cancelled'
+  | 'at_risk'
   | 'completed'
   | 'refunded';
 
@@ -101,15 +129,20 @@ export type Booking = {
   createdAt: string;
   ratedByRider: boolean;
   ratedByDriver: boolean;
+  pickupHub?: string;
+  dropoffHub?: string;
+  alternativeOffered?: boolean;
 };
 
 export type TripStatus =
   | 'scheduled'
+  | 'driver_confirmed'
   | 'driver_en_route'
   | 'driver_arrived'
   | 'in_progress'
   | 'completed'
-  | 'cancelled';
+  | 'cancelled'
+  | 'at_risk';
 
 export type Trip = {
   id: string;
@@ -120,6 +153,8 @@ export type Trip = {
   progress: number;
   startedAt?: string;
   completedAt?: string;
+  driverConfirmed?: boolean;
+  atRiskReason?: string;
 };
 
 export type ChatMessage = {
@@ -135,7 +170,7 @@ export type AppNotification = {
   memberId: string;
   title: string;
   body: string;
-  kind: 'booking' | 'trip' | 'safety' | 'payment' | 'community' | 'system';
+  kind: 'booking' | 'trip' | 'safety' | 'payment' | 'community' | 'system' | 'recovery';
   read: boolean;
   at: string;
 };
@@ -189,7 +224,7 @@ export type SearchQuery = {
   time: string;
   seats: number;
   recurring: boolean;
-  sort: 'match' | 'price' | 'time';
+  sort: 'match' | 'earliest' | 'price';
   verifiedOnly: boolean;
   recurringOnly: boolean;
   communityOnly: boolean;
@@ -226,11 +261,40 @@ export type RideCard = {
   breakdown: MatchBreakdown;
   car: string;
   plate: string;
+  color?: string;
   community: string;
   recurring: boolean;
   durationMin: number;
   distanceKm: number;
   verified: boolean;
+  completionRate?: number;
+  onTimeRate?: number;
+  pickupHub?: string;
+  pickupGate?: string;
+};
+
+export type RecurringSchedule = {
+  id: string;
+  fromHub: string;
+  toHub: string;
+  days: string[];
+  time: string;
+  price: number;
+  status: 'active' | 'skipped_tomorrow' | 'paused';
+  driverName: string;
+  driverCar: string;
+};
+
+export type AtRiskIntervention = {
+  id: string;
+  driverId: string;
+  driverName: string;
+  route: string;
+  time: string;
+  issue: string;
+  status: 'open' | 'recovered' | 'refunded';
+  passengers: number;
+  alternativeDriver?: string;
 };
 
 export type Session = {
@@ -255,4 +319,6 @@ export type PlatformState = {
   ratings: TripRating[];
   communities: Community[];
   search: SearchQuery;
+  recurringCommutes: RecurringSchedule[];
+  atRiskInterventions: AtRiskIntervention[];
 };
