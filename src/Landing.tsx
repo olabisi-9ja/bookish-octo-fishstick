@@ -1,26 +1,32 @@
 import { useState } from 'react';
 import {
-  ArrowRight, BadgeCheck, CalendarDays, CarFront, Check, ChevronDown, Clock3, Coins,
-  HeartHandshake, LocateFixed, MapPin, Menu, Quote, Repeat2, Route, Search, ShieldCheck,
-  Sparkles, Star, Users, X, Zap, Building2, GraduationCap, Home,
+  ArrowRight, BadgeCheck, Calculator, CalendarDays, CarFront, Check, CheckCircle2, ChevronRight,
+  Clock3, Coins, ExternalLink, HeartHandshake, LocateFixed, MapPin, Menu, Navigation, Repeat2,
+  Route, Search, ShieldCheck, Sparkles, Star, Users, X, Zap,
 } from 'lucide-react';
 import Brand from './components/Brand';
+import FigmaSpecViewer from './FigmaSpecViewer';
 import { Avatar, VerifiedBadge } from './components/UI';
-import { BlurReveal, FaceDock, ManifestoHighlight, PhotoRail, SpreadWord } from './components/ScrollEffects';
-import { rides, formatNaira } from './data';
+import { CorridorMapArtwork } from './product/shared';
+import { formatNaira } from './platform';
 
-type Props = { onNavigate: (path: string) => void; onOpenApp: () => void; onOpenOps: () => void };
+type Props = {
+  onNavigate: (path: string) => void;
+  onOpenApp: () => void;
+  onOpenOps: () => void;
+};
 
 export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
   const [menu, setMenu] = useState(false);
-  const [tripType, setTripType] = useState<'ride' | 'offer'>('ride');
-  const [from, setFrom] = useState('Ajah, Lagos');
-  const [to, setTo] = useState('Victoria Island');
+  const [calcDays, setCalcDays] = useState(5);
+  const [calcSeats, setCalcSeats] = useState(3);
+  const [figmaOpen, setFigmaOpen] = useState(false);
 
-  const search = () => {
-    sessionStorage.setItem('padigo.search', JSON.stringify({ from, to, tripType }));
-    onOpenApp();
-  };
+  // Economic calculations (Section 35)
+  const pricePerSeat = 1500;
+  const weeklyRecovery = calcDays * calcSeats * pricePerSeat;
+  const monthlyRecovery = weeklyRecovery * 4;
+
   const go = (path: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     setMenu(false);
@@ -28,280 +34,350 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
   };
 
   return (
-    <main className="landing">
+    <main className="landing comuta-landing">
+      {/* Announcement */}
       <div className="announcement">
-        <span><Sparkles size={14} /> PadiGo is opening selected Lagos corridors</span>
-        <button onClick={onOpenApp}>Join the early community <ArrowRight size={14} /></button>
+        <span><Sparkles size={14} /> COMUTA is now live across Ikorodu ↔ Victoria Island corridor</span>
+        <button onClick={onOpenApp}>
+          <span>View Available Trips</span>
+          <ArrowRight size={14} />
+        </button>
       </div>
+
+      {/* Header */}
       <header className="site-header">
-        <a href="/" className="logo-link" onClick={go('/')}><Brand /></a>
+        <a href="/" className="logo-link" onClick={go('/')}>
+          <Brand tagline />
+        </a>
+
         <nav className={menu ? 'open' : ''}>
           <a href="/how-it-works" onClick={go('/how-it-works')}>How it works</a>
-          <a href="/safety" onClick={go('/safety')}>Safety</a>
-          <a href="/communities" onClick={go('/communities')}>Communities</a>
-          <a href="/drivers" onClick={go('/drivers')}>Drive with PadiGo</a>
-          <button className="nav-ops" onClick={onOpenOps}>Operations demo</button>
+          <a href="/safety" onClick={go('/safety')}>Safety & Hubs</a>
+          <a href="/drivers" onClick={go('/drivers')}>Drive & Recover Costs</a>
+          <button className="nav-spec" onClick={() => setFigmaOpen(true)}>
+            ❖ Figma Spec
+          </button>
+          <button className="nav-ops" onClick={onOpenOps}>
+            Operations Demo
+          </button>
           <div className="mobile-nav-actions">
             <button className="btn btn-light" onClick={onOpenApp}>Log in</button>
-            <button className="btn btn-primary" onClick={onOpenApp}>Get started</button>
+            <button className="btn btn-primary" onClick={onOpenApp}>Open App</button>
           </div>
         </nav>
+
         <div className="header-actions">
-          <button className="text-button" onClick={onOpenApp}>Log in</button>
-          <button className="btn btn-primary btn-small" onClick={onOpenApp}>Get PadiGo <ArrowRight size={16} /></button>
-          <button className="menu-button" onClick={() => setMenu(!menu)} aria-label="Toggle menu">{menu ? <X /> : <Menu />}</button>
+          <button className="text-button" onClick={() => setFigmaOpen(true)}>
+            ❖ Figma Spec
+          </button>
+          <button className="btn btn-outline btn-small" onClick={onOpenOps}>
+            Ops Dashboard
+          </button>
+          <button className="btn btn-primary btn-small" onClick={onOpenApp}>
+            Open COMUTA <ArrowRight size={16} />
+          </button>
+          <button
+            className="menu-button"
+            onClick={() => setMenu(!menu)}
+            aria-label="Toggle menu"
+          >
+            {menu ? <X /> : <Menu />}
+          </button>
         </div>
       </header>
 
-      <section className="hero">
-        <div className="hero-bg" />
-        <div className="hero-overlay" />
-        <div className="hero-content page-width">
+      {/* Hero Section (Section 21 Build Spec) */}
+      <section className="hero comuta-hero">
+        <div className="page-width hero-inner-grid">
           <div className="hero-copy">
-            <div className="eyebrow light">Built for everyday Lagos commutes</div>
-            <h1>Your route.<br />Your people.<br /><em>Your commute.</em></h1>
-            <p>Match with verified people heading your way, share the cost, and turn your daily route into a commute you can count on.</p>
-            <div className="hero-trust">
-              <div className="avatar-stack"><Avatar initials="Tolu" photo="/images/people/tolu.jpg" size={38} /><Avatar initials="Chidi" photo="/images/people/chidi.jpg" size={38} /><Avatar initials="Amaka" photo="/images/people/amaka.jpg" size={38} /><Avatar initials="Seyi" photo="/images/people/seyi.jpg" size={38} /><span className="more-avatar">+2k</span></div>
-              <div><div className="stars"><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /></div><span>Trusted by 2,000+ commuters building better routines</span></div>
+            <div className="eyebrow-pill">
+              <Sparkles size={14} />
+              <span>TRANSIT PHILOSOPHY</span>
+            </div>
+
+            {/* Locked Hero Headline */}
+            <h1 className="hero-title">
+              Your commute.<br />
+              Shared. Simpler.
+            </h1>
+
+            {/* Locked Supporting Copy */}
+            <p className="hero-supporting-copy">
+              Ride with people already making your journey.
+              Book ahead, know your seat, and travel with verified drivers.
+            </p>
+
+            {/* CTAs */}
+            <div className="hero-cta-group">
+              <button className="btn btn-primary cta-main" onClick={onOpenApp}>
+                <span>Find your route</span>
+                <ArrowRight size={18} />
+              </button>
+              <button
+                className="btn btn-outline cta-secondary"
+                onClick={() => {
+                  sessionStorage.setItem('comuta.initial_mode', 'driver');
+                  onOpenApp();
+                }}
+              >
+                <CarFront size={17} />
+                <span>Share your commute</span>
+              </button>
+            </div>
+
+            {/* Philosophy quote */}
+            <div className="philosophy-quote-strip">
+              <blockquote>“My daily commute is already taken care of.”</blockquote>
+              <small>Not: “Find a driver right now.”</small>
             </div>
           </div>
 
-          <div className="search-card">
-            <div className="search-tabs">
-              <button className={tripType === 'ride' ? 'active' : ''} onClick={() => setTripType('ride')}><Search size={17} /> Find a ride</button>
-              <button className={tripType === 'offer' ? 'active' : ''} onClick={() => setTripType('offer')}><CarFront size={17} /> Offer a ride</button>
-            </div>
-            <div className="search-card-body">
-              <div className="route-inputs">
-                <label>
-                  <span>Leaving from</span>
-                  <div className="input-shell"><span className="route-pin from" /><input value={from} onChange={(e) => setFrom(e.target.value)} /><LocateFixed size={18} /></div>
-                </label>
-                <span className="route-line" />
-                <label>
-                  <span>Going to</span>
-                  <div className="input-shell"><MapPin size={18} className="to-pin" /><input value={to} onChange={(e) => setTo(e.target.value)} /></div>
-                </label>
+          {/* Hero Corridor Preview Card */}
+          <div className="hero-preview-col">
+            <div className="hero-interactive-card">
+              <div className="hic-head">
+                <span className="live-dot" />
+                <strong>FEATURED LAUNCH CORRIDOR</strong>
+                <span className="corridor-status-tag">Morning Window · 7:00 AM</span>
               </div>
-              <div className="search-grid">
-                <label><span>When</span><div className="input-shell"><CalendarDays size={17} /><input defaultValue="Tomorrow" /><ChevronDown size={16} /></div></label>
-                <label><span>Departure</span><div className="input-shell"><Clock3 size={17} /><input defaultValue="7:00 AM" /><ChevronDown size={16} /></div></label>
+
+              <div className="hic-map-box">
+                <CorridorMapArtwork
+                  fromLabel="Ikorodu Hub"
+                  toLabel="Victoria Island Hub"
+                />
               </div>
-              <label className="repeat-check"><span className="check-box"><Check size={13} /></span><span><strong>Make it my regular commute</strong><small>Get matched automatically every weekday</small></span></label>
-              <button className="btn btn-primary btn-block" onClick={search}>{tripType === 'ride' ? 'Find people going my way' : 'Share my empty seats'} <ArrowRight size={18} /></button>
-              <p className="card-note"><ShieldCheck size={14} /> Identity verified community · Secure payments</p>
-            </div>
-          </div>
-        </div>
-        <div className="corridor-strip">
-          <span>Live corridors</span>
-          <button onClick={onOpenApp}>Ajah <ArrowRight size={13} /> VI</button>
-          <button onClick={onOpenApp}>Ikeja <ArrowRight size={13} /> VI</button>
-          <button onClick={onOpenApp}>Yaba <ArrowRight size={13} /> Lekki</button>
-          <span className="live-tag"><i /> 68 seats tomorrow</span>
-        </div>
-      </section>
 
-      <section className="proof page-width">
-        <p className="section-kicker">A smarter way to move together</p>
-        <div className="proof-grid">
-          <div><strong>96%</strong><span>top route match</span></div>
-          <div><strong>₦38k</strong><span>potential monthly savings</span></div>
-          <div><strong>6</strong><span>verification signals</span></div>
-          <div><strong>4.9<span>/5</span></strong><span>community trust rating</span></div>
-        </div>
-      </section>
-
-      <section className="manifesto-section">
-        <div className="page-width">
-          <div className="eyebrow light"><Sparkles size={15} /> Why PadiGo exists</div>
-          <ManifestoHighlight text="Every morning, millions of Lagosians crawl through the same traffic, on the same routes, in half-empty cars. PadiGo exists to change that — matching neighbours, colleagues and coursemates seat by seat, so the city moves together and nobody rides alone." />
-        </div>
-      </section>
-
-      <section className="how-section page-width" id="how">
-        <div className="section-heading centered">
-          <div className="eyebrow"><Route size={15} /> Built around your routine</div>
-          <h2>Your daily journey,<br />finally working <em>for you.</em></h2>
-          <p>Not another taxi app. PadiGo helps the same people going the same way build reliable, repeatable carpools.</p>
-        </div>
-        <div className="how-grid">
-          <article>
-            <span className="step-number">01</span><div className="icon-tile mint"><MapPin /></div>
-            <h3>Set your route once</h3><p>Tell us where you start, where you're going, and the time window that works for you.</p>
-            <span className="micro-example"><i /> Ajah <ArrowRight size={13} /> Victoria Island</span>
-          </article>
-          <article>
-            <span className="step-number">02</span><div className="icon-tile yellow"><Users /></div>
-            <h3>Meet your best matches</h3><p>Compare route overlap, verified profiles, community context, timing and price at a glance.</p>
-            <div className="match-bubbles"><span>96% match</span><span>Same workplace</span></div>
-          </article>
-          <article>
-            <span className="step-number">03</span><div className="icon-tile peach"><Repeat2 /></div>
-            <h3>Make it your commute</h3><p>Book once or build a recurring group with people you enjoy travelling with.</p>
-            <span className="micro-example"><CalendarDays size={14} /> Monday to Friday · 7:00 AM</span>
-          </article>
-        </div>
-      </section>
-
-      <section className="commute-feature">
-        <div className="page-width feature-grid">
-          <div className="phone-stage">
-            <div className="orbit orbit-one" /><div className="orbit orbit-two" />
-            <div className="phone">
-              <div className="phone-top"><span>9:41</span><span>● ● ▰</span></div>
-              <div className="phone-body">
-                <div className="mini-head"><Brand compact /><span className="mini-avatar">OO</span></div>
-                <p className="mini-greeting">GOOD MORNING, OLABISI</p>
-                <h4>Your commute is looking good.</h4>
-                <div className="phone-commute-card">
-                  <div className="phone-route-map"><span className="map-road r1"/><span className="map-road r2"/><i className="point p1"/><i className="point p2"/><span className="map-car">⌁</span></div>
-                  <div className="mini-route"><span><i /> Ajah</span><b>→</b><span><i /> Victoria Island</span></div>
-                  <div className="mini-ride-row"><Avatar initials="AB" photo="/images/people/ade.jpg" size={34} /><div><strong>Ade's carpool</strong><small>7:05 AM · 2 seats</small></div><strong>₦1,500</strong></div>
-                  <button onClick={onOpenApp}>View my commute</button>
+              <div className="hic-featured-match">
+                <div className="hfm-time">
+                  <strong>7:00 AM</strong>
+                  <span>~8:05 AM arrival</span>
                 </div>
-                <div className="mini-community"><Users size={18} /><span><strong>8 people</strong> from your area are going your way</span></div>
+                <div className="hfm-driver">
+                  <strong>Adebayo K. <BadgeCheck size={14} className="verified-badge-icon" /></strong>
+                  <span>Verified · <strong>98% completion</strong></span>
+                  <small>Toyota Corolla · ABC 123 XY</small>
+                </div>
+                <div className="hfm-price">
+                  <strong>₦1,500</strong>
+                  <small>/ seat</small>
+                  <span className="badge-seats">2 seats left</span>
+                </div>
               </div>
-              <div className="phone-nav"><span className="active">⌂<small>Home</small></span><span>⌕<small>Explore</small></span><span>◇<small>Trips</small></span><span>○<small>Profile</small></span></div>
+
+              <button className="btn btn-primary btn-block" onClick={onOpenApp}>
+                <span>Reserve seat on this commute ➔</span>
+              </button>
             </div>
-            <div className="floating-save"><Coins size={20} /><span><small>YOU'LL SAVE THIS MONTH</small><strong>₦38,400</strong></span></div>
-            <div className="floating-match"><BadgeCheck size={20} /><span><strong>New route match</strong><small>96% compatible</small></span></div>
           </div>
-          <div className="feature-copy">
-            <div className="eyebrow light"><Repeat2 size={15} /> The recurring advantage</div>
-            <h2>Don't find a ride.<br /><em>Find your people.</em></h2>
-            <p>The best commute isn't a new driver every morning. It's a trusted group who know the route, the time, and each other.</p>
-            <ul>
-              <li><span><Check /></span><div><strong>Your routine, remembered</strong><small>Set a weekday pattern once and let PadiGo keep matching.</small></div></li>
-              <li><span><Check /></span><div><strong>Familiar faces, less uncertainty</strong><small>Build a regular group from your area, office, estate or school.</small></div></li>
-              <li><span><Check /></span><div><strong>Reliable savings, every week</strong><small>Split verified trip costs without surprise surge pricing.</small></div></li>
+        </div>
+      </section>
+
+      {/* Visual Storytelling: Plan → Match → Reserve → Commute (Section 21) */}
+      <section className="visual-storytelling page-width">
+        <div className="section-head text-center">
+          <span className="section-eyebrow">HOW IT WORKS</span>
+          <h2>The COMUTA Commute Cycle</h2>
+          <p>Built as a reliable transportation calendar, not an on-demand taxi app.</p>
+        </div>
+
+        <div className="storytelling-steps-grid">
+          <div className="step-card">
+            <div className="step-number">01</div>
+            <div className="step-icon"><CalendarDays size={24} /></div>
+            <h3>Plan</h3>
+            <p>Choose your origin hub (e.g. Ikorodu Hub Main Gate), destination, and preferred arrival window.</p>
+          </div>
+
+          <div className="step-card">
+            <div className="step-number">02</div>
+            <div className="step-icon"><Users size={24} /></div>
+            <h3>Match</h3>
+            <p>Compare verified drivers already driving your route. Review their 98%+ on-time completion rates.</p>
+          </div>
+
+          <div className="step-card">
+            <div className="step-number">03</div>
+            <div className="step-icon"><ShieldCheck size={24} /></div>
+            <h3>Reserve</h3>
+            <p>Lock your seat with transparent Paystack payment and receive your 4-digit trip PIN (`4827`).</p>
+          </div>
+
+          <div className="step-card">
+            <div className="step-number">04</div>
+            <div className="step-icon"><Navigation size={24} /></div>
+            <h3>Commute</h3>
+            <p>Meet at the designated well-lit hub gate, verify the PIN, track live on the map, and arrive calmly.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Driver Acquisition & Economics Calculator (Section 35) */}
+      <section className="driver-economics-section">
+        <div className="page-width de-grid">
+          <div className="de-copy">
+            <div className="eyebrow-pill"><Coins size={14} /><span>FOR DRIVERS</span></div>
+            <h2>Turn your empty seats into commute savings.</h2>
+            <p>
+              You're already driving Ikorodu to Victoria Island every weekday.
+              Why carry empty seats when verified colleagues and neighbours are heading the exact same way?
+            </p>
+
+            <ul className="de-bullets">
+              <li><CheckCircle2 size={16} /><span>Not gig driving — you drive your own schedule and route</span></li>
+              <li><CheckCircle2 size={16} /><span>T-8 commitment guarantees passengers know you're coming</span></li>
+              <li><CheckCircle2 size={16} /><span>Direct bank settlement every Friday to cover fuel and maintenance</span></li>
             </ul>
-            <button className="btn btn-lime" onClick={onOpenApp}>Build my commute <ArrowRight size={18} /></button>
+
+            <button
+              className="btn btn-primary"
+              onClick={() => {
+                sessionStorage.setItem('comuta.initial_mode', 'driver');
+                onOpenApp();
+              }}
+            >
+              <span>Publish your commute route ➔</span>
+            </button>
           </div>
-        </div>
-      </section>
 
-      <section className="routes-section page-width">
-        <div className="section-heading-row">
-          <div><div className="eyebrow"><Zap size={15} /> Moving tomorrow morning</div><h2>Popular Lagos routes</h2></div>
-          <button className="link-button" onClick={onOpenApp}>Explore all rides <ArrowRight size={16} /></button>
-        </div>
-        <div className="ride-card-grid">
-          {rides.map((ride, i) => (
-            <article className="public-ride-card" key={ride.id}>
-              <div className={`route-visual route-${i + 1}`}>
-                <span className="route-street s1"/><span className="route-street s2"/><span className="route-street s3"/>
-                <svg viewBox="0 0 320 105"><path d={i === 1 ? 'M20 76 C80 100 115 15 190 42 S250 83 300 25' : 'M20 78 C82 62 95 22 168 42 S230 90 302 28'} /><circle cx="20" cy="78" r="5"/><circle cx="302" cy="28" r="5"/></svg>
-                <span className="match-pill">{ride.match}% match</span>
+          {/* Calculator Card */}
+          <div className="economics-calculator-card">
+            <div className="ecc-header">
+              <Calculator size={20} />
+              <div>
+                <h3>Commute Cost Recovery Calculator</h3>
+                <small>Based on Ikorodu ↔ VI standard seat contribution (₦1,500)</small>
               </div>
-              <div className="ride-card-content">
-                <div className="ride-driver"><Avatar initials={ride.initials} color={ride.avatarColor} size={43} photo={ride.photo} /><div><strong>{ride.driver}</strong><span><Star size={13} fill="currentColor" /> {ride.rating} · {ride.trips} trips</span></div><VerifiedBadge /></div>
-                <div className="route-title"><strong>{ride.from}</strong><ArrowRight size={17}/><strong>{ride.to}</strong></div>
-                <div className="ride-meta"><span><Clock3 /> {ride.time}</span><span><CarFront /> {ride.seats} seats</span><span><Repeat2 /> {ride.recurring ? 'Weekdays' : 'Tomorrow'}</span></div>
-                <div className="ride-price"><span><small>Per seat</small><strong>{formatNaira(ride.price)}</strong></span><button onClick={onOpenApp}>View ride <ArrowRight size={15}/></button></div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="voices-section page-width" id="stories">
-        <div className="section-heading centered">
-          <div className="eyebrow"><Quote size={15} /> Loved by everyday commuters</div>
-          <BlurReveal>
-            <h2>Real people. Real routes.<br />Every single <em>morning.</em></h2>
-          </BlurReveal>
-          <p>Behind every seat on PadiGo is a neighbour, a colleague or a coursemate. Here's what sharing the road actually feels like.</p>
-        </div>
-        <PhotoRail />
-        <div className="voices-grid">
-          <article className="voice-card">
-            <div className="stars"><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /></div>
-            <blockquote>"I was spending almost ₦110k a month on ride-hailing. Now I split my Ajah run with three neighbours from my estate — and we take turns buying puff-puff on Fridays."</blockquote>
-            <div className="voice-person"><Avatar initials="TA" photo="/images/people/tolu.jpg" size={44} /><div><strong>Tolu Adeyemi</strong><small>Rider · Ajah → Victoria Island</small></div><VerifiedBadge /></div>
-          </article>
-          <figure className="voice-photo">
-            <img src="/images/people/carpool-crew.jpg" alt="A PadiGo carpool crew laughing together on their morning commute through Lagos" loading="lazy" />
-            <div className="photo-bubble"><Avatar initials="IN" photo="/images/people/ifeoma.jpg" size={30} /><span>We're outside Novare Mall 🚗 saved you the window seat!</span></div>
-            <figcaption><span className="crew-chip"><Users size={13} /> The Lekki Sunrise Crew</span><span>Same four people, weekdays at 6:45 AM — 11 months running.</span></figcaption>
-          </figure>
-          <article className="voice-card">
-            <div className="stars"><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /></div>
-            <blockquote>"Same three faces every morning, so there's nothing to negotiate at 6 AM. My mum follows the live trip link — she knows my crew by name now."</blockquote>
-            <div className="voice-person"><Avatar initials="CO" photo="/images/people/chidi.jpg" size={44} /><div><strong>Chidi Okafor</strong><small>Rider · Yaba → Lekki Phase 1</small></div><VerifiedBadge /></div>
-          </article>
-        </div>
-        <div className="voices-trust">
-          <FaceDock faces={[
-            { src: '/images/people/ade.jpg', name: 'Ade B. · Verified driver' },
-            { src: '/images/people/amaka.jpg', name: 'Amaka E. · Verified rider' },
-            { src: '/images/people/seyi.jpg', name: 'Seyi O. · Verified rider' },
-            { src: '/images/people/musa.jpg', name: 'Musa L. · Verified driver' },
-            { src: '/images/people/tolu.jpg', name: 'Tolu A. · Verified rider' },
-          ]} />
-          <p><strong>4.9/5 average trust rating</strong> from 1,200+ ride reviews last month — every face above is an identity-verified member.</p>
-          <button className="btn btn-primary" onClick={onOpenApp}>Join your commute crew <ArrowRight size={17} /></button>
-        </div>
-      </section>
-
-      <section className="community-section" id="communities">
-        <div className="page-width community-grid">
-          <div className="community-copy">
-            <div className="eyebrow"><HeartHandshake size={15}/> Trust starts with context</div>
-            <h2>Strangers become<br /><em>your community.</em></h2>
-            <p>Choose matches from groups you already have something in common with, without mistaking affiliation for verification.</p>
-            <div className="community-types">
-              <span><Building2/>Workplaces</span><span><Home/>Estates</span><span><GraduationCap/>Campuses</span><span><Users/>Associations</span>
             </div>
-            <button className="btn btn-dark" onClick={onOpenApp}>Find my community <ArrowRight size={17}/></button>
-          </div>
-          <div className="community-board">
-            <div className="board-head"><span>COMMUNITIES NEAR YOUR ROUTE</span><span><i/> Lagos</span></div>
-            <div className="community-card c1"><span className="community-logo">ST</span><div><strong>PadiGo at Sterling</strong><small>Workplace · 428 members</small></div><span className="join-chip">12 routes</span></div>
-            <div className="community-card c2"><span className="community-logo">LG</span><div><strong>Lekki Gardens</strong><small>Estate · 216 members</small></div><span className="join-chip">8 routes</span></div>
-            <div className="community-card c3"><span className="community-logo">VT</span><div><strong>VI Tech Circle</strong><small>Professional · 1,200 members</small></div><span className="join-chip">26 routes</span></div>
-            <div className="board-note"><BadgeCheck size={16}/><span>Membership is one trust signal. Every driver and vehicle is verified separately.</span></div>
+
+            <div className="ecc-controls">
+              <div className="ecc-field">
+                <div className="ecc-lbl"><span>Days commuting per week:</span><strong>{calcDays} days</strong></div>
+                <input
+                  type="range"
+                  min={1}
+                  max={5}
+                  value={calcDays}
+                  onChange={(e) => setCalcDays(parseInt(e.target.value, 10))}
+                />
+              </div>
+
+              <div className="ecc-field">
+                <div className="ecc-lbl"><span>Empty seats shared:</span><strong>{calcSeats} seats</strong></div>
+                <input
+                  type="range"
+                  min={1}
+                  max={4}
+                  value={calcSeats}
+                  onChange={(e) => setCalcSeats(parseInt(e.target.value, 10))}
+                />
+              </div>
+            </div>
+
+            <div className="ecc-output-box">
+              <div className="output-row">
+                <span>Weekly Fuel Recovery</span>
+                <strong>{formatNaira(weeklyRecovery)}</strong>
+              </div>
+              <div className="output-row highlight">
+                <span>Estimated Monthly Offset</span>
+                <strong className="monthly-val">{formatNaira(monthlyRecovery)}</strong>
+              </div>
+              <small className="calc-note">Direct deposit to your Nigerian bank account every Friday.</small>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="safety-section" id="safety">
-        <div className="page-width safety-grid">
+      {/* Designated Well-Lit Hubs Section */}
+      <section className="hubs-network-section page-width">
+        <div className="section-head text-center">
+          <span className="section-eyebrow">NETWORK ARCHITECTURE</span>
+          <h2>Designated, Well-Lit Pickup Hubs</h2>
+          <p>Never wonder where to stand. Verified waiting bays at major transit gateways.</p>
+        </div>
+
+        <div className="hubs-card-grid">
+          <div className="hub-info-card">
+            <MapPin size={22} className="hub-icon" />
+            <h3>Ikorodu Hub</h3>
+            <p>Main Gate · Well-lit pickup point & verified waiting bay</p>
+            <span className="hub-corridor-tag">Expressway Gateway</span>
+          </div>
+
+          <div className="hub-info-card">
+            <MapPin size={22} className="hub-icon" />
+            <h3>Victoria Island Hub</h3>
+            <p>Ozumba Mbadiwe & Sterling Towers · Commuter drop-off</p>
+            <span className="hub-corridor-tag">Financial District</span>
+          </div>
+
+          <div className="hub-info-card">
+            <MapPin size={22} className="hub-icon" />
+            <h3>Ikeja Hub</h3>
+            <p>Maryland Mall & Allen Avenue Transit Junction</p>
+            <span className="hub-corridor-tag">Mainland Commercial</span>
+          </div>
+
+          <div className="hub-info-card">
+            <MapPin size={22} className="hub-icon" />
+            <h3>Berger Hub</h3>
+            <p>Lagos-Ibadan Expressway Interchange Bay</p>
+            <span className="hub-corridor-tag">Inbound Gateway</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="site-footer">
+        <div className="page-width footer-grid">
           <div>
-            <div className="eyebrow light"><ShieldCheck size={15}/> Safety, designed in</div>
-            <h2>Know who you're<br />riding with.</h2>
-            <p>Safety isn't a button added at the end. It's identity, vehicle, trip and response systems working together from signup to arrival.</p>
-            <button className="btn btn-lime" onClick={onOpenApp}>See our safety standard <ArrowRight size={17}/></button>
+            <Brand tagline />
+            <p className="footer-tagline">
+              Nigeria’s corridor-based shared commute platform. Your daily commute is already taken care of.
+            </p>
           </div>
-          <div className="safety-cards">
-            <article><span><BadgeCheck/></span><div><h3>Layered verification</h3><p>Identity, selfie, licence, vehicle and community signals shown clearly.</p></div></article>
-            <article><span><LocateFixed/></span><div><h3>Live trip protection</h3><p>Shareable tracking, pickup confirmation and route deviation signals.</p></div></article>
-            <article><span><ShieldCheck/></span><div><h3>Human safety response</h3><p>SOS connects trip context to your contacts and PadiGo operations.</p></div></article>
+
+          <div>
+            <h4>Platform</h4>
+            <a onClick={onOpenApp}>Find a commute</a>
+            <a onClick={onOpenApp}>Offer empty seats</a>
+            <a onClick={() => setFigmaOpen(true)}>Figma build spec</a>
+            <a onClick={onOpenOps}>Operations control</a>
+          </div>
+
+          <div>
+            <h4>Corridors</h4>
+            <a onClick={onOpenApp}>Ikorodu ↔ Victoria Island</a>
+            <a onClick={onOpenApp}>Berger ↔ Victoria Island</a>
+            <a onClick={onOpenApp}>Ikeja ↔ Victoria Island</a>
+            <a onClick={onOpenApp}>Ajah ↔ Victoria Island</a>
+          </div>
+
+          <div>
+            <h4>Trust & Legal</h4>
+            <a href="/safety" onClick={go('/safety')}>Safety & Hub verification</a>
+            <a href="/privacy" onClick={go('/privacy')}>Privacy (NDPR compliant)</a>
+            <a href="/terms" onClick={go('/terms')}>Terms of service</a>
+            <a href="/help" onClick={go('/help')}>Help centre</a>
           </div>
         </div>
-      </section>
 
-      <div className="together-band" aria-hidden="true">
-        <SpreadWord word="TOGETHER" />
-        <p>One city. One route. One crew at a time.</p>
-      </div>
-
-      <section className="driver-cta page-width" id="drivers">
-        <div className="driver-pattern" />
-        <div className="driver-copy"><div className="eyebrow light"><CarFront size={15}/> Already going that way?</div><h2>Your empty seats can<br />help pay for the journey.</h2><p>Share your regular route with verified riders. You set the schedule, seats and fair cost contribution.</p><button className="btn btn-white" onClick={onOpenApp}>Offer a ride <ArrowRight size={17}/></button><div className="driver-voice"><Avatar initials="AB" photo="/images/people/ade.jpg" size={40}/><span>"My fuel money halves itself every week — and the gist in traffic isn't bad either."<b>Ade B. · Shares his Ajah → VI route, 184 trips</b></span></div></div>
-        <div className="earn-card"><span className="earn-label">THIS WEEK</span><strong>₦24,600</strong><small>Cost contributions from 9 shared seats</small><div className="earn-bars"><i/><i/><i/><i/><i className="high"/><i className="med"/><i/></div><div className="earn-foot"><span>Mon</span><span>Sun</span></div></div>
-      </section>
-
-      <footer>
-        <div className="page-width footer-main">
-          <div className="footer-brand"><Brand inverse/><p>Trusted recurring carpools for the routes Nigerians travel every day.</p><span>Lagos, Nigeria 🇳🇬</span></div>
-          <div><h4>Ride</h4><a onClick={onOpenApp}>Find a ride</a><a onClick={onOpenApp}>My commute</a><a href="/communities" onClick={go('/communities')}>Communities</a><a href="/safety" onClick={go('/safety')}>Safety</a></div>
-          <div><h4>Drive</h4><a href="/drivers" onClick={go('/drivers')}>Offer a ride</a><a href="/drivers" onClick={go('/drivers')}>Driver requirements</a><a onClick={onOpenApp}>Earnings</a><a href="/safety" onClick={go('/safety')}>Verification</a></div>
-          <div><h4>PadiGo</h4><a href="/about" onClick={go('/about')}>About</a><a href="/help" onClick={go('/help')}>Help centre</a><a onClick={onOpenOps}>Operations</a><a href="/help" onClick={go('/help')}>Contact</a></div>
+        <div className="page-width footer-bottom">
+          <span>© 2026 COMUTA Technologies Ltd. All rights reserved.</span>
+          <span className="ndpr"><ShieldCheck size={13} /> NDPR Verified · Bank-grade Paystack Escrow</span>
         </div>
-        <div className="page-width footer-bottom"><span>© 2026 PadiGo Technologies Ltd.</span><div><a href="/privacy" onClick={go('/privacy')}>Privacy</a><a href="/terms" onClick={go('/terms')}>Terms</a><a href="/help" onClick={go('/help')}>Accessibility</a></div><span className="ndpr"><ShieldCheck size={13}/> Privacy by design</span></div>
       </footer>
+
+      {/* Figma Specification Viewer Modal */}
+      {figmaOpen && (
+        <FigmaSpecViewer
+          onClose={() => setFigmaOpen(false)}
+          onOpenRider={onOpenApp}
+          onOpenDriver={onOpenApp}
+          onOpenOps={onOpenOps}
+        />
+      )}
     </main>
   );
 }

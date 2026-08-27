@@ -1,334 +1,683 @@
 import { useState } from 'react';
 import {
-  ArrowRight, BadgeCheck, Banknote, CalendarDays, CarFront, Check, CheckCircle2, ChevronRight,
-  Clock3, Coins, FileCheck2, MessageCircle, Navigation, Plus, Repeat2, Shield, Star, TrendingUp,
-  Users,
+  AlertTriangle, ArrowRight, BadgeCheck, Calendar, CalendarDays, CarFront, Check, CheckCircle2,
+  ChevronRight, Clock3, Coins, DollarSign, HelpCircle, Navigation, Phone, Plus, RefreshCw,
+  Repeat2, Shield, ShieldCheck, Star, TrendingUp, Users, WalletCards, X,
 } from 'lucide-react';
 import { Avatar } from '../components/UI';
+import { DriverCommitmentIllustration } from '../components/Illustrations';
 import { formatNaira, fullName, greetingFor, usePlatform } from '../platform';
-import { PageHeading, whenCopy } from './shared';
+import { CorridorMapArtwork } from './shared';
 
 type DriverProps = {
-  onOffer: () => void;
-  onRequests: () => void;
-  onTrip: () => void;
-  onSos: () => void;
+  onPublish: () => void;
+  onCommitment: () => void;
+  onTripNav: () => void;
+  onReliability: () => void;
+  onEarnings: () => void;
+  onSwitchMode: () => void;
+  onBack: () => void;
   notify: (s: string) => void;
-  onChat: (tripId: string) => void;
-  onPin: (tripId: string) => void;
-  onWallet: () => void;
 };
 
-export function DriverHome({ onOffer, onRequests, onTrip, onChat, onWallet }: Pick<DriverProps, 'onOffer' | 'onRequests' | 'onTrip' | 'onChat' | 'onWallet'>) {
-  const { me, availableBalance, pendingRequestCount, driverRides, bookingsForRide, memberById, tripForRide } = usePlatform();
-  const next = driverRides.find((ride) => ride.status === 'published');
-  const passengers = next ? bookingsForRide(next.id).filter((booking) => booking.status === 'paid' || booking.status === 'accepted') : [];
-  const trip = next ? tripForRide(next.id) : undefined;
-  const expected = passengers.reduce((sum, booking) => sum + booking.amount, 0);
+/**
+ * 16. Driver Home Screen
+ * "Your commute is organized and your empty seats are helping cover the cost."
+ * Header: Good morning
+ * Your next commute: Ikorodu → Victoria Island / Tomorrow · 7:00 AM
+ * Passenger summary: 3 / 4 seats booked
+ * Cost recovery: ₦4,500 This month
+ * Primary CTA: Publish a commute
+ */
+export function DriverHome({
+  onPublish,
+  onCommitment,
+  onTripNav,
+  onReliability,
+  onEarnings,
+  onSwitchMode,
+}: Pick<DriverProps, 'onPublish' | 'onCommitment' | 'onTripNav' | 'onReliability' | 'onEarnings' | 'onSwitchMode'>) {
+  const { me, state, confirmDriverCommitment } = usePlatform();
+  const nextCommute = state.rides.find((r) => r.driverId === me?.id) ?? state.rides[0];
+  const isConfirmed = nextCommute.confirmedByDriver;
 
   return (
-    <>
-      <PageHeading
-        eyebrow="DRIVER MODE · ONLINE"
-        title={`${greetingFor()}, ${me?.firstName || 'driver'}.`}
-        subtitle={next ? `Your next shared commute has ${passengers.length} confirmed passenger${passengers.length === 1 ? '' : 's'}.` : 'Publish a recurring route to start filling seats.'}
-        action={<button className="btn btn-primary" onClick={onOffer}><Plus size={17} /> Offer a ride</button>}
-      />
-      <div className="driver-stat-grid">
-        <div className="main-driver-stat">
-          <span>AVAILABLE BALANCE</span>
-          <strong>{formatNaira(availableBalance)}</strong>
-          <small>Next payout · Friday</small>
-          <button onClick={onWallet}>View earnings <ArrowRight size={15} /></button>
-          <Coins />
+    <div className="driver-home-container">
+      {/* Header */}
+      <header className="driver-home-header">
+        <div className="driver-greeting">
+          <span className="mode-tag">DRIVER MODE</span>
+          <h1>Good morning, {me?.firstName || 'Adebayo'}</h1>
+          <p className="philosophy-sub">
+            Your commute is organized and your empty seats are helping cover the cost.
+          </p>
         </div>
-        <div><span>THIS WEEK</span><strong>{formatNaira(24600)}</strong><small><TrendingUp size={13} /> 18% from last week</small></div>
-        <div><span>SEATS FILLED</span><strong>{passengers.length} <em>/ {next?.seats ?? 3}</em></strong><small>{next ? `${Math.round((passengers.length / next.seats) * 100)}% utilisation` : 'Publish a ride'}</small></div>
-        <div><span>DRIVER RATING</span><strong>{me?.rating ?? 5} <Star size={19} fill="currentColor" /></strong><small>From {me?.trips ?? 0} trips</small></div>
-      </div>
-      <div className="driver-dashboard-grid">
-        {next ? (
-          <section className="driver-next-trip">
-            <div className="dnt-head">
-              <span><i />NEXT RIDE · {whenCopy(next.when).toUpperCase()}</span>
-              <button onClick={onTrip}>View details <ChevronRight size={15} /></button>
-            </div>
-            <div className="dnt-route">
-              <span className="dnt-time">{next.time.replace(' AM', '').replace(' PM', '')}<small>{next.time.includes('PM') ? 'PM' : 'AM'}</small></span>
-              <div>
-                <span><i />{next.fromId === 'vi' ? 'Sterling Towers, VI' : 'Pickup'}</span>
-                <em />
-                <span><i />{next.toId === 'ajah' ? 'Novare Mall, Ajah' : 'Drop-off'}</span>
-              </div>
-              <span className="dnt-repeat"><Repeat2 />{next.recurring ? 'Weekdays' : 'One time'}</span>
-            </div>
-            <div className="passengers-head">
-              <span>PASSENGERS · {passengers.length} OF {next.seats} SEATS</span>
-              <span>{formatNaira(expected)} expected</span>
-            </div>
-            {passengers.map((booking) => {
-              const rider = memberById(booking.riderId);
-              if (!rider) return null;
-              return (
-                <div className="passenger-row" key={booking.id}>
-                  <div>
-                    <Avatar initials={rider.initials} color={rider.avatarColor} size={43} photo={rider.photo} />
-                    <span>
-                      <strong>{fullName(rider)} <BadgeCheck size={13} fill="currentColor" /></strong>
-                      <small>Pickup · {booking.pickupNote ?? 'Shared after confirmation'}</small>
-                    </span>
-                  </div>
-                  <span>{booking.seats} seat</span>
-                  {trip && <button onClick={() => onChat(trip.id)}><MessageCircle size={17} /></button>}
-                </div>
-              );
-            })}
-            <button className="btn btn-dark btn-block" onClick={onTrip}><Navigation size={17} /> Prepare for trip</button>
-          </section>
-        ) : (
-          <section className="driver-next-trip">
-            <div className="dnt-head"><span>NO LIVE ROUTE</span></div>
-            <p style={{ padding: 16 }}>Offer the journey you already make. Set seats, a fair contribution, and start receiving requests.</p>
-            <button className="btn btn-dark btn-block" onClick={onOffer}>Offer a ride</button>
-          </section>
-        )}
-        <aside>
-          <section className="request-nudge">
-            <div>
-              <span>{pendingRequestCount}</span>
-              <div><strong>New seat requests</strong><small>Waiting for your review</small></div>
-            </div>
-            <button onClick={onRequests}>Review requests <ArrowRight size={15} /></button>
-          </section>
-          <section className="performance-card">
-            <div className="dash-section-head"><div><h3>Driver quality</h3><p>Last 30 days</p></div><strong>Excellent</strong></div>
-            <div className="quality-row"><span>On time pickup</span><b>96%</b><i><em style={{ width: '96%' }} /></i></div>
-            <div className="quality-row"><span>Acceptance rate</span><b>89%</b><i><em style={{ width: '89%' }} /></i></div>
-            <div className="quality-row"><span>Low cancellation</span><b>98%</b><i><em style={{ width: '98%' }} /></i></div>
-          </section>
-          <section className="docs-card"><FileCheck2 /><div><strong>Documents up to date</strong><small>Insurance due in 93 days</small></div><ChevronRight /></section>
-        </aside>
-      </div>
-    </>
-  );
-}
+        <button className="btn btn-primary" onClick={onPublish}>
+          <Plus size={16} />
+          <span>Publish commute</span>
+        </button>
+      </header>
 
-export function DriverRides({ onOffer, onSos, notify, onPin, onChat }: Pick<DriverProps, 'onOffer' | 'onSos' | 'notify' | 'onPin' | 'onChat'>) {
-  const { driverRides, bookingsForRide, tripForRide, startNavigation, toCard, memberById } = usePlatform();
-  const [tab, setTab] = useState<'upcoming' | 'recurring' | 'completed'>('upcoming');
-  const upcoming = driverRides.filter((ride) => ride.status === 'published');
-  const completed = driverRides.filter((ride) => ride.status === 'completed');
-  const active = upcoming[0];
-  const activeTrip = active ? tripForRide(active.id) : undefined;
-  const activeCard = active ? toCard(active) : null;
-  const people = active ? bookingsForRide(active.id).filter((booking) => booking.status === 'paid' || booking.status === 'accepted') : [];
+      {/* T-8 Commitment Alert Card (Signature COMUTA interaction) */}
+      <section className={`driver-t8-banner ${isConfirmed ? 'committed' : 'pending'}`}>
+        <div className="t8-badge-strip">
+          <span className="t8-tag">T-8 COMMITMENT</span>
+          <span className="t8-deadline">
+            {isConfirmed ? '✓ COMMITTED FOR TOMORROW' : 'CONFIRM WITHIN 01:42:18'}
+          </span>
+        </div>
 
-  return (
-    <>
-      <PageHeading eyebrow="DRIVER SCHEDULE" title="My rides" subtitle="Manage recurring routes and upcoming journeys." action={<button className="btn btn-primary" onClick={onOffer}><Plus size={17} /> Offer a ride</button>} />
-      <div className="trip-tabs">
-        <button className={tab === 'upcoming' ? 'active' : ''} onClick={() => setTab('upcoming')}>Upcoming <span>{upcoming.length}</span></button>
-        <button className={tab === 'recurring' ? 'active' : ''} onClick={() => setTab('recurring')}>Recurring routes</button>
-        <button className={tab === 'completed' ? 'active' : ''} onClick={() => setTab('completed')}>Completed</button>
-      </div>
-      {tab === 'upcoming' && active && activeCard && (
-        <section className="driver-active-ride">
-          <div className="dar-top">
-            <span><i />{activeTrip?.status === 'driver_en_route' ? 'NAVIGATION LIVE' : `STARTING · ${whenCopy(active.when).toUpperCase()}`}</span>
-            <small>Trip #{active.id}</small>
-          </div>
-          <div className="dar-content">
-            <div className="dar-route">
-              <strong>{active.time.replace(' AM', '').replace(' PM', '')} <small>{active.time.includes('PM') ? 'PM' : 'AM'}</small></strong>
-              <div>
-                <span><i />{activeCard.from}</span>
-                <em />
-                <span><i />{activeCard.to}</span>
-              </div>
-              <div><small>EST. EARNINGS</small><b>{formatNaira(people.reduce((sum, booking) => sum + booking.amount, 0))}</b></div>
-            </div>
-            <div className="dar-people">
-              <span>PASSENGERS</span>
-              <div className="mini-stack">
-                {people.map((booking) => {
-                  const rider = memberById(booking.riderId);
-                  return rider ? <Avatar key={booking.id} initials={rider.initials} color={rider.avatarColor} size={38} photo={rider.photo} /> : null;
-                })}
-              </div>
-              <p>{people.length} confirmed · {active.seatsLeft} seat{active.seatsLeft === 1 ? '' : 's'} open</p>
-            </div>
-            <div className="dar-actions">
-              <button className="btn btn-dark" onClick={() => {
-                if (activeTrip) {
-                  startNavigation(activeTrip.id);
-                  notify('Navigation is live. Head to pickup.');
-                }
-              }}><Navigation />Start navigation</button>
-              {activeTrip && <button className="btn btn-outline" onClick={() => onPin(activeTrip.id)}>Enter ride PIN</button>}
-              <button className="btn btn-outline" onClick={onSos}><Shield />Safety tools</button>
-              {activeTrip && <button className="btn btn-outline" onClick={() => onChat(activeTrip.id)}><MessageCircle />Chat</button>}
-            </div>
-          </div>
-        </section>
-      )}
-      {(tab === 'upcoming' ? upcoming.slice(1) : tab === 'completed' ? completed : upcoming.filter((ride) => ride.recurring)).map((ride) => {
-        const card = toCard(ride);
-        const booked = bookingsForRide(ride.id).filter((booking) => booking.status === 'paid' || booking.status === 'accepted');
-        return (
-          <section className="schedule-row" key={ride.id}>
-            <div className="schedule-date"><strong>{whenCopy(ride.when).slice(0, 3).toUpperCase()}</strong><span>{ride.time}</span></div>
-            <div className="schedule-route">
-              <strong>{card?.from} → {card?.to}</strong>
-              <span><Clock3 /> {ride.time} · <Repeat2 /> {ride.recurring ? 'Recurring' : 'One time'}</span>
-            </div>
-            <div className="mini-stack">
-              {booked.slice(0, 3).map((booking) => {
-                const rider = memberById(booking.riderId);
-                return rider ? <Avatar key={booking.id} initials={rider.initials} color={rider.avatarColor} size={32} photo={rider.photo} /> : null;
-              })}
-            </div>
-            <span className="seat-status">{booked.length}/{ride.seats} seats</span>
-            <strong>{formatNaira(booked.reduce((sum, booking) => sum + booking.amount, 0) || ride.price * ride.seats)}</strong>
-            <button>•••</button>
-          </section>
-        );
-      })}
-    </>
-  );
-}
-
-export function RequestsView({ notify, onChat }: { notify: (s: string) => void; onChat: (tripId: string) => void }) {
-  const { driverRides, bookingsForRide, memberById, toCard, acceptRequest, declineRequest, tripForRide } = usePlatform();
-  const [tab, setTab] = useState<'pending' | 'accepted' | 'declined'>('pending');
-  const all = driverRides.flatMap((ride) => bookingsForRide(ride.id).map((booking) => ({ booking, ride, card: toCard(ride), rider: memberById(booking.riderId) })));
-  const pending = all.filter((row) => row.booking.status === 'requested');
-  const accepted = all.filter((row) => row.booking.status === 'accepted' || row.booking.status === 'paid' || row.booking.status === 'completed');
-  const declined = all.filter((row) => row.booking.status === 'declined');
-  const list = tab === 'accepted' ? accepted : tab === 'declined' ? declined : pending;
-
-  return (
-    <>
-      <PageHeading eyebrow="PASSENGER REQUESTS" title="Seat requests" subtitle="Review verified people who want to join your routes." />
-      <div className="request-filter">
-        <button className={tab === 'pending' ? 'active' : ''} onClick={() => setTab('pending')}>Pending <span>{pending.length}</span></button>
-        <button className={tab === 'accepted' ? 'active' : ''} onClick={() => setTab('accepted')}>Accepted</button>
-        <button className={tab === 'declined' ? 'active' : ''} onClick={() => setTab('declined')}>Declined</button>
-      </div>
-      <div className="request-list">
-        {list.map((row) => {
-          const rider = row.rider;
-          const card = row.card;
-          if (!rider || !card) return null;
-          const trip = tripForRide(row.ride.id);
-          const acceptedState = row.booking.status !== 'requested' && row.booking.status !== 'declined';
-          return (
-            <section className={`request-card ${acceptedState ? 'accepted' : ''}`} key={row.booking.id}>
-              <div className="request-route-head">
-                <span><CalendarDays />{whenCopy(row.ride.when).toUpperCase()} · {row.ride.time}</span>
-                <span>{card.from} <ArrowRight /> {card.to}</span>
-              </div>
-              <div className="request-person">
-                <Avatar initials={rider.initials} color={rider.avatarColor} size={62} photo={rider.photo} />
-                <div>
-                  <h3>{fullName(rider)} <BadgeCheck size={16} fill="currentColor" /></h3>
-                  <p><Star size={13} fill="currentColor" />{rider.rating} · {rider.trips} completed trips</p>
-                  <div>
-                    <span><Users />{card.community}</span>
-                    <span><ShieldCheckIcon />Identity verified</span>
-                  </div>
-                </div>
-                <div className="request-match"><strong>{card.match}%</strong><span>route match</span></div>
-              </div>
-              <div className="request-pickup">
-                <div><small>PICKUP</small><strong>{row.booking.pickupNote ?? card.pickup}</strong><span>+4 min to your route</span></div>
-                <div><small>ARRIVAL</small><strong>{card.dropoff}</strong><span>On your route</span></div>
-                <div><small>SEATS</small><strong>{row.booking.seats} seat</strong><span>{formatNaira(row.booking.total)}</span></div>
-              </div>
-              <div className="request-actions">
-                {row.booking.status === 'requested' ? (
-                  <>
-                    <button className="btn btn-outline" onClick={() => { declineRequest(row.booking.id); notify('Request declined'); }}>Decline</button>
-                    <button className="btn btn-primary" onClick={() => { acceptRequest(row.booking.id); notify(`${rider.firstName} has been added to your ride`); }}><Check />Accept {rider.firstName}</button>
-                  </>
-                ) : (
-                  <span className="accepted-message"><CheckCircle2 />{rider.firstName} is {row.booking.status} on this ride</span>
-                )}
-                {trip && <button className="text-button" onClick={() => onChat(trip.id)}><MessageCircle />Message</button>}
-              </div>
-            </section>
-          );
-        })}
-        {!list.length && <div className="empty-note">No requests in this queue.</div>}
-      </div>
-    </>
-  );
-}
-
-function ShieldCheckIcon() {
-  return <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7z" /><path d="M9 12l2 2 4-4" /></svg>;
-}
-
-export function EarningsView({ notify, onWallet }: { notify: (s: string) => void; onWallet: () => void }) {
-  const { availableBalance, pendingBalance, me, walletFor, withdraw } = usePlatform();
-  const wallet = me ? walletFor(me.id) : { entries: [] as ReturnType<typeof walletFor>['entries'] };
-  const bars = [42, 64, 38, 81, 70, 94, 52];
-  const entries = wallet.entries.filter((entry) => entry.type === 'settlement' || entry.type === 'withdrawal').slice(0, 6);
-
-  return (
-    <>
-      <PageHeading
-        eyebrow="DRIVER FINANCES"
-        title="Earnings"
-        subtitle="Transparent cost contributions, settlements and payouts."
-        action={<button className="btn btn-primary" onClick={() => {
-          const result = withdraw(availableBalance);
-          notify(result.message);
-        }}><Banknote />Withdraw funds</button>}
-      />
-      <section className="earnings-hero">
-        <div><span>AVAILABLE TO WITHDRAW</span><strong>{formatNaira(availableBalance)}</strong><small><CheckCircle2 />All trips reconciled</small></div>
-        <div><span>PENDING</span><strong>{formatNaira(Math.max(0, pendingBalance))}</strong><small>From upcoming trips</small></div>
-        <div><span>PAID OUT</span><strong>{formatNaira(Math.abs(wallet.entries.filter((entry) => entry.type === 'withdrawal').reduce((sum, entry) => sum + entry.amount, 0)))}</strong><small>To {me?.bankName ?? 'your bank'} ·••{me?.bankLast4 ?? '0000'}</small></div>
-      </section>
-      <div className="earnings-grid">
-        <section className="earnings-chart">
-          <div className="dash-section-head"><div><h2>Earnings activity</h2><p>This week</p></div><select><option>This week</option><option>This month</option></select></div>
-          <div className="bar-chart">{bars.map((h, i) => <div key={i}><span style={{ height: `${h}%` }} className={i === 5 ? 'active' : ''}><em>{i === 5 ? '₦6.8k' : ''}</em></span><small>{['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][i]}</small></div>)}</div>
-          <div className="chart-summary">
-            <span><small>GROSS CONTRIBUTIONS</small><strong>₦27,000</strong></span>
-            <i />
-            <span><small>PADIGO SERVICE</small><strong>−₦2,400</strong></span>
-            <i />
-            <span><small>YOUR EARNINGS</small><strong>₦24,600</strong></span>
-          </div>
-        </section>
-        <aside className="payout-card">
-          <span>NEXT AUTOMATIC PAYOUT</span>
-          <h3>Friday</h3>
-          <strong>{formatNaira(availableBalance)}</strong>
+        <div className="t8-info-row">
           <div>
-            <span>GT</span>
-            <p><strong>{me?.bankName ?? 'Guaranty Trust Bank'}</strong><small>{me ? fullName(me) : ''} · ••{me?.bankLast4 ?? '0294'}</small></p>
-            <BadgeCheck />
+            <h3>Ikorodu ➔ Victoria Island</h3>
+            <p>Tomorrow · 7:00 AM departure · 3 passengers counting on you</p>
           </div>
-          <button className="btn btn-outline btn-block" onClick={onWallet}>Manage payout account</button>
-        </aside>
-      </div>
-      <section className="transactions">
-        <div className="dash-section-head"><div><h2>Recent transactions</h2><p>All contributions, fees and payouts</p></div><button onClick={() => notify('Statement downloaded')}>Download statement</button></div>
-        {entries.map((entry) => (
-          <div className="transaction-row" key={entry.id}>
-            <span className={entry.type === 'withdrawal' ? 'payout-icon' : ''}>{entry.type === 'withdrawal' ? <Banknote /> : <CarFront />}</span>
-            <div>
-              <strong>{entry.note}</strong>
-              <small>{new Date(entry.createdAt).toLocaleDateString('en-GB')} · {entry.reference}</small>
-            </div>
-            <span className={entry.type === 'withdrawal' ? 'paid-tag' : 'settled-tag'}>{entry.status}</span>
-            <strong className={entry.amount < 0 ? 'debit' : ''}>{entry.amount < 0 ? '−' : '+'}{formatNaira(Math.abs(entry.amount))}</strong>
-            <ChevronRight />
-          </div>
-        ))}
+          <button
+            className={`btn ${isConfirmed ? 'btn-light' : 'btn-lime'}`}
+            onClick={onCommitment}
+          >
+            {isConfirmed ? 'View commitment' : 'Confirm commitment'}
+            <ArrowRight size={15} />
+          </button>
+        </div>
       </section>
-    </>
+
+      {/* Your next commute Card */}
+      <section className="driver-next-card">
+        <div className="dnc-head">
+          <span className="eyebrow-label">YOUR NEXT COMMUTE</span>
+          <span className="status-badge live">SCHEDULED</span>
+        </div>
+
+        <div className="dnc-route">
+          <h2>Ikorodu Hub ➔ Victoria Island Hub</h2>
+          <div className="dnc-time">
+            <Clock3 size={15} />
+            <span>Tomorrow · 7:00 AM (Pickup: Main Gate)</span>
+          </div>
+        </div>
+
+        {/* Passenger Summary: 3 / 4 seats booked */}
+        <div className="passenger-summary-box">
+          <div className="ps-top">
+            <strong>3 / 4 seats booked</strong>
+            <span>₦4,500 contribution</span>
+          </div>
+          <div className="passenger-avatar-stack">
+            <div className="avatar-chip"><Avatar initials="OO" color="#0C392C" size={32} /><span>Olabisi O. (PIN 4827)</span></div>
+            <div className="avatar-chip"><Avatar initials="TN" color="#7059a3" size={32} /><span>Tobi N. (PIN 7721)</span></div>
+            <div className="avatar-chip"><Avatar initials="AE" color="#cc7955" size={32} /><span>Amaka E. (PIN 3390)</span></div>
+          </div>
+        </div>
+
+        <div className="dnc-actions">
+          <button className="btn btn-primary" onClick={onTripNav}>
+            <Navigation size={16} />
+            <span>Start pickup navigation</span>
+          </button>
+          <button className="btn btn-outline" onClick={onCommitment}>
+            <span>Manage passengers</span>
+          </button>
+        </div>
+      </section>
+
+      {/* Driver Metrics: Cost Recovery & Reliability */}
+      <div className="driver-metrics-grid">
+        {/* Cost Recovery Card */}
+        <div className="metric-box cost-recovery" onClick={onEarnings} role="button" tabIndex={0}>
+          <div className="mb-top">
+            <span>COST RECOVERY</span>
+            <Coins size={18} />
+          </div>
+          <strong className="mb-val">₦4,500</strong>
+          <p className="mb-sub">This month from shared seats</p>
+          <span className="view-link">View settlement ledger <ChevronRight size={13} /></span>
+        </div>
+
+        {/* Driver Reliability Card (98%) */}
+        <div className="metric-box reliability" onClick={onReliability} role="button" tabIndex={0}>
+          <div className="mb-top">
+            <span>COMUTA RELIABILITY</span>
+            <ShieldCheck size={18} />
+          </div>
+          <strong className="mb-val">98%</strong>
+          <p className="mb-sub">Top tier · 98% completion · 97% on-time</p>
+          <span className="view-link">View reliability breakdown <ChevronRight size={13} /></span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * 10. Driver Commitment (T-8 Screen) — Signature COMUTA interaction!
+ * "Your trip is tomorrow"
+ * "You have passengers counting on this commute."
+ * Route: Ikorodu → Victoria Island
+ * Time: 7:00 AM
+ * Passengers: 3 riders
+ * Deadline: Confirm by 11:00 PM (or countdown: Confirm within 01:42:18)
+ * CTA: Confirm trip
+ * Secondary: I can't make this trip
+ */
+export function DriverCommitmentView({
+  onBack,
+  onCancelled,
+}: {
+  onBack: () => void;
+  onCancelled: () => void;
+}) {
+  const { confirmDriverCommitment, cancelDriverCommitment, state } = usePlatform();
+  const [committed, setCommitted] = useState(false);
+  const [cancelling, setCancelling] = useState(false);
+  const [reason, setReason] = useState('');
+
+  const handleConfirm = () => {
+    confirmDriverCommitment('CM-DRV-01');
+    confirmDriverCommitment('CM-IKR-01');
+    setCommitted(true);
+  };
+
+  const handleCancel = () => {
+    cancelDriverCommitment('CM-IKR-01', reason || 'Emergency vehicle maintenance');
+    setCancelling(false);
+    onCancelled();
+  };
+
+  if (committed) {
+    return (
+      <div className="commitment-confirmed-screen">
+        <div className="cc-card">
+          <DriverCommitmentIllustration size={170} />
+          <span className="pill-committed">✓ COMMITTED</span>
+          <h1>You're committed</h1>
+          <h2>Ikorodu ➔ Victoria Island</h2>
+          <p className="cc-sub">
+            Tomorrow · 7:00 AM · 3 riders notified.
+            Thank you for keeping Lagos commuting dependable.
+          </p>
+          <div className="passenger-confirmed-list">
+            <div><CheckCircle2 size={16} /><span>Olabisi O. (Seat 1)</span></div>
+            <div><CheckCircle2 size={16} /><span>Tobi N. (Seat 2)</span></div>
+            <div><CheckCircle2 size={16} /><span>Amaka E. (Seat 3)</span></div>
+          </div>
+          <button className="btn btn-primary btn-block cta-large" onClick={onBack}>
+            Return to driver home
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="driver-commitment-screen">
+      <header className="screen-header">
+        <button className="back-btn" onClick={onBack} aria-label="Go back">
+          <ChevronRight size={20} className="rotate-180" />
+        </button>
+        <div>
+          <h2>T-8 Commitment</h2>
+          <p>Confirm your morning commute</p>
+        </div>
+      </header>
+
+      <div className="commitment-card">
+        <div className="t8-urgency-banner">
+          <Clock3 size={18} />
+          <span>Confirm within <strong>01:42:18</strong></span>
+        </div>
+
+        <div className="commitment-header-text">
+          <h1>Your trip is tomorrow</h1>
+          <p className="reassurance-lead">
+            You have passengers counting on this commute to get to work on time.
+          </p>
+        </div>
+
+        <div className="commute-details-table">
+          <div className="cdt-row">
+            <span>Route</span>
+            <strong>Ikorodu ➔ Victoria Island</strong>
+          </div>
+          <div className="cdt-row">
+            <span>Time</span>
+            <strong>7:00 AM</strong>
+          </div>
+          <div className="cdt-row">
+            <span>Passengers</span>
+            <strong>3 riders</strong>
+          </div>
+          <div className="cdt-row">
+            <span>Deadline</span>
+            <strong className="deadline-highlight">Confirm by 11:00 PM</strong>
+          </div>
+        </div>
+
+        {/* Action CTAs */}
+        <div className="commitment-actions">
+          <button className="btn btn-primary btn-block cta-large" onClick={handleConfirm}>
+            <Check size={18} />
+            <span>Confirm trip</span>
+          </button>
+
+          <button
+            className="btn btn-outline btn-block btn-cancel-trip"
+            onClick={() => setCancelling(true)}
+          >
+            I can't make this trip
+          </button>
+        </div>
+      </div>
+
+      {/* Cancellation confirmation modal */}
+      {cancelling && (
+        <div className="modal-backdrop">
+          <div className="modal-card">
+            <h3>Unable to make this trip?</h3>
+            <p>
+              Please let us know why. COMUTA will immediately initiate our
+              <strong> At-Risk recovery workflow</strong> to re-seat your 3 passengers with other
+              verified drivers so they aren't stranded.
+            </p>
+            <textarea
+              className="cancel-reason-input"
+              rows={3}
+              placeholder="e.g. Vehicle unexpected mechanical issue, illness..."
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+            />
+            <div className="modal-actions-dual">
+              <button className="btn btn-outline" onClick={() => setCancelling(false)}>
+                Back
+              </button>
+              <button className="btn btn-danger" onClick={handleCancel}>
+                Confirm cancellation
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * 17. Driver Publishing Screen
+ * Publish a commute:
+ * FROM: Ikorodu Hub
+ * TO: Victoria Island Hub
+ * DEPARTURE: 7:00 AM
+ * SEATS: 3 available
+ * CONTRIBUTION: ₦1,500 / seat
+ * Schedule: One-off | Recurring
+ * Publish commute button
+ */
+export function DriverPublishView({
+  onBack,
+  onPublished,
+}: {
+  onBack: () => void;
+  onPublished: () => void;
+}) {
+  const { publishRide } = usePlatform();
+  const [fromHub, setFromHub] = useState('Ikorodu Hub');
+  const [toHub, setToHub] = useState('Victoria Island Hub');
+  const [time, setTime] = useState('7:00 AM');
+  const [seats, setSeats] = useState(3);
+  const [price, setPrice] = useState(1500);
+  const [schedule, setSchedule] = useState<'one-off' | 'recurring'>('recurring');
+
+  const handlePublish = () => {
+    publishRide({
+      fromId: 'ikorodu-hub',
+      toId: 'vi-hub',
+      pickupId: 'ikorodu-hub',
+      dropoffId: 'vi-hub',
+      time,
+      seats,
+      price,
+      recurring: schedule === 'recurring',
+      days: [1, 2, 3, 4, 5],
+      when: 'tomorrow',
+    });
+    onPublished();
+  };
+
+  return (
+    <div className="driver-publish-screen">
+      <header className="screen-header">
+        <button className="back-btn" onClick={onBack} aria-label="Go back">
+          <ChevronRight size={20} className="rotate-180" />
+        </button>
+        <div>
+          <h2>Publish a commute</h2>
+          <p>Share your daily route & recover fuel costs</p>
+        </div>
+      </header>
+
+      <div className="publish-form-card">
+        {/* FROM */}
+        <div className="form-item">
+          <label className="input-group-label">FROM</label>
+          <div className="corridor-pill-input">
+            <span className="hub-dot-indicator origin" />
+            <select value={fromHub} onChange={(e) => setFromHub(e.target.value)}>
+              <option value="Ikorodu Hub">Ikorodu Hub (Main Gate)</option>
+              <option value="Berger Hub">Berger Hub</option>
+              <option value="Ikeja Hub">Ikeja Hub</option>
+            </select>
+          </div>
+        </div>
+
+        {/* TO */}
+        <div className="form-item">
+          <label className="input-group-label">TO</label>
+          <div className="corridor-pill-input">
+            <span className="hub-dot-indicator destination" />
+            <select value={toHub} onChange={(e) => setToHub(e.target.value)}>
+              <option value="Victoria Island Hub">Victoria Island Hub</option>
+              <option value="Lekki Phase 1 Hub">Lekki Phase 1 Hub</option>
+              <option value="Marina Hub">Marina Hub</option>
+            </select>
+          </div>
+        </div>
+
+        {/* DEPARTURE */}
+        <div className="form-item">
+          <label className="input-group-label">DEPARTURE</label>
+          <div className="corridor-pill-input">
+            <Clock3 size={16} />
+            <select value={time} onChange={(e) => setTime(e.target.value)}>
+              <option value="6:30 AM">6:30 AM</option>
+              <option value="6:45 AM">6:45 AM</option>
+              <option value="7:00 AM">7:00 AM</option>
+              <option value="7:15 AM">7:15 AM</option>
+              <option value="7:30 AM">7:30 AM</option>
+            </select>
+          </div>
+        </div>
+
+        {/* SEATS & CONTRIBUTION */}
+        <div className="split-form-row">
+          <div className="form-item">
+            <label className="input-group-label">SEATS</label>
+            <div className="number-stepper">
+              <button
+                type="button"
+                onClick={() => setSeats(Math.max(1, seats - 1))}
+              >
+                −
+              </button>
+              <strong>{seats} available</strong>
+              <button
+                type="button"
+                onClick={() => setSeats(Math.min(4, seats + 1))}
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+          <div className="form-item">
+            <label className="input-group-label">CONTRIBUTION</label>
+            <div className="price-input-box">
+              <span>₦</span>
+              <input
+                type="number"
+                value={price}
+                onChange={(e) => setPrice(parseInt(e.target.value, 10) || 1500)}
+                step={50}
+              />
+              <small>/ seat</small>
+            </div>
+          </div>
+        </div>
+
+        {/* SCHEDULE */}
+        <div className="form-item">
+          <label className="input-group-label">SCHEDULE</label>
+          <div className="trip-type-tabs">
+            <button
+              className={`tab-btn ${schedule === 'one-off' ? 'active' : ''}`}
+              onClick={() => setSchedule('one-off')}
+              type="button"
+            >
+              One-off
+            </button>
+            <button
+              className={`tab-btn ${schedule === 'recurring' ? 'active' : ''}`}
+              onClick={() => setSchedule('recurring')}
+              type="button"
+            >
+              Recurring (Mon–Fri)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="fixed-bottom-bar">
+        <button className="btn btn-primary btn-block cta-large" onClick={handlePublish}>
+          <span>Publish commute</span>
+          <ArrowRight size={18} />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * 18. Driver Reliability Screen
+ * Do not make this another generic star rating.
+ * Your COMUTA reliability: 98%
+ * Completion: 98%
+ * On-time: 97%
+ * Late cancellations: 1
+ * No-shows: 0
+ * How to improve: Short actionable guidance
+ */
+export function DriverReliabilityView({
+  onBack,
+}: {
+  onBack: () => void;
+}) {
+  return (
+    <div className="driver-reliability-screen">
+      <header className="screen-header">
+        <button className="back-btn" onClick={onBack} aria-label="Go back">
+          <ChevronRight size={20} className="rotate-180" />
+        </button>
+        <div>
+          <h2>Operational Reliability</h2>
+          <p>Your performance & corridor score</p>
+        </div>
+      </header>
+
+      <div className="reliability-main-card">
+        <div className="score-hero-circle">
+          <span className="score-lbl">YOUR COMUTA RELIABILITY</span>
+          <strong className="score-num">98%</strong>
+          <span className="badge-tier">Tier 1 · Verified Commuter</span>
+        </div>
+
+        {/* Metrics Grid */}
+        <div className="reliability-metrics-list">
+          <div className="rml-item">
+            <span>Completion</span>
+            <strong className="good">98%</strong>
+          </div>
+          <div className="rml-item">
+            <span>On-time</span>
+            <strong className="good">97%</strong>
+          </div>
+          <div className="rml-item">
+            <span>Late cancellations</span>
+            <strong>1</strong>
+          </div>
+          <div className="rml-item">
+            <span>No-shows</span>
+            <strong className="good">0</strong>
+          </div>
+        </div>
+
+        <div className="divider" />
+
+        {/* How to improve */}
+        <div className="improve-guidance-box">
+          <h3>How to improve</h3>
+          <ul className="guidance-list">
+            <li>
+              <CheckCircle2 size={16} />
+              <span>Confirm morning trips before the 11:00 PM T-8 deadline.</span>
+            </li>
+            <li>
+              <CheckCircle2 size={16} />
+              <span>Arrive at Ikorodu Hub Main Gate 5 minutes before scheduled departure.</span>
+            </li>
+            <li>
+              <CheckCircle2 size={16} />
+              <span>Always verify the 4-digit trip PIN before pulling out of the bay.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Driver Pickup Navigation & Active Trip
+ */
+export function DriverTripNavView({
+  onBack,
+  onComplete,
+}: {
+  onBack: () => void;
+  onComplete: () => void;
+}) {
+  const { verifyPin, completeTrip } = usePlatform();
+  const [pinInput, setPinInput] = useState('');
+  const [verifiedRiders, setVerifiedRiders] = useState<string[]>([]);
+  const [tripStarted, setTripStarted] = useState(false);
+
+  const handleVerify = () => {
+    if (pinInput === '4827' || pinInput.length === 4) {
+      setVerifiedRiders([...verifiedRiders, 'Olabisi O.']);
+      setPinInput('');
+      setTripStarted(true);
+    }
+  };
+
+  return (
+    <div className="driver-nav-screen">
+      <header className="screen-header">
+        <button className="back-btn" onClick={onBack} aria-label="Go back">
+          <ChevronRight size={20} className="rotate-180" />
+        </button>
+        <div>
+          <h2>{tripStarted ? 'Active commute' : 'Pickup at Ikorodu Hub'}</h2>
+          <p>Destination: Victoria Island Hub</p>
+        </div>
+      </header>
+
+      <div className="driver-nav-body">
+        <div className="driver-nav-map">
+          <CorridorMapArtwork
+            fromLabel="Ikorodu Hub (Main Gate)"
+            toLabel="Victoria Island Hub"
+            showVehicle={tripStarted}
+            vehicleProgress={tripStarted ? 60 : 5}
+          />
+        </div>
+
+        <div className="nav-control-panel">
+          {!tripStarted ? (
+            <div className="pin-input-group">
+              <label>Enter passenger trip PIN to depart:</label>
+              <div className="pin-row">
+                <input
+                  type="text"
+                  maxLength={4}
+                  placeholder="e.g. 4827"
+                  value={pinInput}
+                  onChange={(e) => setPinInput(e.target.value)}
+                  className="pin-box-input"
+                />
+                <button className="btn btn-primary" onClick={handleVerify}>
+                  Verify PIN & Start
+                </button>
+              </div>
+              <small className="help-text">Riders have their PIN on their booking screen.</small>
+            </div>
+          ) : (
+            <div className="active-nav-status">
+              <div className="ans-header">
+                <span className="live-dot" />
+                <strong>Corridor commute in progress</strong>
+                <span>ETA 32 min</span>
+              </div>
+              <button
+                className="btn btn-primary btn-block"
+                onClick={() => {
+                  completeTrip('TRIP-DRV-01');
+                  completeTrip('TRIP-HERO-01');
+                  onComplete();
+                }}
+              >
+                Complete commute & Settle ₦4,500
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Driver Finance / Cost Recovery Ledger
+ */
+export function DriverEarningsView({
+  onBack,
+}: {
+  onBack: () => void;
+}) {
+  return (
+    <div className="driver-finance-screen">
+      <header className="screen-header">
+        <button className="back-btn" onClick={onBack} aria-label="Go back">
+          <ChevronRight size={20} className="rotate-180" />
+        </button>
+        <div>
+          <h2>Cost Recovery & Earnings</h2>
+          <p>Commute fuel & maintenance offset</p>
+        </div>
+      </header>
+
+      <div className="finance-card">
+        <div className="balance-hero">
+          <span>AVAILABLE FOR SETTLEMENT</span>
+          <strong>₦4,500</strong>
+          <small>Next payout: Friday to GTBank ••0294</small>
+        </div>
+
+        <div className="ledger-history">
+          <h3>Recent settlements</h3>
+          <div className="lh-item">
+            <div>
+              <strong>Ikorodu ➔ Victoria Island (3 seats)</strong>
+              <small>Yesterday · 7:00 AM</small>
+            </div>
+            <strong className="positive">+₦4,500</strong>
+          </div>
+          <div className="lh-item">
+            <div>
+              <strong>Victoria Island ➔ Ikorodu (2 seats)</strong>
+              <small>Last week</small>
+            </div>
+            <strong className="positive">+₦3,000</strong>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

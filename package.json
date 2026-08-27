@@ -1,9 +1,9 @@
 {
-  "name": "padigo-platform",
-  "version": "0.1.0",
+  "name": "comuta-platform",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "PadiGo — Nigeria's trusted recurring carpool network",
+  "description": "COMUTA — Nigeria's corridor-based shared commute platform: Your daily commute is already taken care of.",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "tsc -b && vite build",
