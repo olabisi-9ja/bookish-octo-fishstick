@@ -1,6 +1,6 @@
-# PadiGo
+# Comuta
 
-**PadiGo** is Nigeria's trusted recurring carpool network: *Your people. Your route. Half the cost.*
+**Comuta** is Nigeria's trusted recurring carpool network: *Your route. Your people. Your commute.*
 
 This repository is a working web MVP of the rider app, driver app and operations centre, with a client-side marketplace engine (matching, pricing, bookings, trip PIN, chat, SOS and an immutable wallet ledger).
 
@@ -77,17 +77,54 @@ npm run preview
 
 Open `/ops` to review live trips, route-deviation alerts, corridor demand/supply, verification applications, payment signals and marketplace conversion.
 
-## Design direction
+## Brand system
 
-PadiGo deliberately avoids looking like a generic instant-ride clone. The visual system uses:
+### Identity
 
-- deep forest green for trust and operational confidence;
-- fresh lime for shared-route and live-state emphasis;
-- warm orange for human/community accents;
-- cream and soft greys for an approachable Nigerian commuter product;
-- route-first cards, explicit verification signals and recurring-commute language throughout.
+- **Name:** Comuta — suggestive of "commute"; movement, efficiency, everyday mobility.
+- **Logo:** a dark forest green circle holding two vertical bars — one white, one vibrant lime green — symbolising a road, a pathway and an abstract "C". The mark lives in `src/components/Brand.tsx` and the app icon in `public/comuta-icon.svg`.
 
-The UI is original, with product-pattern inspiration drawn from leading mobility platforms while retaining PadiGo's own positioning: **Your route. Your people. Your commute.**
+### Colour palette
+
+| Role | Tokens | Meaning |
+| --- | --- | --- |
+| Primary — Dark Forest Green | `--forest-950…500`, legacy `--green-950…600` | Trust, stability, nature |
+| Accent — Vibrant Lime Green | `--lime`, `--lime-600`, `--lime-soft` | Energy, growth, freshness |
+| Supporting — Teal / Blue-gray | `--teal-700…50`, `--slate-700…100` | Technology, calm |
+| Supporting — Black / Gray | `--ink`, `--muted`, `--line`, `--cream`, `--sand` | Sophistication |
+| Alerts — Red scale | `--red-700…50` | Warnings, safety, SOS |
+
+All surfaces draw from these tokens in `src/styles.css`; alert and warning states use the red scale, live/route accents use the lime accent, and secondary data accents use teal/blue-gray.
+
+### Typography
+
+One highly legible, clean geometric sans-serif — **Manrope** (400–800) — carries every text role:
+
+| Role | Token | Usage |
+| --- | --- | --- |
+| Display | `--font-display` | Hero and manifest statements |
+| Headline | `--font-headline` | Section titles |
+| Title | `--font-title` | Card and panel titles, wordmark |
+| Body | `--font-body` | Paragraphs, controls |
+| Caption | `--font-caption` | Uppercase kickers, labels, metadata |
+
+### UI elements
+
+- Minimalist, rounded-corner buttons with a single primary action per screen — the onboarding flow is driven by a consistent **Continue** button.
+- Social sign-in options (**Continue with Apple**, **Continue with Google**) alongside phone sign-in in the auth flow.
+- Clean, rounded input fields for **ID type** and **Location** during profile setup, plus phone, name and emergency-contact fields.
+- Rounded corners throughout (cards, chips, modals, inputs) for a calm, frictionless feel.
+
+### Brand values
+
+- **Trust & Security** — dark forest palette, identity/ID-type verification, location context, layered safety signals.
+- **Simplicity & Clarity** — minimal UI, generous whitespace, one geometric typeface, immediate answers.
+- **Sustainability & Vitality** — deep forest green with vibrant lime accents.
+- **Efficiency & Mobility** — the name and the road-like bars in the mark communicate movement, speed and effortless navigation.
+- **Modernity & Innovation** — geometric logo, social sign-in, structured token scales, contemporary components.
+- **Professionalism & Versatility** — organized colour scales and a fixed type hierarchy keep the brand consistent across web, PWA and (future) mobile.
+
+The UI is original, with product-pattern inspiration drawn from leading mobility platforms while retaining Comuta's own positioning: **Your route. Your people. Your commute.**
 
 ## Technical notes
 

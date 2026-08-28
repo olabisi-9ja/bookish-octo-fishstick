@@ -3,14 +3,14 @@ import type { Community, LedgerEntry, Member, PlatformState, RideOffer, Vehicle 
 export const DEMO_PHONE = '08031112841';
 export const DEMO_OTP = '4827';
 export const DEMO_USER_ID = 'usr_olabisi';
-export const STORAGE_KEY = 'padigo.v1';
+export const STORAGE_KEY = 'comuta.v1';
 
 export const COMMUNITIES: Community[] = [
-  { id: 'com_sterling', name: 'PadiGo at Sterling', type: 'Workplace', members: '428', routes: 12, color: '#d8f3e5', initials: 'ST' },
-  { id: 'com_lekki', name: 'Lekki Gardens', type: 'Estate', members: '216', routes: 8, color: '#fff0cd', initials: 'LG' },
-  { id: 'com_vi_tech', name: 'VI Tech Circle', type: 'Professional', members: '1.2k', routes: 26, color: '#ece4ff', initials: 'VT' },
+  { id: 'com_sterling', name: 'Comuta at Sterling', type: 'Workplace', members: '428', routes: 12, color: '#d9efe4', initials: 'ST' },
+  { id: 'com_lekki', name: 'Lekki Gardens', type: 'Estate', members: '216', routes: 8, color: '#eef8fa', initials: 'LG' },
+  { id: 'com_vi_tech', name: 'VI Tech Circle', type: 'Professional', members: '1.2k', routes: 26, color: '#e8edf1', initials: 'VT' },
   { id: 'com_unilag', name: 'UNILAG Community', type: 'University', members: '863', routes: 19, color: '#e1efff', initials: 'UL' },
-  { id: 'com_chevron', name: 'Chevron Estate', type: 'Estate', members: '190', routes: 7, color: '#fde6d8', initials: 'CE' },
+  { id: 'com_chevron', name: 'Chevron Estate', type: 'Estate', members: '190', routes: 7, color: '#f3f9dd', initials: 'CE' },
 ];
 
 const members: Member[] = [
@@ -19,9 +19,9 @@ const members: Member[] = [
     firstName: 'Olabisi',
     lastName: 'Ojo',
     phone: DEMO_PHONE,
-    email: 'olabisi@padigo.ng',
+    email: 'olabisi@comuta.ng',
     initials: 'OO',
-    avatarColor: '#d87753',
+    avatarColor: '#155942',
     rating: 4.9,
     trips: 28,
     verified: true,
@@ -38,7 +38,7 @@ const members: Member[] = [
     lastName: 'Bamidele',
     phone: '0802 441 1182',
     initials: 'AB',
-    avatarColor: '#db6b46',
+    avatarColor: '#2e7d8a',
     photo: '/images/people/ade.jpg',
     rating: 4.9,
     trips: 184,
@@ -55,7 +55,7 @@ const members: Member[] = [
     lastName: 'Nwosu',
     phone: '0813 220 9041',
     initials: 'IN',
-    avatarColor: '#7656b8',
+    avatarColor: '#769e12',
     photo: '/images/people/ifeoma.jpg',
     rating: 4.8,
     trips: 96,
@@ -70,7 +70,7 @@ const members: Member[] = [
     lastName: 'Lawal',
     phone: '0706 239 1104',
     initials: 'ML',
-    avatarColor: '#257769',
+    avatarColor: '#1d6e53',
     photo: '/images/people/musa.jpg',
     rating: 4.9,
     trips: 231,
@@ -84,7 +84,7 @@ const members: Member[] = [
     lastName: 'James',
     phone: '0809 332 4410',
     initials: 'DJ',
-    avatarColor: '#bd8352',
+    avatarColor: '#23626d',
     photo: '/images/people/seyi.jpg',
     rating: 4.7,
     trips: 54,
@@ -98,7 +98,7 @@ const members: Member[] = [
     lastName: 'Nwankwo',
     phone: '0812 667 3901',
     initials: 'TN',
-    avatarColor: '#7059a3',
+    avatarColor: '#5c7186',
     photo: '/images/people/chidi.jpg',
     rating: 4.8,
     trips: 17,
@@ -112,7 +112,7 @@ const members: Member[] = [
     lastName: 'Eze',
     phone: '0805 118 2293',
     initials: 'AE',
-    avatarColor: '#cc7955',
+    avatarColor: '#2a8a68',
     photo: '/images/people/amaka.jpg',
     rating: 4.9,
     trips: 41,
@@ -126,7 +126,7 @@ const members: Member[] = [
     lastName: 'Okafor',
     phone: '0803 991 2044',
     initials: 'CO',
-    avatarColor: '#3c7b6e',
+    avatarColor: '#0f4431',
     photo: '/images/people/chidi.jpg',
     rating: 4.8,
     trips: 62,
@@ -140,7 +140,7 @@ const members: Member[] = [
     lastName: 'Okunola',
     phone: '0816 440 2281',
     initials: 'SO',
-    avatarColor: '#c46b4a',
+    avatarColor: '#4a6584',
     photo: '/images/people/seyi.jpg',
     rating: 4.9,
     trips: 73,
@@ -154,7 +154,7 @@ const members: Member[] = [
     lastName: 'Adeyemi',
     phone: '0807 220 1184',
     initials: 'TA',
-    avatarColor: '#4d6fa8',
+    avatarColor: '#3d5a80',
     photo: '/images/people/tolu.jpg',
     rating: 4.9,
     trips: 38,
@@ -179,7 +179,7 @@ const weekdays = [1, 2, 3, 4, 5];
 
 const rides: RideOffer[] = [
   {
-    id: 'PG2841',
+    id: 'CT2841',
     driverId: 'usr_ade',
     vehicleId: 'veh_ade',
     fromId: 'ajah',
@@ -199,7 +199,7 @@ const rides: RideOffer[] = [
     when: 'tomorrow',
   },
   {
-    id: 'PG3027',
+    id: 'CT3027',
     driverId: 'usr_ifeoma',
     vehicleId: 'veh_ifeoma',
     fromId: 'ajah',
@@ -219,7 +219,7 @@ const rides: RideOffer[] = [
     when: 'tomorrow',
   },
   {
-    id: 'PG1913',
+    id: 'CT1913',
     driverId: 'usr_musa',
     vehicleId: 'veh_musa',
     fromId: 'sangotedo',
@@ -239,7 +239,7 @@ const rides: RideOffer[] = [
     when: 'tomorrow',
   },
   {
-    id: 'PG4388',
+    id: 'CT4388',
     driverId: 'usr_dami',
     vehicleId: 'veh_dami',
     fromId: 'ajah',
@@ -259,7 +259,7 @@ const rides: RideOffer[] = [
     when: 'tomorrow',
   },
   {
-    id: 'PG5510',
+    id: 'CT5510',
     driverId: 'usr_chidi',
     vehicleId: 'veh_chidi',
     fromId: 'ikeja',
@@ -279,7 +279,7 @@ const rides: RideOffer[] = [
     when: 'tomorrow',
   },
   {
-    id: 'PG6621',
+    id: 'CT6621',
     driverId: 'usr_seyi',
     vehicleId: 'veh_seyi',
     fromId: 'yaba',
@@ -299,7 +299,7 @@ const rides: RideOffer[] = [
     when: 'tomorrow',
   },
   {
-    id: 'PG7704',
+    id: 'CT7704',
     driverId: 'usr_tolu',
     vehicleId: 'veh_tolu',
     fromId: 'berger',
@@ -318,7 +318,7 @@ const rides: RideOffer[] = [
     when: 'tomorrow',
   },
   {
-    id: 'PG8824',
+    id: 'CT8824',
     driverId: DEMO_USER_ID,
     vehicleId: 'veh_olabisi',
     fromId: 'vi',
@@ -338,7 +338,7 @@ const rides: RideOffer[] = [
     when: 'today',
   },
   {
-    id: 'PG8901',
+    id: 'CT8901',
     driverId: DEMO_USER_ID,
     vehicleId: 'veh_olabisi',
     fromId: 'vi',
@@ -358,7 +358,7 @@ const rides: RideOffer[] = [
     when: 'friday',
   },
   {
-    id: 'PG9102',
+    id: 'CT9102',
     driverId: 'usr_ifeoma',
     vehicleId: 'veh_ifeoma',
     fromId: 'vi',
@@ -383,10 +383,10 @@ const now = () => new Date().toISOString();
 const minutesAgo = (n: number) => new Date(Date.now() - n * 60000).toISOString();
 
 const ledger: LedgerEntry[] = [
-  { id: 'led_1', memberId: DEMO_USER_ID, type: 'settlement', amount: 2850, status: 'completed', reference: 'PG8701', note: 'Ajah → Victoria Island', createdAt: minutesAgo(60 * 24 * 4) },
-  { id: 'led_2', memberId: DEMO_USER_ID, type: 'settlement', amount: 4200, status: 'completed', reference: 'PG8710', note: 'Victoria Island → Ajah', createdAt: minutesAgo(60 * 24 * 3) },
+  { id: 'led_1', memberId: DEMO_USER_ID, type: 'settlement', amount: 2850, status: 'completed', reference: 'CT8701', note: 'Ajah → Victoria Island', createdAt: minutesAgo(60 * 24 * 4) },
+  { id: 'led_2', memberId: DEMO_USER_ID, type: 'settlement', amount: 4200, status: 'completed', reference: 'CT8710', note: 'Victoria Island → Ajah', createdAt: minutesAgo(60 * 24 * 3) },
   { id: 'led_3', memberId: DEMO_USER_ID, type: 'withdrawal', amount: -32700, status: 'completed', reference: 'OUT6590', note: 'Weekly payout · GTBank ••0294', createdAt: minutesAgo(60 * 24 * 6) },
-  { id: 'led_4', memberId: DEMO_USER_ID, type: 'settlement', amount: 2700, status: 'completed', reference: 'PG8722', note: 'Ajah → Victoria Island', createdAt: minutesAgo(60 * 24 * 2) },
+  { id: 'led_4', memberId: DEMO_USER_ID, type: 'settlement', amount: 2700, status: 'completed', reference: 'CT8722', note: 'Ajah → Victoria Island', createdAt: minutesAgo(60 * 24 * 2) },
   { id: 'led_5', memberId: DEMO_USER_ID, type: 'settlement', amount: 46850, status: 'completed', reference: 'BAL-OPEN', note: 'Available balance brought forward', createdAt: minutesAgo(60 * 24 * 10) },
   { id: 'led_6', memberId: DEMO_USER_ID, type: 'ride_payment', amount: -1500, status: 'completed', reference: 'BKG-LIVE', note: 'Seat with Ade Bamidele', createdAt: minutesAgo(90) },
 ];
@@ -413,7 +413,7 @@ export function createSeedState(): PlatformState {
     bookings: [
       {
         id: 'BKG-LIVE',
-        rideId: 'PG2841',
+        rideId: 'CT2841',
         riderId: DEMO_USER_ID,
         seats: 1,
         amount: 1500,
@@ -429,7 +429,7 @@ export function createSeedState(): PlatformState {
       },
       {
         id: 'BKG-FRI',
-        rideId: 'PG9102',
+        rideId: 'CT9102',
         riderId: DEMO_USER_ID,
         seats: 1,
         amount: 1350,
@@ -444,7 +444,7 @@ export function createSeedState(): PlatformState {
       },
       {
         id: 'BKG-DAMI',
-        rideId: 'PG8824',
+        rideId: 'CT8824',
         riderId: 'usr_dami',
         seats: 1,
         amount: 1500,
@@ -460,7 +460,7 @@ export function createSeedState(): PlatformState {
       },
       {
         id: 'BKG-TOBI',
-        rideId: 'PG8824',
+        rideId: 'CT8824',
         riderId: 'usr_tobi',
         seats: 1,
         amount: 1500,
@@ -476,7 +476,7 @@ export function createSeedState(): PlatformState {
       },
       {
         id: 'BKG-AMAKA',
-        rideId: 'PG8901',
+        rideId: 'CT8901',
         riderId: 'usr_amaka',
         seats: 1,
         amount: 1500,
@@ -494,7 +494,7 @@ export function createSeedState(): PlatformState {
     trips: [
       {
         id: 'TRIP-LIVE',
-        rideId: 'PG2841',
+        rideId: 'CT2841',
         status: 'driver_en_route',
         pin: '4827',
         etaMinutes: 6,
@@ -503,7 +503,7 @@ export function createSeedState(): PlatformState {
       },
       {
         id: 'TRIP-FRI',
-        rideId: 'PG9102',
+        rideId: 'CT9102',
         status: 'scheduled',
         pin: '1934',
         etaMinutes: 46,
@@ -511,7 +511,7 @@ export function createSeedState(): PlatformState {
       },
       {
         id: 'TRIP-EVE',
-        rideId: 'PG8824',
+        rideId: 'CT8824',
         status: 'scheduled',
         pin: '4827',
         etaMinutes: 48,

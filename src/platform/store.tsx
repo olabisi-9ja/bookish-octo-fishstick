@@ -30,7 +30,7 @@ type PlatformApi = {
   availableBalance: number;
   pendingBalance: number;
   login: (phone: string, otp: string) => { ok: boolean; isNew: boolean; message: string };
-  completeProfile: (firstName: string, lastName: string, email?: string) => void;
+  completeProfile: (firstName: string, lastName: string, email?: string, idType?: string, location?: string) => void;
   addEmergencyContact: (name: string, phone: string, relation: string) => void;
   logout: () => void;
   resetDemo: () => void;
@@ -275,8 +275,8 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
           firstName: '',
           lastName: '',
           phone: normalized,
-          initials: 'PG',
-          avatarColor: '#d87753',
+          initials: 'CT',
+          avatarColor: '#155942',
           rating: 5,
           trips: 0,
           verified: false,
@@ -291,9 +291,9 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
         }));
         return { ok: true, isNew: true, message: 'Account created. Tell us your name.' };
       },
-      completeProfile: (firstName, lastName, email) => {
+      completeProfile: (firstName, lastName, email, idType, location) => {
         if (!me) return;
-        updateMe({ firstName, lastName, email, initials: initialsOf(firstName, lastName) });
+        updateMe({ firstName, lastName, email, idType, location, initials: initialsOf(firstName, lastName) });
         setState((current) => ({ ...current, session: current.session ? { ...current.session, onboarded: current.session.onboarded } : current.session }));
       },
       addEmergencyContact: (name, phone, relation) => {
@@ -463,7 +463,7 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
         const to = placeById(input.toId);
         const quote = quoteRoute(from, to);
         const ride: RideOffer = {
-          id: `PG${Math.floor(8000 + Math.random() * 1999)}`,
+          id: `CT${Math.floor(8000 + Math.random() * 1999)}`,
           driverId: me.id,
           vehicleId: vehicle?.id ?? 'veh_olabisi',
           fromId: input.fromId,
@@ -530,7 +530,7 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
                 amount: -commission,
                 status: 'completed',
                 reference: booking.id,
-                note: 'PadiGo service fee',
+                note: 'Comuta service fee',
                 createdAt: new Date().toISOString(),
               });
             }
@@ -576,7 +576,7 @@ export function PlatformProvider({ children }: { children: ReactNode }) {
             },
             me.id,
             'Safety team alerted',
-            'Live trip context was sent to PadiGo Safety and your emergency contact.',
+            'Live trip context was sent to Comuta Safety and your emergency contact.',
             'safety',
           ),
         );

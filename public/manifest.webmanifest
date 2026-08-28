@@ -1,13 +1,13 @@
 {
-  "name": "PadiGo — Trusted recurring carpools",
-  "short_name": "PadiGo",
+  "name": "Comuta — Trusted recurring carpools",
+  "short_name": "Comuta",
   "description": "Find verified people travelling your route and build a commute you can count on.",
   "start_url": "/app",
   "display": "standalone",
-  "background_color": "#f4f5f1",
-  "theme_color": "#0c392c",
+  "background_color": "#f3f6f7",
+  "theme_color": "#0a3325",
   "orientation": "portrait-primary",
   "icons": [
-    { "src": "/padigo-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+    { "src": "/comuta-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
   ]
 }

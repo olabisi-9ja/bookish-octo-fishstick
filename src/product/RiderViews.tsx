@@ -106,7 +106,7 @@ export function RiderHome({ onSearch, onRide, onTrips, onChat }: Pick<RiderProps
           ) : (
             <section className="next-trip-card empty-trip">
               <div className="next-trip-top"><span>NO CONFIRMED RIDE YET</span></div>
-              <p>Search your corridor and request a seat. Drivers on PadiGo accept in seconds during this demo.</p>
+              <p>Search your corridor and request a seat. Drivers on Comuta accept in seconds during this demo.</p>
               <button className="btn btn-dark btn-block" onClick={onSearch}>Find a ride</button>
             </section>
           )}
@@ -120,7 +120,7 @@ export function RiderHome({ onSearch, onRide, onTrips, onChat }: Pick<RiderProps
             <TrendingUp size={21} />
           </section>
           <section className="community-nudge">
-            <div><Users size={19} /><strong>Your workplace is on PadiGo</strong></div>
+            <div><Users size={19} /><strong>Your workplace is on Comuta</strong></div>
             <p>Join 428 verified Sterling commuters.</p>
             <button onClick={() => joinCommunity('com_sterling')}>View community <ArrowRight size={14} /></button>
           </section>
@@ -351,7 +351,7 @@ export function ProfileView({ role, onSwitch, onExit, onWallet }: { role: 'rider
           <h3>Trust & verification</h3>
           <div className="verification-grid">
             <Verification label="Phone number" status="Verified" />
-            <Verification label="National identity" status={me.verified ? 'Verified' : 'Action needed'} />
+            <Verification label={me.idType ?? "National identity"} status={me.verified ? 'Verified' : 'Action needed'} />
             <Verification label="Selfie & liveness" status={me.verified ? 'Verified' : 'Pending'} />
             <Verification label="Community" status={`${me.communityIds.length} joined`} />
             {role === 'driver' && (
@@ -364,7 +364,7 @@ export function ProfileView({ role, onSwitch, onExit, onWallet }: { role: 'rider
           {!me.verified && <button className="btn btn-primary" onClick={verifyIdentity} style={{ marginTop: 12 }}>Complete identity check</button>}
           <h3>Account settings</h3>
           <div className="settings-list">
-            <Setting icon={<User />} title="Personal information" sub={`${fullName(me)} · ${me.phone}`} />
+            <Setting icon={<User />} title="Personal information" sub={`${fullName(me)}${me.location ? ` · ${me.location}` : ""} · ${me.phone}`} />
             <Setting icon={<Shield />} title="Safety & emergency contacts" sub={me.emergencyContacts[0] ? `${me.emergencyContacts[0].name} · ${me.emergencyContacts[0].relation}` : 'Add a contact'} />
             <button onClick={onWallet}><span><WalletCards /></span><p><strong>Wallet and payouts</strong><small>{role === 'driver' ? `${me.bankName ?? 'Bank'} ·•• ${me.bankLast4 ?? '0000'}` : `Visa ·•• ${me.cardLast4 ?? '2048'}`}</small></p><ChevronRight size={17} /></button>
             <Setting icon={<CreditCard />} title="Payment methods" sub={`Visa ·•• ${me.cardLast4 ?? '2048'}`} />
