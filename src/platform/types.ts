@@ -31,6 +31,8 @@ export type Member = {
   lastName: string;
   phone: string;
   email?: string;
+  idType?: string;
+  location?: string;
   initials: string;
   avatarColor: string;
   photo?: string;

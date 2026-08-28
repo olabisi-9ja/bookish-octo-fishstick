@@ -102,7 +102,7 @@ export function WalletDrawer({ open, onClose }: { open: boolean; onClose: () => 
 
 export function HelpDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
   const faqs = [
-    { q: 'How does matching work?', a: 'PadiGo scores route overlap, pickup and destination proximity, time window, driver rating and price. Community membership is a trust signal, not a replacement for verification.' },
+    { q: 'How does matching work?', a: 'Comuta scores route overlap, pickup and destination proximity, time window, driver rating and price. Community membership is a trust signal, not a replacement for verification.' },
     { q: 'When is payment released?', a: 'Your payment is authorised at booking and released to the driver after the trip is completed. Cancellations inside the window are refunded.' },
     { q: 'What is a ride PIN?', a: 'Each confirmed booking has a 4-digit PIN. The driver must enter it before the trip can start, so the wrong passenger never gets in.' },
     { q: 'Is this a live payment?', a: 'No. This prototype records ledger entries locally. Production will use Paystack or Flutterwave with webhook confirmation.' },

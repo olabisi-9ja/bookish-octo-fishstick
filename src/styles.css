@@ -6,23 +6,63 @@
 @import './app-extras.css';
 
 :root {
-  --green-950:#082d23;
-  --green-900:#0c392c;
-  --green-800:#124a39;
-  --green-700:#1c604c;
-  --green-600:#28745d;
-  --lime:#ccf06a;
-  --lime-soft:#e5f7b2;
-  --cream:#f7f6ef;
-  --sand:#efede3;
-  --ink:#17221e;
-  --muted:#6e7773;
-  --line:#dfe3dc;
+  /* Comuta brand system
+     Primary: dark forest green (trust, stability, nature)
+     Accent: vibrant lime green (energy, growth, freshness)
+     Supporting: teal / blue-gray (tech, calm) + black / gray (sophistication)
+     Alerts: red scale (warnings, safety) */
+  --forest-950:#041f17;
+  --forest-900:#0a3325;
+  --forest-800:#0f4431;
+  --forest-700:#155942;
+  --forest-600:#1c6e54;
+  --forest-500:#278465;
+  --forest-100:#d9efe4;
+  --forest-50:#eef8f2;
+  --lime:#bdf23f;
+  --lime-600:#94c11b;
+  --lime-700:#6f8f0e;
+  --lime-soft:#e7f9c0;
+  --teal-700:#155e6e;
+  --teal-600:#1e7386;
+  --teal-500:#2b8ca0;
+  --teal-400:#55a9ba;
+  --teal-100:#dcf0f4;
+  --teal-50:#eef8fa;
+  --teal:var(--teal-600);
+  --slate-700:#37474f;
+  --slate-600:#4d616d;
+  --slate-500:#64798a;
+  --slate-400:#8ba0ae;
+  --slate-200:#d5dee4;
+  --slate-100:#e8edf1;
+  --ink:#131c20;
+  --muted:#5e6c76;
+  --line:#d8e0e4;
+  --cream:#f3f6f7;
+  --sand:#eaeff1;
   --white:#fff;
-  --orange:#df774e;
-  --red:#c7473e;
-  --shadow:0 18px 50px rgba(12,57,44,.12);
-  font-family:'DM Sans',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --red-700:#8c231a;
+  --red-600:#ac2f23;
+  --red-500:#c74435;
+  --red-400:#d96558;
+  --red-100:#f6dcd8;
+  --red-50:#fbefed;
+  --red:var(--red-500);
+  --shadow:0 18px 50px rgba(10,51,37,.12);
+  /* Typography: one clean geometric sans-serif across every role */
+  --font-display:'Manrope',system-ui,-apple-system,sans-serif;
+  --font-headline:'Manrope',system-ui,-apple-system,sans-serif;
+  --font-title:'Manrope',system-ui,-apple-system,sans-serif;
+  --font-body:'Manrope',system-ui,-apple-system,sans-serif;
+  --font-caption:'Manrope',system-ui,-apple-system,sans-serif;
+  /* legacy aliases so existing surfaces keep their brand colours */
+  --green-950:var(--forest-950);
+  --green-900:var(--forest-900);
+  --green-800:var(--forest-800);
+  --green-700:var(--forest-700);
+  --green-600:var(--forest-600);
+  font-family:var(--font-body);
   color:var(--ink);
   background:#fff;
   font-synthesis:none;
@@ -37,36 +77,42 @@ button{cursor:pointer}
 a{text-decoration:none;cursor:pointer}
 img,svg{display:block}
 h1,h2,h3,h4,p{margin:0}
-h1,h2,h3,h4,.brand{font-family:'Manrope','DM Sans',sans-serif}
+h1{font-family:var(--font-display)}
+h2,h3{font-family:var(--font-headline)}
+h4,.brand{font-family:var(--font-title)}
 .page-width{width:min(1180px,calc(100% - 48px));margin-inline:auto}
-.brand{display:inline-flex;align-items:center;gap:9px;font:800 23px/1 'Manrope';letter-spacing:-1.2px;color:var(--green-900);white-space:nowrap}
-.brand-go{color:var(--orange)}
-.brand.inverse{color:#fff}.brand.inverse .brand-go{color:var(--lime)}
-.brand-mark{width:31px;height:31px;display:inline-grid;place-items:center;border-radius:10px;background:var(--green-900);color:var(--lime)}
-.brand-mark svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
-.brand-mark.inverse{background:var(--lime);color:var(--green-950)}
-.btn{border:0;border-radius:11px;padding:14px 20px;display:inline-flex;align-items:center;justify-content:center;gap:9px;font-weight:700;transition:.22s ease;white-space:nowrap}
+.brand{display:inline-flex;align-items:center;gap:9px;font:800 23px/1 var(--font-display);letter-spacing:-1.2px;color:var(--green-900);white-space:nowrap}
+.brand.inverse{color:#fff}
+.brand-mark{width:31px;height:31px;display:inline-grid;place-items:center;border-radius:50%}
+.brand-mark svg{width:100%;height:100%;display:block}
+.mark-bg{fill:var(--forest-900)}
+.brand-mark.inverse .mark-bg{fill:#fff}
+.mark-bar-a{fill:#fff}
+.brand-mark.inverse .mark-bar-a{fill:var(--forest-900)}
+.mark-bar-b{fill:var(--lime)}
+.brand-mark.inverse .mark-bar-b{fill:var(--lime-600)}
+.btn{border:0;border-radius:12px;padding:14px 20px;display:inline-flex;align-items:center;justify-content:center;gap:9px;font-weight:700;transition:.22s ease;white-space:nowrap}
 .btn:hover{transform:translateY(-2px)}
-.btn-primary{background:var(--green-900);color:#fff;box-shadow:0 8px 20px rgba(12,57,44,.2)}
+.btn-primary{background:var(--green-900);color:#fff;box-shadow:0 8px 20px rgba(10,51,37,.2)}
 .btn-primary:hover{background:var(--green-800)}
 .btn-small{padding:11px 16px;border-radius:9px;font-size:14px}
 .btn-block{width:100%}
 .btn-light{background:#edf0e8;color:var(--green-900)}
-.btn-dark{background:#102a22;color:#fff}
+.btn-dark{background:#06251c;color:#fff}
 .btn-lime{background:var(--lime);color:var(--green-950)}
 .btn-white{background:#fff;color:var(--green-950)}
 .btn-outline{background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:none}
-.btn-danger{background:#c9403a;color:#fff}
+.btn-danger{background:#ac2f23;color:#fff}
 .text-button{border:0;background:transparent;font-weight:700;display:inline-flex;gap:7px;align-items:center}
 .icon-button{width:40px;height:40px;border-radius:11px;border:1px solid var(--line);background:#fff;display:grid;place-items:center}
-.avatar{display:inline-grid;place-items:center;flex:0 0 auto;border-radius:50%;color:#fff;font-weight:800;font-family:'Manrope';border:2px solid rgba(255,255,255,.9);box-shadow:0 2px 8px rgba(15,35,29,.1)}
-.avatar.photo{overflow:hidden;background:#dfe4dd}.avatar.photo img{width:100%;height:100%;object-fit:cover;display:block}
-.verified-badge{display:inline-flex;align-items:center;gap:4px;color:#176f57;background:#e1f4ec;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:800;white-space:nowrap}
-.modal-backdrop{position:fixed;inset:0;background:rgba(7,23,18,.62);backdrop-filter:blur(6px);z-index:1000;display:grid;place-items:center;padding:24px;animation:fadeIn .2s ease}
-.modal-card{background:#fff;width:min(510px,100%);max-height:calc(100vh - 36px);overflow:auto;border-radius:22px;padding:30px;position:relative;box-shadow:0 30px 100px rgba(3,15,11,.28);animation:modalUp .26s ease}
+.avatar{display:inline-grid;place-items:center;flex:0 0 auto;border-radius:50%;color:#fff;font-weight:800;font-family:'Manrope';border:2px solid rgba(255,255,255,.9);box-shadow:0 2px 8px rgba(10,51,37,.1)}
+.avatar.photo{overflow:hidden;background:#d8e0e4}.avatar.photo img{width:100%;height:100%;object-fit:cover;display:block}
+.verified-badge{display:inline-flex;align-items:center;gap:4px;color:#155942;background:#d9efe4;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:800;white-space:nowrap}
+.modal-backdrop{position:fixed;inset:0;background:rgba(4,31,23,.62);backdrop-filter:blur(6px);z-index:1000;display:grid;place-items:center;padding:24px;animation:fadeIn .2s ease}
+.modal-card{background:#fff;width:min(510px,100%);max-height:calc(100vh - 36px);overflow:auto;border-radius:22px;padding:30px;position:relative;box-shadow:0 30px 100px rgba(4,31,23,.28);animation:modalUp .26s ease}
 .modal-card.wide{width:min(820px,100%);padding:34px}
-.modal-close{position:absolute;right:20px;top:20px;width:36px;height:36px;border-radius:50%;background:#f2f3ef;border:0;display:grid;place-items:center;z-index:4}
-.toast{position:fixed;z-index:1200;bottom:26px;left:50%;transform:translate(-50%,30px);opacity:0;pointer-events:none;display:flex;align-items:center;gap:9px;background:#102d25;color:#fff;padding:13px 18px;border-radius:11px;font-weight:700;font-size:14px;box-shadow:0 14px 40px rgba(5,31,23,.3);transition:.25s ease}
+.modal-close{position:absolute;right:20px;top:20px;width:36px;height:36px;border-radius:50%;background:#f0f3f5;border:0;display:grid;place-items:center;z-index:4}
+.toast{position:fixed;z-index:1200;bottom:26px;left:50%;transform:translate(-50%,30px);opacity:0;pointer-events:none;display:flex;align-items:center;gap:9px;background:#06251c;color:#fff;padding:13px 18px;border-radius:11px;font-weight:700;font-size:14px;box-shadow:0 14px 40px rgba(4,31,23,.3);transition:.25s ease}
 .toast.show{transform:translate(-50%,0);opacity:1}
 .toast svg{color:var(--lime)}
 .stepper{display:flex;gap:6px;margin:22px 0 28px}.stepper span{height:4px;border-radius:9px;background:#e4e6e1;flex:1}.stepper span.active{background:var(--green-700)}

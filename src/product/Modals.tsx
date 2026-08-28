@@ -145,7 +145,7 @@ export function OfferRideModal({ open, onClose, onDone }: { open: boolean; onClo
             <div>
               <small>ESTIMATED WEEKLY CONTRIBUTION</small>
               <strong>{formatNaira(price * seats * (recurring ? 5 : 1))}</strong>
-              <p>Before PadiGo's service fee · if all seats are filled</p>
+              <p>Before Comuta's service fee · if all seats are filled</p>
             </div>
           </div>
         </div>
@@ -294,7 +294,7 @@ export function RideBookingModal({ ride, step, setStep, onClose, onDone, notify 
             <aside className="order-summary">
               <h3>Payment summary</h3>
               <div><span>Seat contribution</span><strong>{formatNaira(ride.price)}</strong></div>
-              <div><span>PadiGo protection fee</span><strong>₦120</strong></div>
+              <div><span>Comuta protection fee</span><strong>₦120</strong></div>
               <div className="promo"><span>Promo credit</span><strong>−₦120</strong></div>
               <hr />
               <div className="total"><span>Total</span><strong>{formatNaira(ride.price)}</strong></div>
@@ -348,14 +348,14 @@ export function SosModal({ open, onClose, tripId }: { open: boolean; onClose: ()
     <Modal open={open} onClose={() => { setArmed(false); onClose(); }}>
       <div className="sos-modal">
         <span className="sos-shield"><Shield /></span>
-        <span>PADIGO SAFETY</span>
+        <span>COMUTA SAFETY</span>
         <h2>{armed ? 'Help request ready' : 'Do you need help?'}</h2>
-        <p>{armed ? 'Your live location and trip details are ready to send to PadiGo Safety and your emergency contact.' : 'Choose an option below. Emergency actions share your live trip context with our safety team.'}</p>
+        <p>{armed ? 'Your live location and trip details are ready to send to Comuta Safety and your emergency contact.' : 'Choose an option below. Emergency actions share your live trip context with our safety team.'}</p>
         {armed ? (
           <>
             <div className="sos-location"><LocateFixed /><span><strong>Live location captured</strong><small>Updated just now · {tripId ?? 'No active trip'}</small></span><CheckCircle2 /></div>
             <button className="btn btn-danger btn-block" onClick={() => { if (tripId) triggerSos(tripId, 'sos', 'Emergency services requested'); setArmed(false); onClose(); }}><Phone />Call emergency services</button>
-            <button className="btn btn-dark btn-block" onClick={() => { if (tripId) triggerSos(tripId, 'unsafe', 'Alerted PadiGo Safety'); setArmed(false); onClose(); }}><Headphones />Alert PadiGo Safety</button>
+            <button className="btn btn-dark btn-block" onClick={() => { if (tripId) triggerSos(tripId, 'unsafe', 'Alerted Comuta Safety'); setArmed(false); onClose(); }}><Headphones />Alert Comuta Safety</button>
           </>
         ) : (
           <div className="sos-options">

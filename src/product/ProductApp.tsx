@@ -69,9 +69,9 @@ export default function ProductApp({ path, onNavigate, onExit, onOps }: Props) {
   const [receiptId, setReceiptId] = useState<string | null>(null);
 
   useEffect(() => {
-    const raw = sessionStorage.getItem('padigo.search');
+    const raw = sessionStorage.getItem('comuta.search');
     if (!raw) return;
-    sessionStorage.removeItem('padigo.search');
+    sessionStorage.removeItem('comuta.search');
     try {
       const parsed = JSON.parse(raw) as { from?: string; to?: string; tripType?: string };
       const fromHit = searchPlaces(parsed.from ?? '')[0];
@@ -132,7 +132,7 @@ export default function ProductApp({ path, onNavigate, onExit, onOps }: Props) {
           <button className={role === 'driver' ? 'active' : ''} onClick={() => switchRole('driver')}><CarFront size={15} /> Driver</button>
         </div>
         <nav className="app-nav">
-          <span className="nav-label">YOUR PADIGO</span>
+          <span className="nav-label">YOUR COMUTA</span>
           {nav.map(({ id, label, icon: Icon }) => (
             <button key={id} className={currentTab === id ? 'active' : ''} onClick={() => goTab(role, id)}>
               <Icon size={19} />
@@ -150,7 +150,7 @@ export default function ProductApp({ path, onNavigate, onExit, onOps }: Props) {
           <ChevronRight size={17} />
         </button>
         <div className="side-profile">
-          <Avatar initials={me?.initials ?? 'PG'} color={me?.avatarColor} size={40} photo={me?.photo} />
+          <Avatar initials={me?.initials ?? 'CT'} color={me?.avatarColor} size={40} photo={me?.photo} />
           <div>
             <strong>{me ? fullName(me) : 'Guest'}</strong>
             <small>{me?.verified ? 'Identity verified' : 'Verification pending'}</small>
@@ -177,7 +177,7 @@ export default function ProductApp({ path, onNavigate, onExit, onOps }: Props) {
               <Bell size={19} />
               {unreadCount > 0 && <i />}
             </button>
-            <button className="mobile-avatar"><Avatar initials={me?.initials ?? 'PG'} color={me?.avatarColor} size={36} photo={me?.photo} /></button>
+            <button className="mobile-avatar"><Avatar initials={me?.initials ?? 'CT'} color={me?.avatarColor} size={36} photo={me?.photo} /></button>
           </div>
         </header>
 

@@ -1,4 +1,4 @@
-# PadiGo cross platform mobile plan
+# Comuta cross platform mobile plan
 
 ## Recommendation
 

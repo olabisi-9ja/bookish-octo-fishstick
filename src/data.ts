@@ -11,7 +11,7 @@ export { formatNaira };
 const seed = createSeedState();
 
 export const rides: Ride[] = seed.rides
-  .filter((ride) => ['PG2841', 'PG3027', 'PG1913'].includes(ride.id))
+  .filter((ride) => ['CT2841', 'CT3027', 'CT1913'].includes(ride.id))
   .map((ride) => {
     const driver = seed.members.find((member) => member.id === ride.driverId)!;
     const vehicle = seed.vehicles.find((item) => item.id === ride.vehicleId)!;

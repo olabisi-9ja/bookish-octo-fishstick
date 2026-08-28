@@ -18,7 +18,7 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
   const [to, setTo] = useState('Victoria Island');
 
   const search = () => {
-    sessionStorage.setItem('padigo.search', JSON.stringify({ from, to, tripType }));
+    sessionStorage.setItem('comuta.search', JSON.stringify({ from, to, tripType }));
     onOpenApp();
   };
   const go = (path: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -30,7 +30,7 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
   return (
     <main className="landing">
       <div className="announcement">
-        <span><Sparkles size={14} /> PadiGo is opening selected Lagos corridors</span>
+        <span><Sparkles size={14} /> Comuta is opening selected Lagos corridors</span>
         <button onClick={onOpenApp}>Join the early community <ArrowRight size={14} /></button>
       </div>
       <header className="site-header">
@@ -39,7 +39,7 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
           <a href="/how-it-works" onClick={go('/how-it-works')}>How it works</a>
           <a href="/safety" onClick={go('/safety')}>Safety</a>
           <a href="/communities" onClick={go('/communities')}>Communities</a>
-          <a href="/drivers" onClick={go('/drivers')}>Drive with PadiGo</a>
+          <a href="/drivers" onClick={go('/drivers')}>Drive with Comuta</a>
           <button className="nav-ops" onClick={onOpenOps}>Operations demo</button>
           <div className="mobile-nav-actions">
             <button className="btn btn-light" onClick={onOpenApp}>Log in</button>
@@ -48,7 +48,7 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
         </nav>
         <div className="header-actions">
           <button className="text-button" onClick={onOpenApp}>Log in</button>
-          <button className="btn btn-primary btn-small" onClick={onOpenApp}>Get PadiGo <ArrowRight size={16} /></button>
+          <button className="btn btn-primary btn-small" onClick={onOpenApp}>Get Comuta <ArrowRight size={16} /></button>
           <button className="menu-button" onClick={() => setMenu(!menu)} aria-label="Toggle menu">{menu ? <X /> : <Menu />}</button>
         </div>
       </header>
@@ -115,8 +115,8 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
 
       <section className="manifesto-section">
         <div className="page-width">
-          <div className="eyebrow light"><Sparkles size={15} /> Why PadiGo exists</div>
-          <ManifestoHighlight text="Every morning, millions of Lagosians crawl through the same traffic, on the same routes, in half-empty cars. PadiGo exists to change that — matching neighbours, colleagues and coursemates seat by seat, so the city moves together and nobody rides alone." />
+          <div className="eyebrow light"><Sparkles size={15} /> Why Comuta exists</div>
+          <ManifestoHighlight text="Every morning, millions of Lagosians crawl through the same traffic, on the same routes, in half-empty cars. Comuta exists to change that — matching neighbours, colleagues and coursemates seat by seat, so the city moves together and nobody rides alone." />
         </div>
       </section>
 
@@ -124,7 +124,7 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
         <div className="section-heading centered">
           <div className="eyebrow"><Route size={15} /> Built around your routine</div>
           <h2>Your daily journey,<br />finally working <em>for you.</em></h2>
-          <p>Not another taxi app. PadiGo helps the same people going the same way build reliable, repeatable carpools.</p>
+          <p>Not another taxi app. Comuta helps the same people going the same way build reliable, repeatable carpools.</p>
         </div>
         <div className="how-grid">
           <article>
@@ -173,7 +173,7 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
             <h2>Don't find a ride.<br /><em>Find your people.</em></h2>
             <p>The best commute isn't a new driver every morning. It's a trusted group who know the route, the time, and each other.</p>
             <ul>
-              <li><span><Check /></span><div><strong>Your routine, remembered</strong><small>Set a weekday pattern once and let PadiGo keep matching.</small></div></li>
+              <li><span><Check /></span><div><strong>Your routine, remembered</strong><small>Set a weekday pattern once and let Comuta keep matching.</small></div></li>
               <li><span><Check /></span><div><strong>Familiar faces, less uncertainty</strong><small>Build a regular group from your area, office, estate or school.</small></div></li>
               <li><span><Check /></span><div><strong>Reliable savings, every week</strong><small>Split verified trip costs without surprise surge pricing.</small></div></li>
             </ul>
@@ -212,7 +212,7 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
           <BlurReveal>
             <h2>Real people. Real routes.<br />Every single <em>morning.</em></h2>
           </BlurReveal>
-          <p>Behind every seat on PadiGo is a neighbour, a colleague or a coursemate. Here's what sharing the road actually feels like.</p>
+          <p>Behind every seat on Comuta is a neighbour, a colleague or a coursemate. Here's what sharing the road actually feels like.</p>
         </div>
         <PhotoRail />
         <div className="voices-grid">
@@ -222,7 +222,7 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
             <div className="voice-person"><Avatar initials="TA" photo="/images/people/tolu.jpg" size={44} /><div><strong>Tolu Adeyemi</strong><small>Rider · Ajah → Victoria Island</small></div><VerifiedBadge /></div>
           </article>
           <figure className="voice-photo">
-            <img src="/images/people/carpool-crew.jpg" alt="A PadiGo carpool crew laughing together on their morning commute through Lagos" loading="lazy" />
+            <img src="/images/people/carpool-crew.jpg" alt="A Comuta carpool crew laughing together on their morning commute through Lagos" loading="lazy" />
             <div className="photo-bubble"><Avatar initials="IN" photo="/images/people/ifeoma.jpg" size={30} /><span>We're outside Novare Mall 🚗 saved you the window seat!</span></div>
             <figcaption><span className="crew-chip"><Users size={13} /> The Lekki Sunrise Crew</span><span>Same four people, weekdays at 6:45 AM — 11 months running.</span></figcaption>
           </figure>
@@ -258,7 +258,7 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
           </div>
           <div className="community-board">
             <div className="board-head"><span>COMMUNITIES NEAR YOUR ROUTE</span><span><i/> Lagos</span></div>
-            <div className="community-card c1"><span className="community-logo">ST</span><div><strong>PadiGo at Sterling</strong><small>Workplace · 428 members</small></div><span className="join-chip">12 routes</span></div>
+            <div className="community-card c1"><span className="community-logo">ST</span><div><strong>Comuta at Sterling</strong><small>Workplace · 428 members</small></div><span className="join-chip">12 routes</span></div>
             <div className="community-card c2"><span className="community-logo">LG</span><div><strong>Lekki Gardens</strong><small>Estate · 216 members</small></div><span className="join-chip">8 routes</span></div>
             <div className="community-card c3"><span className="community-logo">VT</span><div><strong>VI Tech Circle</strong><small>Professional · 1,200 members</small></div><span className="join-chip">26 routes</span></div>
             <div className="board-note"><BadgeCheck size={16}/><span>Membership is one trust signal. Every driver and vehicle is verified separately.</span></div>
@@ -277,7 +277,7 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
           <div className="safety-cards">
             <article><span><BadgeCheck/></span><div><h3>Layered verification</h3><p>Identity, selfie, licence, vehicle and community signals shown clearly.</p></div></article>
             <article><span><LocateFixed/></span><div><h3>Live trip protection</h3><p>Shareable tracking, pickup confirmation and route deviation signals.</p></div></article>
-            <article><span><ShieldCheck/></span><div><h3>Human safety response</h3><p>SOS connects trip context to your contacts and PadiGo operations.</p></div></article>
+            <article><span><ShieldCheck/></span><div><h3>Human safety response</h3><p>SOS connects trip context to your contacts and Comuta operations.</p></div></article>
           </div>
         </div>
       </section>
@@ -298,9 +298,9 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
           <div className="footer-brand"><Brand inverse/><p>Trusted recurring carpools for the routes Nigerians travel every day.</p><span>Lagos, Nigeria 🇳🇬</span></div>
           <div><h4>Ride</h4><a onClick={onOpenApp}>Find a ride</a><a onClick={onOpenApp}>My commute</a><a href="/communities" onClick={go('/communities')}>Communities</a><a href="/safety" onClick={go('/safety')}>Safety</a></div>
           <div><h4>Drive</h4><a href="/drivers" onClick={go('/drivers')}>Offer a ride</a><a href="/drivers" onClick={go('/drivers')}>Driver requirements</a><a onClick={onOpenApp}>Earnings</a><a href="/safety" onClick={go('/safety')}>Verification</a></div>
-          <div><h4>PadiGo</h4><a href="/about" onClick={go('/about')}>About</a><a href="/help" onClick={go('/help')}>Help centre</a><a onClick={onOpenOps}>Operations</a><a href="/help" onClick={go('/help')}>Contact</a></div>
+          <div><h4>Comuta</h4><a href="/about" onClick={go('/about')}>About</a><a href="/help" onClick={go('/help')}>Help centre</a><a onClick={onOpenOps}>Operations</a><a href="/help" onClick={go('/help')}>Contact</a></div>
         </div>
-        <div className="page-width footer-bottom"><span>© 2026 PadiGo Technologies Ltd.</span><div><a href="/privacy" onClick={go('/privacy')}>Privacy</a><a href="/terms" onClick={go('/terms')}>Terms</a><a href="/help" onClick={go('/help')}>Accessibility</a></div><span className="ndpr"><ShieldCheck size={13}/> Privacy by design</span></div>
+        <div className="page-width footer-bottom"><span>© 2026 Comuta Technologies Ltd.</span><div><a href="/privacy" onClick={go('/privacy')}>Privacy</a><a href="/terms" onClick={go('/terms')}>Terms</a><a href="/help" onClick={go('/help')}>Accessibility</a></div><span className="ndpr"><ShieldCheck size={13}/> Privacy by design</span></div>
       </footer>
     </main>
   );

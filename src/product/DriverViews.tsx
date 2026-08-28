@@ -297,7 +297,7 @@ export function EarningsView({ notify, onWallet }: { notify: (s: string) => void
           <div className="chart-summary">
             <span><small>GROSS CONTRIBUTIONS</small><strong>₦27,000</strong></span>
             <i />
-            <span><small>PADIGO SERVICE</small><strong>−₦2,400</strong></span>
+            <span><small>COMUTA SERVICE</small><strong>−₦2,400</strong></span>
             <i />
             <span><small>YOUR EARNINGS</small><strong>₦24,600</strong></span>
           </div>

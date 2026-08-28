@@ -29,7 +29,7 @@ function Shell() {
   };
 
   if (path.startsWith('/app')) {
-    if (!session) return <AuthApp onEnter={() => navigate('/app/rider/home')} />;
+    if (!session || !session.onboarded) return <AuthApp onEnter={() => navigate('/app/rider/home')} />;
     return <ProductApp path={path} onNavigate={navigate} onExit={() => navigate('/')} onOps={() => navigate('/ops/control-centre')} />;
   }
   if (path.startsWith('/ops')) {
