@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Comuta — Nigeria's trusted recurring carpool network",
+  "description": "Comuta: Nigeria's trusted recurring carpool network",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "tsc -b && vite build",
@@ -11,6 +11,7 @@
     "typecheck": "tsc -b"
   },
   "dependencies": {
+    "@lottiefiles/lottie-player": "^2.0.12",
     "@vitejs/plugin-react": "latest",
     "lucide-react": "^0.468.0",
     "react": "latest",

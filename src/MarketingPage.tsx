@@ -4,7 +4,9 @@ import {
   Clock3, FileCheck2, GraduationCap, Headphones, HeartHandshake, Home, LocateFixed,
   MapPin, Repeat2, Route, ShieldCheck, Sparkles, Users,
 } from 'lucide-react';
-import Brand from './components/Brand';
+import { AppDownload, AudienceBanner, SiteFooter, SiteHeader } from './components/MarketingUi';
+import { LottieAnimation, LOTTIE } from './components/LottieArt';
+import { StatCounter } from './components/UI';
 
 type Icon = ComponentType<{ size?: number; strokeWidth?: number }>;
 type PageCard = { icon: Icon; title: string; text: string; points: string[] };
@@ -160,53 +162,49 @@ export default function MarketingPage({ path, onNavigate, onOpenApp, onOpenOps }
     event.preventDefault();
     onNavigate(next);
   };
-  return <main className="marketing-page">
-    <header className="info-header">
-      <a href="/" onClick={go('/')}><Brand /></a>
-      <nav>
-        <a href="/how-it-works" onClick={go('/how-it-works')}>How it works</a>
-        <a href="/safety" onClick={go('/safety')}>Safety</a>
-        <a href="/communities" onClick={go('/communities')}>Communities</a>
-        <a href="/drivers" onClick={go('/drivers')}>Drivers</a>
-      </nav>
-      <button className="btn btn-primary btn-small" onClick={onOpenApp}>Open Comuta <ArrowRight size={16}/></button>
-    </header>
 
-    <section className="info-hero">
-      <div className="info-orbit one"/><div className="info-orbit two"/>
-      <div className="page-width info-hero-inner">
-        <div>
-          <span className="info-eyebrow"><Sparkles size={14}/>{page.eyebrow}</span>
-          <h1>{page.title}<br/><em>{page.accent}</em></h1>
-          <p>{page.intro}</p>
-          <div className="info-actions"><button className="btn btn-lime" onClick={onOpenApp}>{page.action}<ArrowRight size={17}/></button><a href="/" onClick={go('/')}>Back to home</a></div>
+  return (
+    <main className="marketing-page">
+      <SiteHeader onNavigate={onNavigate} onOpenApp={onOpenApp} onOpenOps={onOpenOps} />
+
+      <section className="info-hero">
+        <div className="info-orbit one"/><div className="info-orbit two"/>
+        <div className="page-width info-hero-inner">
+          <div>
+            <span className="info-eyebrow"><Sparkles size={14}/>{page.eyebrow}</span>
+            <h1>{page.title}<br/><em>{page.accent}</em></h1>
+            <p>{page.intro}</p>
+            <div className="info-actions"><button className="btn btn-lime" onClick={onOpenApp}>{page.action}<ArrowRight size={17}/></button><a href="/" onClick={go('/')}>Back to home</a></div>
+          </div>
+          <div className="info-route-card">
+            <span>COMUTA ROUTE NETWORK</span>
+            <div className="info-route-lottie">
+              <LottieAnimation src={LOTTIE.carCity} label="Animated Comuta route between Ajah and Victoria Island" speed={0.82} style={{ width: '100%', height: '100%' }} />
+            </div>
+            <div><strong>Ajah</strong><ArrowRight/><strong>Victoria Island</strong></div>
+            <p><BadgeCheck size={15}/>Verified people on a recurring route</p>
+            <small><Repeat2 size={14}/>Monday to Friday · 7:00 AM</small>
+          </div>
         </div>
-        <div className="info-route-card">
-          <span>COMUTA ROUTE NETWORK</span>
-          <div className="route-line-art"><i/><b/><i/><em/></div>
-          <div><strong>Ajah</strong><ArrowRight/><strong>Victoria Island</strong></div>
-          <p><BadgeCheck size={15}/>Verified people on a recurring route</p>
-          <small><Repeat2 size={14}/>Monday to Friday · 7:00 AM</small>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <section className="info-proof page-width">
-      {page.proof.map(item=><div key={item.label}><strong>{item.value}</strong><span>{item.label}</span></div>)}
-    </section>
+      <section className="info-proof page-width">
+        {page.proof.map(item=><div key={item.label}><StatCounter className="info-proof-value" value={item.value} /><span>{item.label}</span></div>)}
+      </section>
 
-    <section className="info-content page-width">
-      <div className="info-section-heading"><span>BUILT FOR RECURRING TRAVEL</span><h2>{page.sectionTitle}</h2><p>{page.sectionIntro}</p></div>
-      <div className="info-card-grid">{page.cards.map(({icon:Icon,title,text,points})=><article key={title}><span><Icon size={24}/></span><h3>{title}</h3><p>{text}</p><ul>{points.map(point=><li key={point}><CheckCircle2 size={15}/>{point}</li>)}</ul></article>)}</div>
-    </section>
+      <section className="info-content page-width">
+        <div className="info-section-heading"><span>BUILT FOR RECURRING TRAVEL</span><h2>{page.sectionTitle}</h2><p>{page.sectionIntro}</p></div>
+        <div className="info-card-grid">{page.cards.map(({icon:Icon,title,text,points})=><article key={title}><span><Icon size={24}/></span><h3>{title}</h3><p>{text}</p><ul>{points.map(point=><li key={point}><CheckCircle2 size={15}/>{point}</li>)}</ul></article>)}</div>
+      </section>
 
-    <section className="info-callout page-width">
-      <div><span><ShieldCheck/>VERIFIED RECURRING CARPOOLS</span><h2>{page.calloutTitle}</h2><p>{page.calloutText}</p></div>
-      <button className="btn btn-lime" onClick={onOpenApp}>{page.action}<ArrowRight size={17}/></button>
-    </section>
+      <section className="info-callout page-width">
+        <div><span><ShieldCheck/>VERIFIED RECURRING CARPOOLS</span><h2>{page.calloutTitle}</h2><p>{page.calloutText}</p></div>
+        <button className="btn btn-lime" onClick={onOpenApp}>{page.action}<ArrowRight size={17}/></button>
+      </section>
 
-    <footer className="info-footer">
-      <div className="page-width"><div><Brand inverse/><p>Trusted recurring carpools for the routes Nigerians travel every day.</p></div><div><a href="/about" onClick={go('/about')}>About</a><a href="/help" onClick={go('/help')}>Help centre</a><a href="/privacy" onClick={go('/privacy')}>Privacy</a><a href="/terms" onClick={go('/terms')}>Terms</a><button onClick={onOpenOps}>Operations</button></div></div>
-    </footer>
-  </main>;
+      <AudienceBanner onOpenApp={onOpenApp} />
+      <AppDownload onOpenApp={onOpenApp} />
+      <SiteFooter onNavigate={onNavigate} onOpenApp={onOpenApp} onOpenOps={onOpenOps} />
+    </main>
+  );
 }

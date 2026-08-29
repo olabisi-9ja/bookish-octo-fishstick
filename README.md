@@ -5,7 +5,7 @@
 This repository is a working web MVP of the rider app, driver app and operations centre, with a client-side marketplace engine (matching, pricing, bookings, trip PIN, chat, SOS and an immutable wallet ledger).
 
 - **Marketing website** at `/`
-- **Product** at `/app` — phone/OTP auth, rider + driver workspaces
+- **Product** at `/app`, phone/OTP auth, rider + driver workspaces
 - **Operations centre** at `/ops`
 
 ### Demo login
@@ -81,24 +81,24 @@ Open `/ops` to review live trips, route-deviation alerts, corridor demand/supply
 
 ### Identity
 
-- **Name:** Comuta — suggestive of "commute"; movement, efficiency, everyday mobility.
-- **Logo:** a dark forest green circle holding two vertical bars — one white, one vibrant lime green — symbolising a road, a pathway and an abstract "C". The mark lives in `src/components/Brand.tsx` and the app icon in `public/comuta-icon.svg`.
+- **Name:** Comuta (suggestive of "commute"); movement, efficiency, everyday mobility.
+- **Logo:** a dark forest green circle holding two vertical bars, one white, one vibrant lime green, symbolising a road, a pathway and an abstract "C". The mark lives in `src/components/Brand.tsx` and the app icon in `public/comuta-icon.svg`.
 
 ### Colour palette
 
 | Role | Tokens | Meaning |
 | --- | --- | --- |
-| Primary — Dark Forest Green | `--forest-950…500`, legacy `--green-950…600` | Trust, stability, nature |
-| Accent — Vibrant Lime Green | `--lime`, `--lime-600`, `--lime-soft` | Energy, growth, freshness |
-| Supporting — Teal / Blue-gray | `--teal-700…50`, `--slate-700…100` | Technology, calm |
-| Supporting — Black / Gray | `--ink`, `--muted`, `--line`, `--cream`, `--sand` | Sophistication |
-| Alerts — Red scale | `--red-700…50` | Warnings, safety, SOS |
+| Primary, Dark Forest Green | `--forest-950…500`, legacy `--green-950…600` | Trust, stability, nature |
+| Accent, Vibrant Lime Green | `--lime`, `--lime-600`, `--lime-soft` | Energy, growth, freshness |
+| Supporting, Teal / Blue-gray | `--teal-700…50`, `--slate-700…100` | Technology, calm |
+| Supporting, Black / Gray | `--ink`, `--muted`, `--line`, `--cream`, `--sand` | Sophistication |
+| Alerts, Red scale | `--red-700…50` | Warnings, safety, SOS |
 
 All surfaces draw from these tokens in `src/styles.css`; alert and warning states use the red scale, live/route accents use the lime accent, and secondary data accents use teal/blue-gray.
 
 ### Typography
 
-One highly legible, clean geometric sans-serif — **Manrope** (400–800) — carries every text role:
+One highly legible, clean geometric sans-serif, **Manrope** (400-800), carries every text role:
 
 | Role | Token | Usage |
 | --- | --- | --- |
@@ -110,19 +110,21 @@ One highly legible, clean geometric sans-serif — **Manrope** (400–800) — c
 
 ### UI elements
 
-- Minimalist, rounded-corner buttons with a single primary action per screen — the onboarding flow is driven by a consistent **Continue** button.
+- Minimalist, rounded-corner buttons with a single primary action per screen. The onboarding flow is driven by a consistent **Continue** button.
 - Social sign-in options (**Continue with Apple**, **Continue with Google**) alongside phone sign-in in the auth flow.
 - Clean, rounded input fields for **ID type** and **Location** during profile setup, plus phone, name and emergency-contact fields.
 - Rounded corners throughout (cards, chips, modals, inputs) for a calm, frictionless feel.
+- Official **App Store** and **Google Play** badges in the mobile download section, linked to the launch listing. The badge artwork is served unmodified from Apple's and Google's official asset services per their marketing guidelines (set `APP_STORE_LINK` / `GOOGLE_PLAY_LINK` in `src/components/MarketingUi.tsx` once live).
+- Live motion illustration layer powered by **LottieFiles** (`src/components/LottieArt.tsx`). It uses the official `lottie-player` web component to render car, route and commuter animations streamed from the LottieFiles CDN, replacing static/custom illustrations in the hero, motion rail, voice section and marketing route cards. Member avatars remain clean flat vector art.
 
 ### Brand values
 
-- **Trust & Security** — dark forest palette, identity/ID-type verification, location context, layered safety signals.
-- **Simplicity & Clarity** — minimal UI, generous whitespace, one geometric typeface, immediate answers.
-- **Sustainability & Vitality** — deep forest green with vibrant lime accents.
-- **Efficiency & Mobility** — the name and the road-like bars in the mark communicate movement, speed and effortless navigation.
-- **Modernity & Innovation** — geometric logo, social sign-in, structured token scales, contemporary components.
-- **Professionalism & Versatility** — organized colour scales and a fixed type hierarchy keep the brand consistent across web, PWA and (future) mobile.
+- **Trust & Security**, dark forest palette, identity/ID-type verification, location context, layered safety signals.
+- **Simplicity & Clarity**, minimal UI, generous whitespace, one geometric typeface, immediate answers.
+- **Sustainability & Vitality**, deep forest green with vibrant lime accents.
+- **Efficiency & Mobility**, the name and the road-like bars in the mark communicate movement, speed and effortless navigation.
+- **Modernity & Innovation**, geometric logo, social sign-in, structured token scales, contemporary components.
+- **Professionalism & Versatility**, organized colour scales and a fixed type hierarchy keep the brand consistent across web, PWA and (future) mobile.
 
 The UI is original, with product-pattern inspiration drawn from leading mobility platforms while retaining Comuta's own positioning: **Your route. Your people. Your commute.**
 

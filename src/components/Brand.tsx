@@ -3,8 +3,8 @@ import type { CSSProperties } from 'react';
 type BrandProps = { inverse?: boolean; compact?: boolean; style?: CSSProperties };
 
 /**
- * Comuta mark: a dark forest green circle holding two vertical bars —
- * one white, one lime — evoking a road, a pathway and an abstract "C".
+ * Comuta mark: a dark forest green circle holding two vertical bars -
+ * one white, one lime, evoking a road, a pathway and an abstract "C".
  */
 export function Mark({ inverse = false }: { inverse?: boolean }) {
   return (
