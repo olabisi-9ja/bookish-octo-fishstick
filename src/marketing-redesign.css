@@ -5,15 +5,15 @@
    Applied consistently to / and every marketing/company page.
    ========================================================================= */
 
-/* ── Shared sticky header ─────────────────────────────────────────────── */
+/* ---- Shared sticky header ---- */
 .landing{overflow:clip}
 .com-header-wrap{position:sticky;top:0;z-index:50;box-shadow:0 10px 34px rgba(4,31,23,.06)}
 .com-header-wrap .announcement{height:32px;gap:20px;font-size:11px}
 .com-header-wrap .site-header{height:72px;background:#fff;border-bottom:1px solid rgba(224,228,219,.75)}
 
-/* ── Hero ─────────────────────────────────────────────────────────────── */
+/* ---- Hero ---- */
 .com-hero{position:relative;min-height:780px;display:flex;align-items:center;color:#fff;background:var(--green-950)}
-.com-hero-bg{position:absolute;inset:0;background:url('/images/comuta-commuters.jpg') center 40%/cover no-repeat}
+.com-hero-bg{position:absolute;inset:0;background:url('/images/illustrations/commute-hero.svg') center 38%/cover no-repeat}
 .com-hero-overlay{position:absolute;inset:0;background:linear-gradient(102deg,rgba(4,27,21,.96) 0%,rgba(6,33,25,.87) 38%,rgba(5,32,24,.46) 66%,rgba(5,32,24,.16) 100%),linear-gradient(0deg,rgba(4,27,21,.52),transparent 55%)}
 .com-hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1fr .9fr;gap:64px;align-items:center;padding:92px 0 110px}
 
@@ -92,7 +92,7 @@
 .com-corridor-strip button{border:0;background:none;color:#fff;display:flex;gap:7px;align-items:center;font-weight:700}
 .com-corridor-strip .live-tag{margin-left:12px}
 
-/* ── Proof ────────────────────────────────────────────────────────────── */
+/* ---- Proof ---- */
 .com-proof{background:#fff;padding:58px 0 50px;border-bottom:1px solid #e8e9e5}
 .com-proof-grid{display:grid;grid-template-columns:repeat(4,1fr)}
 .com-proof-item{text-align:center;border-right:1px solid #dde1da;padding:0 22px}
@@ -101,7 +101,7 @@
 .com-proof-item strong span{font-size:17px;letter-spacing:-.5px}
 .com-proof-item span{display:block;margin-top:8px;font-size:11px;color:#747c78}
 
-/* ── Audience choice ──────────────────────────────────────────────────── */
+/* ---- Audience choice ---- */
 .com-choice{padding:104px 0 6px}
 .com-section-heading{max-width:720px}
 .com-section-heading.centered{text-align:center;margin:0 auto 52px}
@@ -123,7 +123,7 @@
 .com-choice-card-copy p{font-size:13px;line-height:1.65;color:var(--muted);max-width:290px}
 .com-choice-card .btn{justify-content:center}
 
-/* ── Audience banner (Ride / Drive close) ─────────────────────────────── */
+/* ---- Audience banner (Ride / Drive close) ---- */
 .com-audience-banner{margin:96px auto}
 .com-audience-heading{text-align:center;margin-bottom:38px}
 .com-audience-heading .com-eyebrow{justify-content:center}
@@ -137,7 +137,7 @@
 .com-audience-card h3{font-size:19px;letter-spacing:-.5px;margin-bottom:6px}
 .com-audience-card p{font-size:12px;line-height:1.6;color:var(--muted);max-width:280px}
 
-/* ── App download (mobile-first CRO) ──────────────────────────────────── */
+/* ---- App download (mobile-first CRO) ---- */
 .com-app-section{background:var(--green-950);color:#fff;padding:104px 0;position:relative;overflow:hidden}
 .com-app-section:before{content:"";position:absolute;width:620px;height:620px;border:1px solid rgba(189,242,63,.08);border-radius:50%;left:-240px;bottom:-320px}
 .com-app-orbit{position:absolute;border:1px solid rgba(189,242,63,.12);border-radius:50%}
@@ -169,14 +169,14 @@
 
 .mini-brand{display:inline-grid;place-items:center}
 
-/* ── Shared marketing page overrides ──────────────────────────────────── */
+/* ---- Shared marketing page overrides ---- */
 .marketing-page .info-hero h1{font-weight:800}
 .marketing-page .info-hero{min-height:560px}
 .marketing-page .info-eyebrow{margin-bottom:2px}
 .marketing-page .info-callout{margin-bottom:0}
 .marketing-page .info-callout+.com-audience-banner,.marketing-page .com-audience-banner{margin-top:96px}
 
-/* ── Responsive ───────────────────────────────────────────────────────── */
+/* ---- Responsive ---- */
 @media(max-width:980px){
   .com-header-wrap .site-header{height:64px}
   .com-hero{min-height:auto}

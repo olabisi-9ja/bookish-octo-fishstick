@@ -74,10 +74,10 @@ export default function AuthApp({ onEnter }: { onEnter: () => void }) {
           <h1>Your people.<br />Your route.<br /><em>One commute.</em></h1>
           <p>Match with verified commuters heading your way, share the journey, and build a crew you can count on every weekday.</p>
           <div className="auth-faces">
-            <Avatar initials="Ade" photo="/images/people/ade.jpg" size={36} />
-            <Avatar initials="Tolu" photo="/images/people/tolu.jpg" size={36} />
-            <Avatar initials="Amaka" photo="/images/people/amaka.jpg" size={36} />
-            <Avatar initials="Musa" photo="/images/people/musa.jpg" size={36} />
+            <Avatar initials="AB" color="#d96e4b" size={36} />
+            <Avatar initials="TA" color="#1c6e54" size={36} />
+            <Avatar initials="AE" color="#155e6e" size={36} />
+            <Avatar initials="ML" color="#37474f" size={36} />
             <span>2,000+ verified commuters</span>
           </div>
           <ul>

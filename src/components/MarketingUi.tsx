@@ -5,10 +5,10 @@ import {
 } from 'lucide-react';
 import Brand, { Mark } from './Brand';
 
-/* ──────────────────────────────────────────────────────────────────────────
-   Comuta marketing site — shared UI used by the landing page and every
+/* ----
+   Comuta marketing site, shared UI used by the landing page and every
    marketing/company page so the redesigned experience stays consistent.
-   ────────────────────────────────────────────────────────────────────────── */
+   ---- */
 
 /* Official store badges + destination links.
    Replace the placeholder links with the real store listings when Comuta is
@@ -25,7 +25,7 @@ type NavigateProps = {
   onOpenOps: () => void;
 };
 
-/* ── Branded, deterministic QR-style mark (prototype-safe, no API key) ── */
+/* ---- Branded, deterministic QR-style mark (prototype-safe, no API key) ---- */
 const QR_SIZE = 25;
 
 function buildQrMatrix() {
@@ -82,7 +82,7 @@ export function QrMark({ size = 190 }: { size?: number }) {
   );
 }
 
-/* ── Sticky, shared header with bolt-style audience split in nav/actions ── */
+/* ---- Sticky, shared header with bolt-style audience split in nav/actions ---- */
 export function SiteHeader({ onNavigate, onOpenApp, onOpenOps }: NavigateProps) {
   const [menu, setMenu] = useState(false);
   const go = (path: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -120,7 +120,7 @@ export function SiteHeader({ onNavigate, onOpenApp, onOpenOps }: NavigateProps) 
   );
 }
 
-/* ── Ride / Drive segmentation banner (Bolt-style split conversion) ── */
+/* ---- Ride / Drive segmentation banner (Bolt-style split conversion) ---- */
 export function AudienceBanner({ onOpenApp }: { onOpenApp: () => void }) {
   return (
     <section className="com-audience-banner page-width">
@@ -143,7 +143,7 @@ export function AudienceBanner({ onOpenApp }: { onOpenApp: () => void }) {
           <span className="com-audience-icon drive"><CarFront size={24} /></span>
           <div>
             <h3>I want to earn</h3>
-            <p>Turn the empty seats you already drive into reliable weekly contribution — you set the schedule and the fare.</p>
+            <p>Turn the empty seats you already drive into reliable weekly contribution, you set the schedule and the fare.</p>
           </div>
           <button className="btn btn-lime" onClick={onOpenApp}>Start earning <ArrowRight size={17} /></button>
         </article>
@@ -152,7 +152,7 @@ export function AudienceBanner({ onOpenApp }: { onOpenApp: () => void }) {
   );
 }
 
-/* ── Mobile-first conversion close: large QR + store steps ── */
+/* ---- Mobile-first conversion close: large QR + store steps ---- */
 export function AppDownload({ onOpenApp }: { onOpenApp: () => void }) {
   return (
     <section className="com-app-section">
@@ -162,7 +162,7 @@ export function AppDownload({ onOpenApp }: { onOpenApp: () => void }) {
         <div className="com-app-copy">
           <div className="com-eyebrow light"><Phone size={15} /> Your commute, in your pocket</div>
           <h2>Download the app.<br /><em>Start moving together.</em></h2>
-          <p>Scan the code, verify once, and you're ready to ride or drive the same trusted corridors — no paper, no confusion.</p>
+          <p>Scan the code, verify once, and you're ready to ride or drive the same trusted corridors, no paper, no confusion.</p>
           <div className="com-app-steps">
             <div className="com-app-step"><span><ScanLine size={21} /></span><div><strong>Scan the code</strong><small>Use your phone camera or the button below.</small></div></div>
             <div className="com-app-step"><span><BadgeCheck size={21} /></span><div><strong>Verify your identity</strong><small>One quick check and your trust profile is live.</small></div></div>
@@ -195,7 +195,7 @@ export function AppDownload({ onOpenApp }: { onOpenApp: () => void }) {
   );
 }
 
-/* ── Shared, consistent footer across every public page ── */
+/* ---- Shared, consistent footer across every public page ---- */
 export function SiteFooter({ onNavigate, onOpenApp, onOpenOps }: NavigateProps) {
   const go = (path: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();

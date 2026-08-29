@@ -1,9 +1,11 @@
 import { useRef, useState, type ReactNode } from 'react';
 import { useElementScroll } from '../hooks/useScrollProgress';
+import { Avatar } from './UI';
+import { RailArtwork, type RailVariant } from './Illustrations';
 
 const clamp = (v: number) => Math.max(0, Math.min(1, v));
 
-/* ── Word-by-word highlight as the reader scrolls ── */
+/* - Word-by-word highlight as the reader scrolls - */
 export function ManifestoHighlight({ text }: { text: string }) {
   const { ref, progress } = useElementScroll<HTMLParagraphElement>();
   const words = text.split(' ');
@@ -17,7 +19,7 @@ export function ManifestoHighlight({ text }: { text: string }) {
   );
 }
 
-/* ── Content sharpens into focus while crossing the viewport ── */
+/* - Content sharpens into focus while crossing the viewport - */
 export function BlurReveal({ children, className = '' }: { children: ReactNode; className?: string }) {
   const { ref, progress } = useElementScroll<HTMLDivElement>();
   const p = clamp((progress - 0.12) / 0.33);
@@ -37,7 +39,7 @@ export function BlurReveal({ children, className = '' }: { children: ReactNode; 
   );
 }
 
-/* ── Letters converge into one word as you scroll (carpool energy) ── */
+/* - Letters converge into one word as you scroll (carpool energy) - */
 export function SpreadWord({ word = 'TOGETHER' }: { word?: string }) {
   const { ref, progress } = useElementScroll<HTMLDivElement>();
   const t = clamp((progress - 0.15) / 0.5);
@@ -57,16 +59,16 @@ export function SpreadWord({ word = 'TOGETHER' }: { word?: string }) {
   );
 }
 
-/* ── Photo strip that glides sideways with the page ── */
-const RAIL = [
-  { src: '/images/people/ade.jpg', label: 'Ade · 184 trips shared' },
-  { src: '/images/people/tolu.jpg', label: 'Tolu · Ajah crew' },
-  { src: '/images/people/carpool-crew.jpg', label: 'The Lekki Sunrise Crew · 11 months strong', wide: true },
-  { src: '/images/people/chidi.jpg', label: 'Chidi · Yaba → Lekki' },
-  { src: '/images/people/ifeoma.jpg', label: 'Ifeoma · drives weekdays' },
-  { src: '/images/people/seyi.jpg', label: 'Seyi · UNILAG community' },
-  { src: '/images/people/amaka.jpg', label: 'Amaka · VI Tech Circle' },
-  { src: '/images/people/musa.jpg', label: 'Musa · 231 trips shared' },
+/* - Vector-art photo rail: flat illustrated cards that glide with scroll - */
+const RAIL: { label: string; variant: RailVariant; wide?: boolean }[] = [
+  { label: 'Ade · 184 trips shared', variant: 'route' },
+  { label: 'Tolu · Ajah crew', variant: 'crew' },
+  { label: 'The Lekki Sunrise Crew · 11 months strong', variant: 'crew', wide: true },
+  { label: 'Chidi · Yaba → Lekki', variant: 'corridor' },
+  { label: 'Ifeoma · drives weekdays', variant: 'workplace' },
+  { label: 'Seyi · UNILAG community', variant: 'campus' },
+  { label: 'Amaka · VI Tech Circle', variant: 'workplace' },
+  { label: 'Musa · 231 trips shared', variant: 'route' },
 ];
 
 export function PhotoRail() {
@@ -77,7 +79,7 @@ export function PhotoRail() {
       <div className="photo-rail-track" style={{ transform: `translateX(${translateX}%)` }}>
         {RAIL.map((item) => (
           <figure key={item.label} className={`rail-card ${item.wide ? 'wide' : ''}`}>
-            <img src={item.src} alt={item.label} loading="lazy" />
+            <RailArtwork variant={item.variant} />
             <figcaption>{item.label}</figcaption>
           </figure>
         ))}
@@ -86,10 +88,10 @@ export function PhotoRail() {
   );
 }
 
-/* ── Dock-style magnification for the verified member faces ── */
-type Face = { src: string; name: string };
+/* - Dock-style magnification for the flat vector member avatars - */
+type Face = { initials: string; name: string; color: string };
 
-function FaceDockItem({ src, name, mouseX }: Face & { mouseX: number | null }) {
+function FaceDockItem({ initials, name, color, mouseX }: Face & { mouseX: number | null }) {
   const ref = useRef<HTMLSpanElement>(null);
   let scale = 1;
   if (mouseX !== null && ref.current) {
@@ -104,7 +106,7 @@ function FaceDockItem({ src, name, mouseX }: Face & { mouseX: number | null }) {
       title={name}
       style={{ transform: `scale(${scale})`, zIndex: scale > 1.02 ? 5 : 1 }}
     >
-      <img src={src} alt={name} loading="lazy" />
+      <Avatar initials={initials} color={color} size={38} />
     </span>
   );
 }

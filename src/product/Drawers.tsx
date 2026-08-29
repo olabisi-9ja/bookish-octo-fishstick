@@ -95,7 +95,7 @@ export function WalletDrawer({ open, onClose }: { open: boolean; onClose: () => 
           </article>
         ))}
       </div>
-      <p className="ledger-note"><ShieldCheck size={14} /> Every naira movement is an immutable ledger entry — not a mutable balance field.</p>
+      <p className="ledger-note"><ShieldCheck size={14} /> Every naira movement is an immutable ledger entry, not a mutable balance field.</p>
     </Drawer>
   );
 }
