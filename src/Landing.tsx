@@ -1,100 +1,143 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
-  ArrowRight, BadgeCheck, CalendarDays, CarFront, Check, ChevronDown, Clock3, Coins,
-  HeartHandshake, LocateFixed, MapPin, Menu, Quote, Repeat2, Route, Search, ShieldCheck,
-  Sparkles, Star, Users, X, Zap, Building2, GraduationCap, Home,
+  ArrowRight, BadgeCheck, Building2, CalendarDays, CarFront, Check, ChevronDown, Clock3,
+  Coins, GraduationCap, HeartHandshake, Home, LocateFixed, MapPin, Quote, Repeat2, Route,
+  Search, ShieldCheck, Sparkles, Star, Users, Zap,
 } from 'lucide-react';
-import Brand from './components/Brand';
 import { Avatar, VerifiedBadge } from './components/UI';
+import { AppDownload, AudienceBanner, SiteFooter, SiteHeader } from './components/MarketingUi';
 import { BlurReveal, FaceDock, ManifestoHighlight, PhotoRail, SpreadWord } from './components/ScrollEffects';
 import { rides, formatNaira } from './data';
+import { quoteRoute, searchPlaces } from './platform';
 
 type Props = { onNavigate: (path: string) => void; onOpenApp: () => void; onOpenOps: () => void };
 
 export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
-  const [menu, setMenu] = useState(false);
-  const [tripType, setTripType] = useState<'ride' | 'offer'>('ride');
+  const [mode, setMode] = useState<'ride' | 'drive'>('ride');
   const [from, setFrom] = useState('Ajah, Lagos');
   const [to, setTo] = useState('Victoria Island');
+  const [recurring, setRecurring] = useState(true);
+  const [showPrice, setShowPrice] = useState(false);
+
+  const quote = useMemo(() => {
+    const fromPlace = searchPlaces(from)[0];
+    const toPlace = searchPlaces(to)[0];
+    if (!fromPlace || !toPlace || fromPlace.id === toPlace.id) return null;
+    return quoteRoute(fromPlace, toPlace);
+  }, [from, to]);
 
   const search = () => {
-    sessionStorage.setItem('comuta.search', JSON.stringify({ from, to, tripType }));
+    sessionStorage.setItem('comuta.search', JSON.stringify({ from, to, tripType: mode === 'drive' ? 'offer' : 'ride' }));
     onOpenApp();
   };
   const go = (path: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
-    setMenu(false);
     onNavigate(path);
   };
 
   return (
     <main className="landing">
-      <div className="announcement">
-        <span><Sparkles size={14} /> Comuta is opening selected Lagos corridors</span>
-        <button onClick={onOpenApp}>Join the early community <ArrowRight size={14} /></button>
-      </div>
-      <header className="site-header">
-        <a href="/" className="logo-link" onClick={go('/')}><Brand /></a>
-        <nav className={menu ? 'open' : ''}>
-          <a href="/how-it-works" onClick={go('/how-it-works')}>How it works</a>
-          <a href="/safety" onClick={go('/safety')}>Safety</a>
-          <a href="/communities" onClick={go('/communities')}>Communities</a>
-          <a href="/drivers" onClick={go('/drivers')}>Drive with Comuta</a>
-          <button className="nav-ops" onClick={onOpenOps}>Operations demo</button>
-          <div className="mobile-nav-actions">
-            <button className="btn btn-light" onClick={onOpenApp}>Log in</button>
-            <button className="btn btn-primary" onClick={onOpenApp}>Get started</button>
-          </div>
-        </nav>
-        <div className="header-actions">
-          <button className="text-button" onClick={onOpenApp}>Log in</button>
-          <button className="btn btn-primary btn-small" onClick={onOpenApp}>Get Comuta <ArrowRight size={16} /></button>
-          <button className="menu-button" onClick={() => setMenu(!menu)} aria-label="Toggle menu">{menu ? <X /> : <Menu />}</button>
-        </div>
-      </header>
+      <SiteHeader onNavigate={onNavigate} onOpenApp={onOpenApp} onOpenOps={onOpenOps} />
 
-      <section className="hero">
-        <div className="hero-bg" />
-        <div className="hero-overlay" />
-        <div className="hero-content page-width">
-          <div className="hero-copy">
-            <div className="eyebrow light">Built for everyday Lagos commutes</div>
-            <h1>Your route.<br />Your people.<br /><em>Your commute.</em></h1>
-            <p>Match with verified people heading your way, share the cost, and turn your daily route into a commute you can count on.</p>
-            <div className="hero-trust">
+      {/* ── Split-action hero: functional ride search + driver earning panel ── */}
+      <section className="com-hero">
+        <div className="com-hero-bg" />
+        <div className="com-hero-overlay" />
+        <div className="com-hero-grid page-width">
+          <div className="com-hero-copy">
+            <div className="com-eyebrow light"><Sparkles size={15} /> Built for everyday Lagos commutes</div>
+            <h1 className="com-hero-title">Your route.<br />Your people.<br /><em>Your commute.</em></h1>
+            <p className="com-hero-lead">Match with verified people heading your way, share the cost, and turn your daily route into a commute you can count on.</p>
+
+            <div className="com-audience-switch">
+              <button className={mode === 'ride' ? 'active' : ''} onClick={() => setMode('ride')}><Search size={16} /> I want a ride</button>
+              <button className={mode === 'drive' ? 'active' : ''} onClick={() => setMode('drive')}><CarFront size={16} /> I want to earn</button>
+            </div>
+
+            <div className="com-hero-trust">
               <div className="avatar-stack"><Avatar initials="Tolu" photo="/images/people/tolu.jpg" size={38} /><Avatar initials="Chidi" photo="/images/people/chidi.jpg" size={38} /><Avatar initials="Amaka" photo="/images/people/amaka.jpg" size={38} /><Avatar initials="Seyi" photo="/images/people/seyi.jpg" size={38} /><span className="more-avatar">+2k</span></div>
-              <div><div className="stars"><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /></div><span>Trusted by 2,000+ commuters building better routines</span></div>
+              <div className="com-trust-copy"><div className="stars"><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /></div><span>Trusted by 2,000+ commuters building better routines</span></div>
+            </div>
+
+            <div className="com-hero-flags">
+              <span><ShieldCheck size={15} /> Identity-verified network</span>
+              <span><Coins size={15} /> No surge pricing</span>
+              <span><Repeat2 size={15} /> Recurring by design</span>
             </div>
           </div>
 
-          <div className="search-card">
-            <div className="search-tabs">
-              <button className={tripType === 'ride' ? 'active' : ''} onClick={() => setTripType('ride')}><Search size={17} /> Find a ride</button>
-              <button className={tripType === 'offer' ? 'active' : ''} onClick={() => setTripType('offer')}><CarFront size={17} /> Offer a ride</button>
-            </div>
-            <div className="search-card-body">
-              <div className="route-inputs">
-                <label>
-                  <span>Leaving from</span>
-                  <div className="input-shell"><span className="route-pin from" /><input value={from} onChange={(e) => setFrom(e.target.value)} /><LocateFixed size={18} /></div>
-                </label>
-                <span className="route-line" />
-                <label>
-                  <span>Going to</span>
-                  <div className="input-shell"><MapPin size={18} className="to-pin" /><input value={to} onChange={(e) => setTo(e.target.value)} /></div>
-                </label>
+          <div className="com-hero-panel">
+            {mode === 'ride' ? (
+              <div className="com-card">
+                <div className="com-card-head">
+                  <span className="com-card-eyebrow">BOOK YOUR COMMUTE</span>
+                  <h3>See real people <em>going your way.</em></h3>
+                </div>
+                <div className="com-card-body">
+                  <div className="com-route-stack">
+                    <label>
+                      <span className="com-field-label">Leaving from</span>
+                      <div className="com-input"><span className="com-route-pin" /><input value={from} onChange={(e) => setFrom(e.target.value)} /><LocateFixed size={18} /></div>
+                    </label>
+                    <span className="com-route-line" />
+                    <label>
+                      <span className="com-field-label">Going to</span>
+                      <div className="com-input"><MapPin size={18} className="com-route-to-pin" /><input value={to} onChange={(e) => setTo(e.target.value)} /></div>
+                    </label>
+                  </div>
+                  <div className="com-grid-2">
+                    <label><span className="com-field-label">When</span><div className="com-input compact"><CalendarDays size={17} /><input defaultValue="Tomorrow" /><ChevronDown size={16} /></div></label>
+                    <label><span className="com-field-label">Departure</span><div className="com-input compact"><Clock3 size={17} /><input defaultValue="7:00 AM" /><ChevronDown size={16} /></div></label>
+                  </div>
+                  <label className="com-recurring-row" onClick={() => setRecurring(!recurring)}>
+                    <span className={`com-checkbox ${recurring ? 'checked' : ''}`}>{recurring && <Check size={13} />}</span>
+                    <span><strong>Make it my regular commute</strong><small>Get matched automatically every weekday</small></span>
+                  </label>
+                  <button className="com-price-toggle" onClick={() => setShowPrice(!showPrice)}>
+                    {showPrice ? <ChevronDown size={15} /> : <Zap size={15} />} {showPrice ? 'Hide estimated prices' : 'See prices before signing up'}
+                  </button>
+                  {showPrice && (
+                    <div className="com-price-preview">
+                      {quote ? (
+                        <>
+                          <strong>{formatNaira(quote.band.low)} – {formatNaira(quote.band.high)}</strong> per seat · about {quote.durationMin} min
+                          <small>{quote.distanceKm} km route · vs {formatNaira(quote.taxi)} by taxi · no surge pricing</small>
+                        </>
+                      ) : (
+                        <small>Start typing a Lagos route like “Ajah” or “Victoria Island” to see a per-seat estimate.</small>
+                      )}
+                    </div>
+                  )}
+                  <button className="btn btn-primary btn-block" onClick={search}>{mode === 'ride' ? 'Find people going my way' : 'Start earning'} <ArrowRight size={18} /></button>
+                  <p className="com-card-note"><ShieldCheck size={14} /> Identity verified community · Secure payments</p>
+                </div>
               </div>
-              <div className="search-grid">
-                <label><span>When</span><div className="input-shell"><CalendarDays size={17} /><input defaultValue="Tomorrow" /><ChevronDown size={16} /></div></label>
-                <label><span>Departure</span><div className="input-shell"><Clock3 size={17} /><input defaultValue="7:00 AM" /><ChevronDown size={16} /></div></label>
+            ) : (
+              <div className="com-card drive">
+                <div className="com-card-head drive">
+                  <span className="com-card-eyebrow">DRIVE &amp; EARN</span>
+                  <h3>Your empty seats can <em>pay for the road.</em></h3>
+                </div>
+                <div className="com-card-body">
+                  <div className="com-drive-highlight">
+                    <div><small>THIS WEEK</small><strong>₦24,600</strong><span>from 9 shared seats</span></div>
+                    <div className="com-drive-bars"><i /><i /><i className="high" /><i /><i /></div>
+                  </div>
+                  <ul className="com-drive-list">
+                    <li><span><Check /></span><strong>You set the route &amp; schedule</strong></li>
+                    <li><span><Check /></span><strong>Verified riders only</strong></li>
+                    <li><span><Check /></span><strong>Weekly, transparent payouts</strong></li>
+                  </ul>
+                  <div className="com-drive-route"><span><i /> Ajah</span><ArrowRight size={15} /><span><i /> Victoria Island</span><em>184 trips shared</em></div>
+                  <button className="btn btn-lime btn-block" onClick={() => search()}><CarFront size={18} /> Register as a driver <ArrowRight size={18} /></button>
+                  <p className="com-card-note"><BadgeCheck size={14} /> 6 verification signals · Weekly settlement</p>
+                </div>
               </div>
-              <label className="repeat-check"><span className="check-box"><Check size={13} /></span><span><strong>Make it my regular commute</strong><small>Get matched automatically every weekday</small></span></label>
-              <button className="btn btn-primary btn-block" onClick={search}>{tripType === 'ride' ? 'Find people going my way' : 'Share my empty seats'} <ArrowRight size={18} /></button>
-              <p className="card-note"><ShieldCheck size={14} /> Identity verified community · Secure payments</p>
-            </div>
+            )}
           </div>
         </div>
-        <div className="corridor-strip">
+
+        <div className="com-corridor-strip">
           <span>Live corridors</span>
           <button onClick={onOpenApp}>Ajah <ArrowRight size={13} /> VI</button>
           <button onClick={onOpenApp}>Ikeja <ArrowRight size={13} /> VI</button>
@@ -103,23 +146,46 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
         </div>
       </section>
 
-      <section className="proof page-width">
-        <p className="section-kicker">A smarter way to move together</p>
-        <div className="proof-grid">
-          <div><strong>96%</strong><span>top route match</span></div>
-          <div><strong>₦38k</strong><span>potential monthly savings</span></div>
-          <div><strong>6</strong><span>verification signals</span></div>
-          <div><strong>4.9<span>/5</span></strong><span>community trust rating</span></div>
-        </div>
-      </section>
-
-      <section className="manifesto-section">
+      {/* ── Proof strip ── */}
+      <section className="com-proof">
         <div className="page-width">
-          <div className="eyebrow light"><Sparkles size={15} /> Why Comuta exists</div>
-          <ManifestoHighlight text="Every morning, millions of Lagosians crawl through the same traffic, on the same routes, in half-empty cars. Comuta exists to change that — matching neighbours, colleagues and coursemates seat by seat, so the city moves together and nobody rides alone." />
+          <p className="section-kicker">A smarter way to move together</p>
+          <div className="com-proof-grid">
+            <div className="com-proof-item"><strong>96%</strong><span>top route match</span></div>
+            <div className="com-proof-item"><strong>₦38k</strong><span>potential monthly savings</span></div>
+            <div className="com-proof-item"><strong>6</strong><span>verification signals</span></div>
+            <div className="com-proof-item"><strong>4.9<span>/5</span></strong><span>community trust rating</span></div>
+          </div>
         </div>
       </section>
 
+      {/* ── Targeted audience choice ── */}
+      <section className="com-choice page-width" id="choices">
+        <div className="com-section-heading centered">
+          <div className="com-eyebrow"><Zap size={15} /> Built for the way you travel</div>
+          <h2>Pick your lane. <em>We'll do the rest.</em></h2>
+          <p>Whether you come for a ride, to earn, or to bring your people together — Comuta is one trusted network.</p>
+        </div>
+        <div className="com-choice-grid">
+          <article className="com-choice-card ride">
+            <span className="com-choice-icon"><Search size={24} /></span>
+            <div className="com-choice-card-copy"><h3>Ride with Comuta</h3><p>Compare complete routes, verified profiles and transparent per-seat prices before you book.</p></div>
+            <button className="btn btn-primary" onClick={onOpenApp}>Find a ride <ArrowRight size={17} /></button>
+          </article>
+          <article className="com-choice-card drive">
+            <span className="com-choice-icon"><CarFront size={24} /></span>
+            <div className="com-choice-card-copy"><h3>Drive &amp; earn</h3><p>You're already going that way. Set your seats, schedule and contribution once — then get paid weekly.</p></div>
+            <button className="btn btn-lime" onClick={onOpenApp}>Start earning <ArrowRight size={17} /></button>
+          </article>
+          <article className="com-choice-card community">
+            <span className="com-choice-icon"><Users size={24} /></span>
+            <div className="com-choice-card-copy"><h3>Build your community</h3><p>Workplaces, estates and campuses get private route boards with the same independent verification.</p></div>
+            <button className="btn btn-dark" onClick={() => onNavigate('/communities')}>Explore communities <ArrowRight size={17} /></button>
+          </article>
+        </div>
+      </section>
+
+      {/* ── How it works ── */}
       <section className="how-section page-width" id="how">
         <div className="section-heading centered">
           <div className="eyebrow"><Route size={15} /> Built around your routine</div>
@@ -145,6 +211,7 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
         </div>
       </section>
 
+      {/* ── Recurring advantage ── */}
       <section className="commute-feature">
         <div className="page-width feature-grid">
           <div className="phone-stage">
@@ -152,7 +219,7 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
             <div className="phone">
               <div className="phone-top"><span>9:41</span><span>● ● ▰</span></div>
               <div className="phone-body">
-                <div className="mini-head"><Brand compact /><span className="mini-avatar">OO</span></div>
+                <div className="mini-head"><BrandLight /><span className="mini-avatar">OO</span></div>
                 <p className="mini-greeting">GOOD MORNING, OLABISI</p>
                 <h4>Your commute is looking good.</h4>
                 <div className="phone-commute-card">
@@ -182,6 +249,7 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
         </div>
       </section>
 
+      {/* ── Popular routes ── */}
       <section className="routes-section page-width">
         <div className="section-heading-row">
           <div><div className="eyebrow"><Zap size={15} /> Moving tomorrow morning</div><h2>Popular Lagos routes</h2></div>
@@ -206,6 +274,46 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
         </div>
       </section>
 
+      {/* ── Community ── */}
+      <section className="community-section" id="communities">
+        <div className="page-width community-grid">
+          <div className="community-copy">
+            <div className="eyebrow"><HeartHandshake size={15}/> Trust starts with context</div>
+            <h2>Strangers become<br /><em>your community.</em></h2>
+            <p>Choose matches from groups you already have something in common with, without mistaking affiliation for verification.</p>
+            <div className="community-types">
+              <span><Building2/>Workplaces</span><span><Home/>Estates</span><span><GraduationCap/>Campuses</span><span><Users/>Associations</span>
+            </div>
+            <button className="btn btn-dark" onClick={() => onNavigate('/communities')}>Find my community <ArrowRight size={17}/></button>
+          </div>
+          <div className="community-board">
+            <div className="board-head"><span>COMMUNITIES NEAR YOUR ROUTE</span><span><i/> Lagos</span></div>
+            <div className="community-card c1"><span className="community-logo">ST</span><div><strong>Comuta at Sterling</strong><small>Workplace · 428 members</small></div><span className="join-chip">12 routes</span></div>
+            <div className="community-card c2"><span className="community-logo">LG</span><div><strong>Lekki Gardens</strong><small>Estate · 216 members</small></div><span className="join-chip">8 routes</span></div>
+            <div className="community-card c3"><span className="community-logo">VT</span><div><strong>VI Tech Circle</strong><small>Professional · 1,200 members</small></div><span className="join-chip">26 routes</span></div>
+            <div className="board-note"><BadgeCheck size={16}/><span>Membership is one trust signal. Every driver and vehicle is verified separately.</span></div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Safety ── */}
+      <section className="safety-section" id="safety">
+        <div className="page-width safety-grid">
+          <div>
+            <div className="eyebrow light"><ShieldCheck size={15}/> Safety, designed in</div>
+            <h2>Know who you're<br />riding with.</h2>
+            <p>Safety isn't a button added at the end. It's identity, vehicle, trip and response systems working together from signup to arrival.</p>
+            <button className="btn btn-lime" onClick={onOpenApp}>See our safety standard <ArrowRight size={17}/></button>
+          </div>
+          <div className="safety-cards">
+            <article><span><BadgeCheck/></span><div><h3>Layered verification</h3><p>Identity, selfie, licence, vehicle and community signals shown clearly.</p></div></article>
+            <article><span><LocateFixed/></span><div><h3>Live trip protection</h3><p>Shareable tracking, pickup confirmation and route deviation signals.</p></div></article>
+            <article><span><ShieldCheck/></span><div><h3>Human safety response</h3><p>SOS connects trip context to your contacts and Comuta operations.</p></div></article>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Stories ── */}
       <section className="voices-section page-width" id="stories">
         <div className="section-heading centered">
           <div className="eyebrow"><Quote size={15} /> Loved by everyday commuters</div>
@@ -245,63 +353,38 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
         </div>
       </section>
 
-      <section className="community-section" id="communities">
-        <div className="page-width community-grid">
-          <div className="community-copy">
-            <div className="eyebrow"><HeartHandshake size={15}/> Trust starts with context</div>
-            <h2>Strangers become<br /><em>your community.</em></h2>
-            <p>Choose matches from groups you already have something in common with, without mistaking affiliation for verification.</p>
-            <div className="community-types">
-              <span><Building2/>Workplaces</span><span><Home/>Estates</span><span><GraduationCap/>Campuses</span><span><Users/>Associations</span>
-            </div>
-            <button className="btn btn-dark" onClick={onOpenApp}>Find my community <ArrowRight size={17}/></button>
-          </div>
-          <div className="community-board">
-            <div className="board-head"><span>COMMUNITIES NEAR YOUR ROUTE</span><span><i/> Lagos</span></div>
-            <div className="community-card c1"><span className="community-logo">ST</span><div><strong>Comuta at Sterling</strong><small>Workplace · 428 members</small></div><span className="join-chip">12 routes</span></div>
-            <div className="community-card c2"><span className="community-logo">LG</span><div><strong>Lekki Gardens</strong><small>Estate · 216 members</small></div><span className="join-chip">8 routes</span></div>
-            <div className="community-card c3"><span className="community-logo">VT</span><div><strong>VI Tech Circle</strong><small>Professional · 1,200 members</small></div><span className="join-chip">26 routes</span></div>
-            <div className="board-note"><BadgeCheck size={16}/><span>Membership is one trust signal. Every driver and vehicle is verified separately.</span></div>
-          </div>
-        </div>
-      </section>
-
-      <section className="safety-section" id="safety">
-        <div className="page-width safety-grid">
-          <div>
-            <div className="eyebrow light"><ShieldCheck size={15}/> Safety, designed in</div>
-            <h2>Know who you're<br />riding with.</h2>
-            <p>Safety isn't a button added at the end. It's identity, vehicle, trip and response systems working together from signup to arrival.</p>
-            <button className="btn btn-lime" onClick={onOpenApp}>See our safety standard <ArrowRight size={17}/></button>
-          </div>
-          <div className="safety-cards">
-            <article><span><BadgeCheck/></span><div><h3>Layered verification</h3><p>Identity, selfie, licence, vehicle and community signals shown clearly.</p></div></article>
-            <article><span><LocateFixed/></span><div><h3>Live trip protection</h3><p>Shareable tracking, pickup confirmation and route deviation signals.</p></div></article>
-            <article><span><ShieldCheck/></span><div><h3>Human safety response</h3><p>SOS connects trip context to your contacts and Comuta operations.</p></div></article>
-          </div>
-        </div>
-      </section>
-
       <div className="together-band" aria-hidden="true">
         <SpreadWord word="TOGETHER" />
         <p>One city. One route. One crew at a time.</p>
       </div>
 
+      {/* ── Driver recruitment ── */}
       <section className="driver-cta page-width" id="drivers">
         <div className="driver-pattern" />
         <div className="driver-copy"><div className="eyebrow light"><CarFront size={15}/> Already going that way?</div><h2>Your empty seats can<br />help pay for the journey.</h2><p>Share your regular route with verified riders. You set the schedule, seats and fair cost contribution.</p><button className="btn btn-white" onClick={onOpenApp}>Offer a ride <ArrowRight size={17}/></button><div className="driver-voice"><Avatar initials="AB" photo="/images/people/ade.jpg" size={40}/><span>"My fuel money halves itself every week — and the gist in traffic isn't bad either."<b>Ade B. · Shares his Ajah → VI route, 184 trips</b></span></div></div>
         <div className="earn-card"><span className="earn-label">THIS WEEK</span><strong>₦24,600</strong><small>Cost contributions from 9 shared seats</small><div className="earn-bars"><i/><i/><i/><i/><i className="high"/><i className="med"/><i/></div><div className="earn-foot"><span>Mon</span><span>Sun</span></div></div>
       </section>
 
-      <footer>
-        <div className="page-width footer-main">
-          <div className="footer-brand"><Brand inverse/><p>Trusted recurring carpools for the routes Nigerians travel every day.</p><span>Lagos, Nigeria 🇳🇬</span></div>
-          <div><h4>Ride</h4><a onClick={onOpenApp}>Find a ride</a><a onClick={onOpenApp}>My commute</a><a href="/communities" onClick={go('/communities')}>Communities</a><a href="/safety" onClick={go('/safety')}>Safety</a></div>
-          <div><h4>Drive</h4><a href="/drivers" onClick={go('/drivers')}>Offer a ride</a><a href="/drivers" onClick={go('/drivers')}>Driver requirements</a><a onClick={onOpenApp}>Earnings</a><a href="/safety" onClick={go('/safety')}>Verification</a></div>
-          <div><h4>Comuta</h4><a href="/about" onClick={go('/about')}>About</a><a href="/help" onClick={go('/help')}>Help centre</a><a onClick={onOpenOps}>Operations</a><a href="/help" onClick={go('/help')}>Contact</a></div>
+      {/* ── Manifesto ── */}
+      <section className="manifesto-section">
+        <div className="page-width">
+          <div className="eyebrow light"><Sparkles size={15} /> Why Comuta exists</div>
+          <ManifestoHighlight text="Every morning, millions of Lagosians crawl through the same traffic, on the same routes, in half-empty cars. Comuta exists to change that — matching neighbours, colleagues and coursemates seat by seat, so the city moves together and nobody rides alone." />
         </div>
-        <div className="page-width footer-bottom"><span>© 2026 Comuta Technologies Ltd.</span><div><a href="/privacy" onClick={go('/privacy')}>Privacy</a><a href="/terms" onClick={go('/terms')}>Terms</a><a href="/help" onClick={go('/help')}>Accessibility</a></div><span className="ndpr"><ShieldCheck size={13}/> Privacy by design</span></div>
-      </footer>
+      </section>
+
+      {/* ── Ride / Drive close + mobile-first conversion ── */}
+      <AudienceBanner onOpenApp={onOpenApp} />
+      <AppDownload onOpenApp={onOpenApp} />
+      <SiteFooter onNavigate={onNavigate} onOpenApp={onOpenApp} onOpenOps={onOpenOps} />
     </main>
+  );
+}
+
+function BrandLight() {
+  return (
+    <span className="mini-brand">
+      <svg viewBox="0 0 48 48" width="18" height="18"><circle cx="24" cy="24" r="24" fill="#0a3325" /><rect x="16.2" y="13" width="6.8" height="22" rx="3.4" fill="#fff" /><rect x="25" y="13" width="6.8" height="22" rx="3.4" fill="#bdf23f" /></svg>
+    </span>
   );
 }
