@@ -93,8 +93,8 @@
 .com-proof-grid{display:grid;grid-template-columns:repeat(4,1fr)}
 .com-proof-item{text-align:center;border-right:1px solid #dde1da;padding:0 22px}
 .com-proof-item:last-child{border:0}
-.com-proof-value{display:inline-block;font:800 56px/1 var(--font-display);letter-spacing:-3px;color:var(--green-900)}
-.com-proof-item span{display:block;margin-top:10px;font-size:11px;color:#747c78}
+.com-proof-value{display:inline-block;font:800 76px/1 var(--font-display);letter-spacing:-4px;color:var(--green-900)}
+.com-proof-item span{display:block;margin-top:12px;font-size:11px;color:#747c78}
 
 /* ---- Audience choice ---- */
 .com-choice{padding:104px 0 6px}
@@ -163,8 +163,9 @@
 .com-qr-safety svg{color:var(--lime)}
 
 /* Commute feature floating car */
-.com-lottie-float{position:absolute;left:-16px;top:300px;width:250px;height:190px;border-radius:17px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);overflow:hidden;z-index:3;pointer-events:none;box-shadow:0 22px 44px rgba(0,0,0,.26)}
-.com-lottie-float lottie-player{width:100%;height:100%;display:block}
+.com-lottie-float{position:absolute;left:-16px;top:300px;width:250px;height:190px;overflow:hidden;z-index:3;pointer-events:none;background:transparent}
+.com-lottie-float lottie-player{width:100%;height:100%;display:block;background:transparent}
+.com-lottie-float lottie-player svg{background:transparent!important}
 
 /* Voice / testimonial scene */
 .com-lottie-scene{position:absolute;inset:0;display:grid;place-items:center;background:var(--green-950)}
@@ -213,7 +214,7 @@
   .com-proof{padding:50px 0 40px}
   .com-proof-grid{grid-template-columns:1fr 1fr;gap:22px 0}
   .com-proof-item{border:0}
-  .com-proof-value{font-size:40px;letter-spacing:-2px}
+  .com-proof-value{font-size:48px;letter-spacing:-2px}
   .com-proof-item span{font-size:10px}
   .com-choice{padding:72px 0 0}
   .com-section-heading h2,.com-audience-heading h2{font-size:35px;letter-spacing:-2px}

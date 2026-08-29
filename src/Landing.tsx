@@ -135,7 +135,7 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
           <button onClick={onOpenApp}>Ajah <ArrowRight size={13} /> VI</button>
           <button onClick={onOpenApp}>Ikeja <ArrowRight size={13} /> VI</button>
           <button onClick={onOpenApp}>Yaba <ArrowRight size={13} /> Lekki</button>
-          <span className="live-tag"><i /> 68 seats tomorrow</span>
+          <span className="live-tag">68 seats tomorrow</span>
         </div>
       </section>
 
@@ -283,7 +283,7 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
             <button className="btn btn-dark" onClick={() => onNavigate('/communities')}>Find my community <ArrowRight size={17}/></button>
           </div>
           <div className="community-board">
-            <div className="board-head"><span>COMMUNITIES NEAR YOUR ROUTE</span><span><i/> Lagos</span></div>
+            <div className="board-head"><span>COMMUNITIES NEAR YOUR ROUTE</span><span>Lagos</span></div>
             <div className="community-card c1"><span className="community-logo">ST</span><div><strong>Comuta at Sterling</strong><small>Workplace · 428 members</small></div><span className="join-chip">12 routes</span></div>
             <div className="community-card c2"><span className="community-logo">LG</span><div><strong>Lekki Gardens</strong><small>Estate · 216 members</small></div><span className="join-chip">8 routes</span></div>
             <div className="community-card c3"><span className="community-logo">VT</span><div><strong>VI Tech Circle</strong><small>Professional · 1,200 members</small></div><span className="join-chip">26 routes</span></div>
