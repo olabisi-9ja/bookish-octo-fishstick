@@ -4,7 +4,7 @@ import {
   Coins, GraduationCap, HeartHandshake, Home, LocateFixed, MapPin, Quote, Repeat2, Route,
   Search, ShieldCheck, Sparkles, Star, Users, Zap,
 } from 'lucide-react';
-import { Avatar, VerifiedBadge } from './components/UI';
+import { Avatar, StatCounter, VerifiedBadge } from './components/UI';
 import { CarpoolScene, LottieAnimation, LOTTIE } from './components/LottieArt';
 import { AppDownload, AudienceBanner, SiteFooter, SiteHeader } from './components/MarketingUi';
 import { BlurReveal, FaceDock, ManifestoHighlight, PhotoRail, SpreadWord } from './components/ScrollEffects';
@@ -56,17 +56,6 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
             <div className="com-audience-switch">
               <button className={mode === 'ride' ? 'active' : ''} onClick={() => setMode('ride')}><Search size={16} /> I want a ride</button>
               <button className={mode === 'drive' ? 'active' : ''} onClick={() => setMode('drive')}><CarFront size={16} /> I want to earn</button>
-            </div>
-
-            <div className="com-hero-trust">
-              <div className="avatar-stack"><Avatar initials="Tolu" color="#1c6e54" size={38} /><Avatar initials="Chidi" color="#155e6e" size={38} /><Avatar initials="Amaka" color="#37474f" size={38} /><Avatar initials="Seyi" color="#6f8f0e" size={38} /><span className="more-avatar">+2k</span></div>
-              <div className="com-trust-copy"><div className="stars"><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /><Star size={13} fill="currentColor" /></div><span>Trusted by 2,000+ commuters building better routines</span></div>
-            </div>
-
-            <div className="com-hero-flags">
-              <span><ShieldCheck size={15} /> Identity-verified network</span>
-              <span><Coins size={15} /> No surge pricing</span>
-              <span><Repeat2 size={15} /> Recurring by design</span>
             </div>
           </div>
 
@@ -155,10 +144,10 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
         <div className="page-width">
           <p className="section-kicker">A smarter way to move together</p>
           <div className="com-proof-grid">
-            <div className="com-proof-item"><strong>96%</strong><span>top route match</span></div>
-            <div className="com-proof-item"><strong>₦38k</strong><span>potential monthly savings</span></div>
-            <div className="com-proof-item"><strong>6</strong><span>verification signals</span></div>
-            <div className="com-proof-item"><strong>4.9<span>/5</span></strong><span>community trust rating</span></div>
+            <div className="com-proof-item"><StatCounter className="com-proof-value" value="96%" /><span>top route match</span></div>
+            <div className="com-proof-item"><StatCounter className="com-proof-value" value="₦38k" /><span>potential monthly savings</span></div>
+            <div className="com-proof-item"><StatCounter className="com-proof-value" value="6" /><span>verification signals</span></div>
+            <div className="com-proof-item"><StatCounter className="com-proof-value" value="4.9/5" /><span>community trust rating</span></div>
           </div>
         </div>
       </section>

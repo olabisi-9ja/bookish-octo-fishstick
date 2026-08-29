@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { X, CheckCircle2 } from 'lucide-react';
 
 /* Flat vector avatar used everywhere (marketing, rider, driver, ops).
@@ -55,4 +55,67 @@ export function Toast({ message, visible }: { message: string; visible: boolean 
 
 export function Stepper({ active, total }: { active: number; total: number }) {
   return <div className="stepper">{Array.from({ length: total }).map((_, i) => <span key={i} className={i < active ? 'active' : ''} />)}</div>;
+}
+
+/* ---- Animated stat counter ----
+   Counts the leading number from 0 to its target once it scrolls into view.
+   Preserves prefix/suffix so values like "₦38k", "4.9/5" and "24/7" still read
+   naturally. Non-numeric strings (e.g. "Live", "Weekly") stay static. */
+const STAT_RE = /^([^\d]*)(\d+(?:\.\d+)?)(.*)$/;
+
+function useInView<T extends HTMLElement>(threshold = 0.35) {
+  const ref = useRef<T | null>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return { ref, inView };
+}
+
+export function StatCounter({ value, className = '' }: { value: string; className?: string }) {
+  const { ref, inView } = useInView<HTMLSpanElement>();
+  const match = STAT_RE.exec(value);
+  const prefix = match?.[1] ?? value;
+  const rawNum = match?.[2];
+  const suffix = match?.[3] ?? '';
+  const target = rawNum ? Number(rawNum) : 0;
+  const decimals = rawNum?.includes('.') ? (rawNum.split('.')[1]?.length ?? 0) : 0;
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    if (!inView || !rawNum) return;
+    let frame = 0;
+    const start = performance.now();
+    const duration = 1400;
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      setCurrent(target * eased);
+      if (t < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [inView, rawNum, target]);
+
+  return (
+    <span ref={ref} className={(className || 'stat-counter').trim()} aria-label={value}>
+      {prefix}
+      {rawNum ? current.toFixed(decimals) : value}
+      {rawNum ? suffix : ''}
+    </span>
+  );
 }

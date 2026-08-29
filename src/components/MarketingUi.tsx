@@ -93,10 +93,6 @@ export function SiteHeader({ onNavigate, onOpenApp, onOpenOps }: NavigateProps) 
 
   return (
     <div className="com-header-wrap">
-      <div className="announcement">
-        <span><Sparkles size={14} /> Comuta is opening selected Lagos corridors</span>
-        <button onClick={onOpenApp}>Join the early community <ArrowRight size={14} /></button>
-      </div>
       <header className="site-header">
         <a href="/" className="logo-link" onClick={go('/')}><Brand /></a>
         <nav className={menu ? 'open' : ''}>

@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { AppDownload, AudienceBanner, SiteFooter, SiteHeader } from './components/MarketingUi';
 import { LottieAnimation, LOTTIE } from './components/LottieArt';
+import { StatCounter } from './components/UI';
 
 type Icon = ComponentType<{ size?: number; strokeWidth?: number }>;
 type PageCard = { icon: Icon; title: string; text: string; points: string[] };
@@ -188,7 +189,7 @@ export default function MarketingPage({ path, onNavigate, onOpenApp, onOpenOps }
       </section>
 
       <section className="info-proof page-width">
-        {page.proof.map(item=><div key={item.label}><strong>{item.value}</strong><span>{item.label}</span></div>)}
+        {page.proof.map(item=><div key={item.label}><StatCounter className="info-proof-value" value={item.value} /><span>{item.label}</span></div>)}
       </section>
 
       <section className="info-content page-width">
