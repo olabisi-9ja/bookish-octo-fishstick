@@ -159,7 +159,11 @@
 .com-qr-wrap span{font-size:10px;letter-spacing:1.6px;font-weight:800;color:var(--green-700);display:block;margin-top:14px}
 .com-qr-svg{display:block}
 .com-qr-note{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center}
-.com-store-pill{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:8px 13px;font-size:10px;font-weight:700;color:#fff}
+.com-store-badges{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:18px;padding-top:18px;border-top:1px solid #e8ece6}
+.com-store-badge{display:inline-flex;width:180px;border-radius:8px;overflow:hidden;transition:.2s}
+.com-store-badge:first-child{width:200px}
+.com-store-badge:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(4,31,23,.12)}
+.com-store-badge img{width:100%;height:auto;display:block}
 .com-qr-safety{display:flex;align-items:center;gap:5px;color:rgba(255,255,255,.7);font-size:10px}
 .com-qr-safety svg{color:var(--lime)}
 

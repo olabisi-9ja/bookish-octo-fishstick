@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {
-  Apple, ArrowRight, BadgeCheck, CarFront, CheckCircle2, Menu, Phone, Play, ScanLine,
+  ArrowRight, BadgeCheck, CarFront, CheckCircle2, Menu, Phone, ScanLine,
   Search, ShieldCheck, Sparkles, X,
 } from 'lucide-react';
 import Brand, { Mark } from './Brand';
@@ -9,6 +9,15 @@ import Brand, { Mark } from './Brand';
    Comuta marketing site — shared UI used by the landing page and every
    marketing/company page so the redesigned experience stays consistent.
    ────────────────────────────────────────────────────────────────────────── */
+
+/* Official store badges + destination links.
+   Replace the placeholder links with the real store listings when Comuta is
+   published. The badge artwork itself must stay unmodified and is loaded from
+   the official Apple / Google asset services, per their marketing guidelines. */
+const APP_STORE_LINK = 'https://apps.apple.com/ng/app/comuta/id0000000000';
+const GOOGLE_PLAY_LINK = 'https://play.google.com/store/apps/details?id=com.comuta.app';
+const APP_STORE_BADGE = 'https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83';
+const GOOGLE_PLAY_BADGE = 'https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png';
 
 type NavigateProps = {
   onNavigate: (path: string) => void;
@@ -168,11 +177,17 @@ export function AppDownload({ onOpenApp }: { onOpenApp: () => void }) {
           <div className="com-qr-wrap">
             <QrMark size={188} />
             <span>SCAN TO GET COMUTA</span>
+            <div className="com-store-badges">
+              <a className="com-store-badge" href={APP_STORE_LINK} target="_blank" rel="noopener noreferrer" aria-label="Download Comuta on the App Store">
+                <img src={APP_STORE_BADGE} alt="Download on the App Store" loading="lazy" />
+              </a>
+              <a className="com-store-badge" href={GOOGLE_PLAY_LINK} target="_blank" rel="noopener noreferrer" aria-label="Get Comuta on Google Play">
+                <img src={GOOGLE_PLAY_BADGE} alt="Get it on Google Play" loading="lazy" />
+              </a>
+            </div>
           </div>
           <div className="com-qr-note">
-            <span className="com-store-pill"><Apple size={17} /> App Store</span>
-            <span className="com-store-pill"><Play size={17} /> Google Play</span>
-            <span className="com-qr-safety"><ShieldCheck size={14} /> Security built in</span>
+            <span className="com-qr-safety"><ShieldCheck size={14} /> Security built in · iOS &amp; Android</span>
           </div>
         </div>
       </div>
