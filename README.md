@@ -115,7 +115,7 @@ One highly legible, clean geometric sans-serif, **Manrope** (400-800), carries e
 - Clean, rounded input fields for **ID type** and **Location** during profile setup, plus phone, name and emergency-contact fields.
 - Rounded corners throughout (cards, chips, modals, inputs) for a calm, frictionless feel.
 - Official **App Store** and **Google Play** badges in the mobile download section, linked to the launch listing. The badge artwork is served unmodified from Apple's and Google's official asset services per their marketing guidelines (set `APP_STORE_LINK` / `GOOGLE_PLAY_LINK` in `src/components/MarketingUi.tsx` once live).
-- A flat vector illustration system (`src/components/Illustrations.tsx` plus `public/images/illustrations/commute-hero.svg`) replaces photographic / AI-generated imagery on the public pages. People are drawn as clean 2D vector avatars, corridors and carpool crews appear as flat scenes, and all cards use the brand palette.
+- Live motion illustration layer powered by **LottieFiles** (`src/components/LottieArt.tsx`). It uses the official `lottie-player` web component to render car, route and commuter animations streamed from the LottieFiles CDN, replacing static/custom illustrations in the hero, motion rail, voice section and marketing route cards. Member avatars remain clean flat vector art.
 
 ### Brand values
 

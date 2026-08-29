@@ -5,6 +5,7 @@ import {
   MapPin, Repeat2, Route, ShieldCheck, Sparkles, Users,
 } from 'lucide-react';
 import { AppDownload, AudienceBanner, SiteFooter, SiteHeader } from './components/MarketingUi';
+import { LottieAnimation, LOTTIE } from './components/LottieArt';
 
 type Icon = ComponentType<{ size?: number; strokeWidth?: number }>;
 type PageCard = { icon: Icon; title: string; text: string; points: string[] };
@@ -176,7 +177,9 @@ export default function MarketingPage({ path, onNavigate, onOpenApp, onOpenOps }
           </div>
           <div className="info-route-card">
             <span>COMUTA ROUTE NETWORK</span>
-            <div className="route-line-art"><i/><b/><i/><em/></div>
+            <div className="info-route-lottie">
+              <LottieAnimation src={LOTTIE.carCity} label="Animated Comuta route between Ajah and Victoria Island" speed={0.82} style={{ width: '100%', height: '100%' }} />
+            </div>
             <div><strong>Ajah</strong><ArrowRight/><strong>Victoria Island</strong></div>
             <p><BadgeCheck size={15}/>Verified people on a recurring route</p>
             <small><Repeat2 size={14}/>Monday to Friday · 7:00 AM</small>

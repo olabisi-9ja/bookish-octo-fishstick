@@ -1,7 +1,7 @@
 import { useRef, useState, type ReactNode } from 'react';
 import { useElementScroll } from '../hooks/useScrollProgress';
 import { Avatar } from './UI';
-import { RailArtwork, type RailVariant } from './Illustrations';
+import { LottieAnimation, LOTTIE } from './LottieArt';
 
 const clamp = (v: number) => Math.max(0, Math.min(1, v));
 
@@ -59,16 +59,14 @@ export function SpreadWord({ word = 'TOGETHER' }: { word?: string }) {
   );
 }
 
-/* - Vector-art photo rail: flat illustrated cards that glide with scroll - */
-const RAIL: { label: string; variant: RailVariant; wide?: boolean }[] = [
-  { label: 'Ade · 184 trips shared', variant: 'route' },
-  { label: 'Tolu · Ajah crew', variant: 'crew' },
-  { label: 'The Lekki Sunrise Crew · 11 months strong', variant: 'crew', wide: true },
-  { label: 'Chidi · Yaba → Lekki', variant: 'corridor' },
-  { label: 'Ifeoma · drives weekdays', variant: 'workplace' },
-  { label: 'Seyi · UNILAG community', variant: 'campus' },
-  { label: 'Amaka · VI Tech Circle', variant: 'workplace' },
-  { label: 'Musa · 231 trips shared', variant: 'route' },
+/* - Animated LottieFiles rail: motion cards that glide with scroll - */
+const RAIL: { label: string; src: string; wide?: boolean; tint: string }[] = [
+  { label: 'Ade · 184 trips shared', src: LOTTIE.carBlue, tint: '#eef8f2' },
+  { label: 'Tolu · Ajah crew', src: LOTTIE.carRed, tint: '#eef6f8' },
+  { label: 'The Lekki Sunrise Crew · 11 months strong', src: LOTTIE.carYellow, wide: true, tint: '#eef8f2' },
+  { label: 'Chidi · Yaba → Lekki', src: LOTTIE.carCity, tint: '#eef1f4' },
+  { label: 'Ifeoma · drives weekdays', src: LOTTIE.person, tint: '#eef8f2' },
+  { label: 'Seyi · UNILAG community', src: LOTTIE.carBlue, tint: '#eef6f8' },
 ];
 
 export function PhotoRail() {
@@ -78,8 +76,14 @@ export function PhotoRail() {
     <div ref={ref} className="photo-rail">
       <div className="photo-rail-track" style={{ transform: `translateX(${translateX}%)` }}>
         {RAIL.map((item) => (
-          <figure key={item.label} className={`rail-card ${item.wide ? 'wide' : ''}`}>
-            <RailArtwork variant={item.variant} />
+          <figure key={item.label} className={`rail-card ${item.wide ? 'wide' : ''}`} style={{ background: item.tint }}>
+            <LottieAnimation
+              src={item.src}
+              label={item.label}
+              speed={0.82}
+              background="transparent"
+              style={{ width: '100%', height: '100%' }}
+            />
             <figcaption>{item.label}</figcaption>
           </figure>
         ))}

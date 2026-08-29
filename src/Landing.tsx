@@ -5,7 +5,7 @@ import {
   Search, ShieldCheck, Sparkles, Star, Users, Zap,
 } from 'lucide-react';
 import { Avatar, VerifiedBadge } from './components/UI';
-import { CarpoolCrewArt } from './components/Illustrations';
+import { CarpoolScene, LottieAnimation, LOTTIE } from './components/LottieArt';
 import { AppDownload, AudienceBanner, SiteFooter, SiteHeader } from './components/MarketingUi';
 import { BlurReveal, FaceDock, ManifestoHighlight, PhotoRail, SpreadWord } from './components/ScrollEffects';
 import { rides, formatNaira } from './data';
@@ -43,6 +43,9 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
       {/* ---- Split-action hero: functional ride search + driver earning panel ---- */}
       <section className="com-hero">
         <div className="com-hero-bg" />
+        <div className="com-hero-lottie" aria-hidden="true">
+          <LottieAnimation src={LOTTIE.carBlue} speed={0.82} label="Animated Comuta car moving through Lagos" style={{ width: '100%', height: '100%' }} />
+        </div>
         <div className="com-hero-overlay" />
         <div className="com-hero-grid page-width">
           <div className="com-hero-copy">
@@ -235,6 +238,9 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
             </div>
             <div className="floating-save"><Coins size={20} /><span><small>YOU'LL SAVE THIS MONTH</small><strong>₦38,400</strong></span></div>
             <div className="floating-match"><BadgeCheck size={20} /><span><strong>New route match</strong><small>96% compatible</small></span></div>
+            <div className="com-lottie-float" aria-hidden="true">
+              <LottieAnimation src={LOTTIE.carRed} speed={0.8} label="Animated Comuta car on a recurring route" style={{ width: '100%', height: '100%' }} />
+            </div>
           </div>
           <div className="feature-copy">
             <div className="eyebrow light"><Repeat2 size={15} /> The recurring advantage</div>
@@ -331,7 +337,7 @@ export default function Landing({ onNavigate, onOpenApp, onOpenOps }: Props) {
             <div className="voice-person"><Avatar initials="TA" color="#d96e4b" size={44} /><div><strong>Tolu Adeyemi</strong><small>Rider · Ajah → Victoria Island</small></div><VerifiedBadge /></div>
           </article>
           <figure className="voice-photo">
-            <CarpoolCrewArt />
+            <CarpoolScene />
             <div className="photo-bubble"><Avatar initials="IN" color="#155e6e" size={30} /><span>We're outside Novare Mall 🚗 saved you the window seat!</span></div>
             <figcaption><span className="crew-chip"><Users size={13} /> The Lekki Sunrise Crew</span><span>Same four people, weekdays at 6:45 AM, for 11 months running.</span></figcaption>
           </figure>
