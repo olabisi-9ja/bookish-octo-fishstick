@@ -155,8 +155,11 @@ export function Landing() {
               'radial-gradient(circle at 73% 32%, rgba(28,110,84,.34), transparent 44%), linear-gradient(120deg, #041f17 0%, #0a3325 100%)',
           }}
         />
-        {/* Animated car */}
-        <div className="pointer-events-none absolute -right-10 bottom-14 z-[1] hidden w-[540px] opacity-85 lg:block" aria-hidden="true">
+        {/* Animated car — the live hero's centerpiece image */}
+        <div
+          className="pointer-events-none absolute -right-[3%] bottom-[58px] z-[1] hidden h-[430px] w-[560px] opacity-[.86] [filter:drop-shadow(0_34px_70px_rgba(0,0,0,.34))] lg:block"
+          aria-hidden="true"
+        >
           <LottieAnimation src={LOTTIE.carBlue} speed={0.82} label="Animated COMUTA car moving through Lagos" style={{ width: '100%', height: '100%' }} />
         </div>
         <div
