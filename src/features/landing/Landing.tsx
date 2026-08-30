@@ -9,15 +9,19 @@ import {
   Check,
   ChevronDown,
   Clock3,
-  Download,
+  Home,
+  KeyRound,
   LocateFixed,
   MapPin,
   Repeat,
+  Route,
   Search,
   ShieldCheck,
+  Siren,
   Sparkles,
   Star,
   Users,
+  Wallet,
   Zap,
 } from 'lucide-react';
 import { SiteFooter } from '../../components/brand/SiteFooter';
@@ -67,6 +71,13 @@ const CORRIDORS: { from: string; to: string; label: string }[] = [
 const FEATURED_TRIP_IDS = ['t_ikvi_0700', 't_ajvi_0700', 't_lekvi_0715', 't_ikevi_0630'];
 
 const DEPARTURES = ['6:00 AM', '6:30 AM', '7:00 AM', '7:30 AM', '8:00 AM', '5:00 PM', '6:00 PM'];
+
+/* Official store badges (same artwork the live marketing site used).
+   The destination links are placeholders until the stores are live. */
+const APP_STORE_LINK = 'https://apps.apple.com/ng/app/comuta/id0000000000';
+const GOOGLE_PLAY_LINK = 'https://play.google.com/store/apps/details?id=com.comuta.app';
+const APP_STORE_BADGE = 'https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83';
+const GOOGLE_PLAY_BADGE = 'https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png';
 
 function matchHub(hubs: Hub[], query: string) {
   const q = query.trim().toLowerCase();
@@ -124,6 +135,16 @@ export function Landing() {
       }).filter((x): x is NonNullable<typeof x> => !!x),
     [trips, users, vehicles, driverProfiles],
   );
+
+  // Real driver details for the human quote cards
+  const driverInfo = (userId: string, fallback: string) => {
+    const user = users.find((u) => u.id === userId);
+    const profile = user ? driverProfiles[user.id] : undefined;
+    const vehicle = profile ? vehicles.find((v) => v.id === profile.vehicleId) : undefined;
+    return { initials: user?.photoInitials ?? 'CD', color: user?.avatarColor ?? '#155942', vehicle: vehicle ? `${vehicle.make} ${vehicle.model}` : fallback };
+  };
+  const adebayo = driverInfo('usr_ade', 'Toyota Corolla');
+  const ifeoma = driverInfo('usr_ifeoma', 'Honda Accord');
 
   const search = () => {
     const f = matchHub(hubs, from);
@@ -274,28 +295,30 @@ export function Landing() {
         </div>
 
         {/* Corridor strip */}
-        <div className="absolute inset-x-0 bottom-0 z-[4] flex h-14 items-center justify-center gap-7 border-t border-white/10 bg-forest-950/85 backdrop-blur">
-          <span className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-lime-500">Popular corridors</span>
-          {CORRIDORS.map((c) => (
-            <button
-              key={c.label}
-              onClick={() => goCorridor(c.from, c.to)}
-              className="tap flex items-center gap-2 text-[12.5px] font-bold text-white hover:text-lime-500"
-            >
-              {c.label} <ArrowRight size={13} /> VI
-            </button>
-          ))}
-          <span className="ml-3 text-[11.5px] font-bold text-white/60">{seatsTomorrow} seats tomorrow</span>
+        <div className="absolute inset-x-0 bottom-0 z-[4] border-t border-white/10 bg-forest-950/85 backdrop-blur">
+          <div className="mx-auto flex max-w-6xl items-center gap-2 overflow-x-auto px-4 py-3 sm:gap-3 lg:justify-center lg:gap-5 lg:px-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <span className="shrink-0 text-[11px] font-extrabold uppercase tracking-[0.14em] text-lime-500">Popular corridors</span>
+            {CORRIDORS.map((c) => (
+              <button
+                key={c.label}
+                onClick={() => goCorridor(c.from, c.to)}
+                className="tap flex shrink-0 items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[12px] font-bold text-white transition-colors hover:border-lime-500/60 hover:text-lime-500 sm:text-[12.5px]"
+              >
+                {c.label} <ArrowRight size={12} className="text-lime-500/70" /> VI
+              </button>
+            ))}
+            <span className="shrink-0 pl-2 text-[11.5px] font-bold text-white/60 sm:pl-4">{seatsTomorrow} seats tomorrow</span>
+          </div>
         </div>
       </section>
 
       {/* ---- Proof strip ---- */}
-      <section className="border-b border-line-soft bg-white py-12">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-5 md:grid-cols-4">
-          <ProofStat to={4.8} format={(v) => `${v.toFixed(1)}`} label="rider rating" />
-          <ProofStat to={96} format={(v) => `${Math.round(v)}%`} label="top route match" />
-          <ProofStat to={38} format={(v) => `₦${Math.round(v)}k`} label="potential monthly savings" />
-          <ProofStat to={4.9} format={(v) => `${v.toFixed(1)}/5`} label="rider trust rating" />
+      <section className="border-b border-line-soft bg-white py-14 lg:py-16">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-x-4 gap-y-10 px-5 md:grid-cols-4">
+          <ProofStat icon={<Star size={20} />} to={4.8} format={(v) => `${v.toFixed(1)}`} label="Rider rating" delay={0} />
+          <ProofStat icon={<Route size={20} />} to={96} format={(v) => `${Math.round(v)}%`} label="Top route match" delay={150} />
+          <ProofStat icon={<Wallet size={20} />} to={38} format={(v) => `₦${Math.round(v)}k`} label="Potential monthly savings" delay={300} />
+          <ProofStat icon={<ShieldCheck size={20} />} to={4.9} format={(v) => `${v.toFixed(1)}/5`} label="Rider trust rating" delay={450} />
         </div>
       </section>
 
@@ -327,7 +350,7 @@ export function Landing() {
       <Section title="How COMUTA works" kicker="Plan → Book → Ride">
         <div className="grid gap-4 md:grid-cols-3">
           <StepCard n="01" icon={<CalendarCheck size={20} />} title="Plan your commute" body="Choose your corridor, day and time. See every verified driver making that exact journey." />
-          <StepCard n="02" icon={<BadgeCheck size={20} />} title="Know your ride" body="Compare drivers by reliability, on-time record, vehicle and price. Reserve your seat in seconds." />
+          <StepCard n="02" icon={<CarFront size={20} />} title="Know your ride" body="Compare drivers by reliability, on-time record, vehicle and price. Reserve your seat in seconds." />
           <StepCard n="03" icon={<ShieldCheck size={20} />} title="Travel protected" body="Meet at a safe hub, confirm your trip PIN, and share your live trip with people you trust." />
         </div>
       </Section>
@@ -381,13 +404,16 @@ export function Landing() {
             </p>
             <figure className="mt-6 rounded-3xl border border-white/10 bg-white/5 p-5">
               <blockquote className="text-[15px] font-semibold leading-relaxed text-white/90">“I drive to the Island every morning anyway. Now three people cover my fuel and the bridge toll.”</blockquote>
-              <figcaption className="mt-4 flex items-center gap-3">
-                <Avatar initials="AK" color="#7a5c1f" size={38} />
-                <div>
-                  <p className="text-[13.5px] font-extrabold text-white">Adebayo K., driver</p>
-                  <p className="text-[11.5px] font-semibold text-white/60">Ikorodu → Victoria Island · recovered ₦18,500 last month</p>
-                </div>
-              </figcaption>
+              <div className="mt-5 border-t border-white/10 pt-4">
+                <DriverBadge
+                  initials={adebayo.initials}
+                  color={adebayo.color}
+                  name="Adebayo K."
+                  vehicleLabel={adebayo.vehicle}
+                  route="Ikorodu → Victoria Island"
+                  meta="184 trips shared · recovered ₦18,500 this month"
+                />
+              </div>
             </figure>
           </div>
         </div>
@@ -397,8 +423,8 @@ export function Landing() {
       <Section title="Who COMUTA is for" kicker="Everyday people, everyday routes">
         <div className="grid gap-4 md:grid-cols-3">
           <StepCard icon={<Users size={20} />} title="Office commuters" body="Ikorodu, Lekki, Ajah or Ikeja to the Island every weekday. Same route, same time, same people." />
-          <StepCard icon={<CalendarCheck size={20} />} title="Parents & families" body="Know your pickup hub, share your live trip with family, and never wait at a random corner." />
-          <StepCard icon={<Repeat size={20} />} title="Drivers going anyway" body="You're already making the trip. Fill empty seats and recover fuel, tolls and wear." />
+          <StepCard icon={<Home size={20} />} title="Parents & families" body="Know your pickup hub, share your live trip with family, and never wait at a random corner." />
+          <StepCard icon={<CarFront size={20} />} title="Drivers going anyway" body="You're already making the trip. Fill empty seats and recover fuel, tolls and wear." />
         </div>
       </Section>
 
@@ -444,9 +470,9 @@ export function Landing() {
       {/* ---- Safety ---- */}
       <Section title="Safety that's calm, not scary" kicker="Safety">
         <div className="grid gap-4 md:grid-cols-3">
-          <StepCard icon={<ShieldCheck size={20} />} title="Trip PIN" body="A private code confirms the vehicle before you enter. Only your driver sees it." />
+          <StepCard icon={<KeyRound size={20} />} title="Trip PIN" body="A private code confirms the vehicle before you enter. Only your driver sees it." />
           <StepCard icon={<Users size={20} />} title="Live trip sharing" body="Share your route with trusted contacts for the whole journey. You can stop sharing any time." />
-          <StepCard icon={<BadgeCheck size={20} />} title="SOS, when you need it" body="One clear emergency action with your location, trip and vehicle details ready for support." />
+          <StepCard icon={<Siren size={20} />} title="SOS, when you need it" body="One clear emergency action with your location, trip and vehicle details ready for support." />
         </div>
       </Section>
 
@@ -462,14 +488,15 @@ export function Landing() {
             <blockquote className="max-w-xl text-[19px] font-semibold leading-relaxed">
               “At first I was worried about strangers in my car. But everyone is verified, and the trip PIN thing made my wife comfortable.”
             </blockquote>
-            <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
-              <figcaption className="flex items-center gap-3">
-                <Avatar initials="IN" color="#3d5f8a" size={42} />
-                <div>
-                  <p className="text-[14px] font-extrabold">Ifeoma N., driver</p>
-                  <p className="text-[12px] text-white/60">Ikeja → Victoria Island · 11 trips this month</p>
-                </div>
-              </figcaption>
+            <div className="mt-6 flex flex-wrap items-center justify-between gap-5">
+              <DriverBadge
+                initials={ifeoma.initials}
+                color={ifeoma.color}
+                name="Ifeoma N."
+                vehicleLabel={ifeoma.vehicle}
+                route="Ikeja → Victoria Island"
+                meta="11 trips this month · 4.9 rating"
+              />
               <Button size="md" variant="lime" onClick={() => navigate('/app/driver/routes/new')}>
                 Start sharing your commute <ArrowRight size={16} />
               </Button>
@@ -484,16 +511,13 @@ export function Landing() {
           <p className="text-[12px] font-extrabold uppercase tracking-[0.2em] text-lime-500">Your commute. Shared. Simpler.</p>
           <h2 className="mt-3 text-[32px] font-extrabold tracking-tight text-white">Keep your commute one tap away</h2>
           <p className="mt-3 text-[15px] text-white/70">
-            COMUTA installs like an app on your phone. Fast, offline-friendly, and built around your daily journey.
+            Get the COMUTA app on iOS and Android. Fast, offline-friendly, and built around your daily journey.
           </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <Button size="lg" onClick={() => navigate('/signup')}>
-              <Download size={17} /> Install COMUTA
-            </Button>
-            <Button size="lg" variant="secondary" className="border-white/15 bg-white/10 text-white hover:bg-white/20" onClick={() => navigate('/login')}>
-              Log in
-            </Button>
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
+            <StoreBadge href={APP_STORE_LINK} src={APP_STORE_BADGE} alt="Download on the App Store" />
+            <StoreBadge href={GOOGLE_PLAY_LINK} src={GOOGLE_PLAY_BADGE} alt="Get it on Google Play" />
           </div>
+          <p className="mt-4 text-[12px] font-semibold text-white/45">Free to download · iOS & Android</p>
         </div>
       </Section>
 
@@ -708,15 +732,27 @@ function DriveCard({ onEarn }: { onEarn: () => void }) {
 /* ------------------------------------------------------------------ */
 /* Small building blocks                                               */
 /* ------------------------------------------------------------------ */
-function ProofStat({ to, format, label }: { to: number; format: (v: number) => string; label: string }) {
+function ProofStat({
+  icon,
+  to,
+  format,
+  label,
+  delay = 0,
+}: {
+  icon: React.ReactNode;
+  to: number;
+  format: (v: number) => string;
+  label: string;
+  delay?: number;
+}) {
   const ref = useRef<HTMLParagraphElement>(null);
   const [val, setVal] = useState(0);
   const [started, setStarted] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (!el || typeof window === 'undefined') return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || typeof IntersectionObserver === 'undefined') {
       setVal(to);
       setStarted(true);
       return;
@@ -728,7 +764,7 @@ function ProofStat({ to, format, label }: { to: number; format: (v: number) => s
           io.disconnect();
         }
       },
-      { threshold: 0.4 },
+      { threshold: 0.35 },
     );
     io.observe(el);
     return () => io.disconnect();
@@ -736,24 +772,35 @@ function ProofStat({ to, format, label }: { to: number; format: (v: number) => s
 
   useEffect(() => {
     if (!started) return;
-    const t0 = performance.now();
-    const dur = 900;
     let raf = 0;
-    const tick = (t: number) => {
-      const p = Math.min(1, (t - t0) / dur);
-      setVal(to * (1 - Math.pow(1 - p, 3)));
-      if (p < 1) raf = requestAnimationFrame(tick);
+    let cancelled = false;
+    const timeout = window.setTimeout(() => {
+      const t0 = performance.now();
+      const dur = 1100;
+      const tick = (t: number) => {
+        if (cancelled) return;
+        const p = Math.min(1, (t - t0) / dur);
+        setVal(to * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    }, delay);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timeout);
+      cancelAnimationFrame(raf);
     };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [started, to]);
+  }, [started, to, delay]);
 
   return (
     <div className="text-center">
-      <p ref={ref} className="text-[40px] font-extrabold tracking-tight text-forest-900">
+      <span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-forest-900 text-lime-500">
+        {icon}
+      </span>
+      <p ref={ref} className="mt-3 text-[38px] font-extrabold leading-none tracking-tight text-forest-900 lg:text-[44px]">
         {format(val)}
       </p>
-      <p className="mt-1 text-[12px] font-semibold text-variant">{label}</p>
+      <p className="mt-2 text-[10.5px] font-extrabold uppercase tracking-[0.12em] text-variant">{label}</p>
     </div>
   );
 }
@@ -828,6 +875,59 @@ function PublicRideCard({
       </div>
       <p className="px-4 pb-4 text-[10.5px] font-semibold text-faint">{vehicleLabel} · verified</p>
     </article>
+  );
+}
+
+/* Driver attribution with an unmistakable driver badge and vehicle line. */
+function DriverBadge({
+  initials,
+  color,
+  name,
+  vehicleLabel,
+  route,
+  meta,
+}: {
+  initials: string;
+  color: string;
+  name: string;
+  vehicleLabel: string;
+  route: string;
+  meta: string;
+}) {
+  return (
+    <div className="flex items-center gap-3.5">
+      <div className="relative shrink-0">
+        <Avatar initials={initials} color={color} size={46} />
+        <span className="absolute -bottom-1 -right-1 grid h-5 w-5 place-items-center rounded-full bg-lime-500 text-forest-950 ring-2 ring-forest-900">
+          <CarFront size={12} aria-hidden />
+        </span>
+      </div>
+      <div className="min-w-0">
+        <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[14px] font-extrabold text-white">
+          {name}
+          <span className="inline-flex items-center gap-1 rounded-full border border-lime-500/40 bg-lime-500/10 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-lime-400">
+            <BadgeCheck size={11} aria-hidden /> Verified driver
+          </span>
+        </p>
+        <p className="mt-1 truncate text-[12px] font-semibold text-white/65">{vehicleLabel} · {route}</p>
+        <p className="text-[11px] text-white/45">{meta}</p>
+      </div>
+    </div>
+  );
+}
+
+/* Official App Store / Google Play badge on a white tile so the artwork reads on dark sections. */
+function StoreBadge({ href, src, alt }: { href: string; src: string; alt: string }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={alt}
+      className="tap inline-flex h-[52px] items-center overflow-hidden rounded-xl bg-white px-3 shadow-lg transition-transform hover:scale-[1.03]"
+    >
+      <img src={src} alt={alt} loading="lazy" className="h-9 w-auto" />
+    </a>
   );
 }
 
