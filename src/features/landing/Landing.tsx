@@ -20,8 +20,9 @@ import {
   Users,
   Zap,
 } from 'lucide-react';
-import { Logo } from '../../components/brand/Logo';
 import { LottieAnimation, LOTTIE } from '../../components/brand/LottieArt';
+import { SiteFooter } from '../../components/brand/SiteFooter';
+import { PublicNav } from './PublicNav';
 import { Avatar } from '../../components/ui/Misc';
 import { Button } from '../../components/ui/Button';
 import { InstallPrompt } from '../../components/ui/InstallPrompt';
@@ -143,22 +144,7 @@ export function Landing() {
   return (
     <div className="min-h-dvh bg-surface text-onsurface">
       {/* Nav */}
-      <header className="sticky top-0 z-30 border-b border-line-soft bg-surface/90 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
-          <Logo size={28} />
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => navigate('/login')}
-              className="tap rounded-xl px-4 py-2 text-[13.5px] font-bold text-forest-900 hover:bg-surface-2"
-            >
-              Log in
-            </button>
-            <Button size="md" onClick={() => navigate('/signup')}>
-              Get started
-            </Button>
-          </div>
-        </div>
-      </header>
+      <PublicNav />
 
       {/* ---- Split-action hero: functional ride search + driver earning panel ---- */}
       <section className="relative flex min-h-[780px] items-center overflow-hidden bg-forest-950 text-white">
@@ -508,17 +494,7 @@ export function Landing() {
       </Section>
 
       {/* Footer */}
-      <footer className="border-t border-line-soft bg-white py-10">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-5 md:flex-row">
-          <Logo size={26} />
-          <p className="text-[12.5px] font-semibold text-faint">Planned shared commuting for Lagos. © {new Date().getFullYear()} COMUTA</p>
-          <div className="flex gap-5 text-[13px] font-bold text-variant">
-            <button onClick={() => navigate('/app/rider/safety')} className="tap hover:text-forest-900">Safety</button>
-            <button onClick={() => navigate('/app/driver/home')} className="tap hover:text-forest-900">Drivers</button>
-            <button onClick={() => navigate('/app/rider/support')} className="tap hover:text-forest-900">Help</button>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
       <InstallPrompt />
     </div>
   );

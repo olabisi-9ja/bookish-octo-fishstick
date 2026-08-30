@@ -12,6 +12,7 @@ import { ForgotPassword } from './features/auth/ForgotPassword';
 import { Kyc } from './features/auth/Kyc';
 import { RoleSelect, DriverOnboarding } from './features/auth/RoleSelect';
 import { Landing } from './features/landing/Landing';
+import { CompanyPage } from './features/landing/CompanyPage';
 import { RiderHome } from './features/rider/Home';
 import { Plan } from './features/rider/Plan';
 import { Search } from './features/rider/Search';
@@ -93,6 +94,13 @@ export function AppRoutes() {
       <Routes>
         {/* Public */}
         <Route path="/" element={<Landing />} />
+        <Route path="/how-it-works" element={<CompanyPage />} />
+        <Route path="/safety" element={<CompanyPage />} />
+        <Route path="/drivers" element={<CompanyPage />} />
+        <Route path="/about" element={<CompanyPage />} />
+        <Route path="/help" element={<CompanyPage />} />
+        <Route path="/privacy" element={<CompanyPage />} />
+        <Route path="/terms" element={<CompanyPage />} />
         <Route path="/splash" element={<Splash />} />
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/login" element={<PublicOnly><Login /></PublicOnly>} />

@@ -20,6 +20,13 @@ const server = await createServer({ server: { middlewareMode: true }, appType: '
 const screens = [
   // public
   ['Landing', '/src/features/landing/Landing.tsx', 'Landing'],
+  ['HowItWorks', '/src/features/landing/CompanyPage.tsx', 'CompanyPage'],
+  ['SafetyPage', '/src/features/landing/CompanyPage.tsx', 'CompanyPage'],
+  ['Drivers', '/src/features/landing/CompanyPage.tsx', 'CompanyPage'],
+  ['About', '/src/features/landing/CompanyPage.tsx', 'CompanyPage'],
+  ['Help', '/src/features/landing/CompanyPage.tsx', 'CompanyPage'],
+  ['Privacy', '/src/features/landing/CompanyPage.tsx', 'CompanyPage'],
+  ['Terms', '/src/features/landing/CompanyPage.tsx', 'CompanyPage'],
   ['Splash', '/src/features/auth/Splash.tsx', 'Splash'],
   ['Onboarding', '/src/features/auth/Onboarding.tsx', 'Onboarding'],
   ['Login', '/src/features/auth/Login.tsx', 'Login'],
@@ -69,7 +76,21 @@ const screens = [
 ];
 
 const entryFor = (label) =>
-  label === 'TripScreen (upcoming)'
+  label === 'HowItWorks'
+    ? ['/how-it-works']
+    : label === 'SafetyPage'
+      ? ['/safety']
+      : label === 'Drivers'
+        ? ['/drivers']
+        : label === 'About'
+          ? ['/about']
+          : label === 'Help'
+            ? ['/help']
+            : label === 'Privacy'
+              ? ['/privacy']
+              : label === 'Terms'
+                ? ['/terms']
+                : label === 'TripScreen (upcoming)'
     ? ['/x/t_ikvi_0700']
     : label === 'TripScreen (at-risk)' || label === 'AlternativeScreen'
       ? ['/x/t_ikvi_0800']

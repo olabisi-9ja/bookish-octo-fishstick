@@ -106,14 +106,25 @@ src/
                            history, routes, account, safety, notifications, support
     driver/                Home, publish, routes, trips + passengers, confirmation,
                            reliability, earnings, account
-    landing/               Marketing site (web = storytelling)
+    landing/               Public website (landing + company pages + footer)
+      Landing.tsx          Split-action hero (live site merge) + human sections
+      CompanyPage.tsx      /about /safety /drivers /help /privacy /terms /how-it-works
+      PublicNav.tsx        Shared sticky nav for every public page
+  components/brand/
+    SiteFooter.tsx         Live-site footer (Ride / Drive / Comuta sitemap)
 scripts/
   smoke.mjs                SSR smoke test across all routes
   smoke-driver.mjs         SSR smoke test for driver screens
 public/
   manifest.webmanifest     PWA manifest + shortcuts
+  sitemap.xml              Public URL sitemap (base https://comuta.app)
+  robots.txt               Allows crawling, points to sitemap.xml
   icons/                   Generated PNG icons (192/512 + maskable)
 ```
+
+### Public website pages
+
+The marketing site is multi-page, not a single landing: `/` (landing), `/how-it-works`, `/safety`, `/drivers`, `/about`, `/help`, `/privacy`, `/terms`, plus the auth screens (`/login`, `/signup`, `/splash`, `/onboarding`, `/forgot`). Every page shares the sticky nav (`PublicNav`) and the live-site footer (`SiteFooter`) with the site map: Ride / Drive / Comuta columns plus Privacy, Terms and Accessibility. `public/sitemap.xml` lists the crawlable URLs.
 
 ### Trip state machine (visible in the UI)
 
