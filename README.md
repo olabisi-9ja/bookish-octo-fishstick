@@ -1,146 +1,144 @@
-# Comuta
+# COMUTA — Planned Shared Commuting
 
-**Comuta** is Nigeria's trusted recurring carpool network: *Your route. Your people. Your commute.*
+**COMUTA** is a planned shared-commuting platform for Lagos: *Your commute. Shared. Simpler.*
 
-This repository is a working web MVP of the rider app, driver app and operations centre, with a client-side marketplace engine (matching, pricing, bookings, trip PIN, chat, SOS and an immutable wallet ledger).
+Ride with people already making your journey. Book ahead, know your seat, and travel with verified drivers — at a fraction of the cost of riding alone.
 
-- **Marketing website** at `/`
-- **Product** at `/app`, phone/OTP auth, rider + driver workspaces
-- **Operations centre** at `/ops`
+This repository is a **production-quality, frontend-only PWA prototype**. Everything runs locally in the browser with mocked services and persisted `localStorage` state — no database, payments, maps, auth or notification backend required yet. Integration points are clearly isolated so Supabase, Paystack, Mapbox/Google Maps, push notifications and real auth can be plugged in later without rewriting the UI.
 
-### Demo login
+---
 
-Continue as **Olabisi**, or sign in with any Nigerian number. Prototype OTP is always **`4827`**.
-
-## Run locally
+## Run it
 
 ```bash
 npm install
-npm run dev
+npm run dev        # http://localhost:4173
 ```
 
-The Vite server binds to `0.0.0.0:4173`.
+Production build + installable PWA:
 
 ```bash
 npm run build
 npm run preview
 ```
 
-## Product paths
+Other scripts: `npm run typecheck`, `npm run smoke` (server-render smoke test over every route).
 
-| Path | Surface |
-| --- | --- |
-| `/` | Marketing home |
-| `/how-it-works` | Product method and matching |
-| `/safety` | Verification and trip safety |
-| `/communities` | Trusted community networks |
-| `/drivers` | Driver proposition and workflow |
-| `/about`, `/help`, `/privacy`, `/terms` | Company, support and policy pages |
-| `/app/rider/home` | Rider home |
-| `/app/rider/explore` | Ranked ride matches |
-| `/app/rider/trips` | Active and scheduled trips |
-| `/app/rider/communities` | Rider communities |
-| `/app/rider/profile` | Rider profile and trust |
-| `/app/driver/home` | Driver home |
-| `/app/driver/rides` | Driver schedule and trip controls |
-| `/app/driver/requests` | Passenger requests |
-| `/app/driver/earnings` | Earnings, settlements and payouts |
-| `/app/driver/profile` | Driver profile and verification |
-| `/ops/control-centre` | Operations overview |
-| `/ops/live-trips`, `/ops/analytics`, `/ops/reports` | Monitoring and intelligence |
-| `/ops/users`, `/ops/drivers`, `/ops/vehicles`, `/ops/trips`, `/ops/bookings` | Marketplace operations |
-| `/ops/communities`, `/ops/pricing`, `/ops/promotions` | Community and growth operations |
-| `/ops/verification`, `/ops/safety`, `/ops/disputes` | Trust and safety operations |
-| `/ops/payments`, `/ops/refunds`, `/ops/payouts` | Finance operations |
-| `/ops/settings`, `/ops/audit-logs` | Platform controls and accountability |
+## Local development accounts (seeded, never shown in the UI)
 
-## Interactive flows
+| Email | Password | Role | What you get |
+| --- | --- | --- | --- |
+| `test@comuta.app` | `ComutaTest123!` | Rider (primary) | Verified rider with a confirmed next commute (Ikorodu → VI, tomorrow 7:00 AM, driver Adebayo K.), a second pending-confirmation trip, an **at-risk trip** (driver hasn't confirmed → recovery flow), completed trip history, a saved recurring route, trusted contacts, notifications and a resolved support ticket |
+| `rider@comuta.app` | `ComutaTest123!` | Rider | Second rider — also booked on the at-risk trip |
+| `driver@comuta.app` | `ComutaTest123!` | Driver | Verified driver (Adebayo K., Toyota Corolla ABC 123 XY) with published routes, tomorrow's commute with 2 riders, a T-8 confirmation deadline, reliability stats, cost recovery and payout history |
 
-### Rider
+Mock OTP for every verification step is **`4827`**. Any other email + password creates a fresh local account (sign up → OTP → KYC → role selection).
 
-1. Select **Find a ride**.
-2. Confirm Ajah → Victoria Island and a recurring schedule.
-3. Compare route matches in **Explore**.
-4. Open a driver, inspect verification and vehicle details.
-5. Request a seat, choose payment, and reach confirmation.
-6. Open **Trips** for live tracking, masked communication, sharing and safety tools.
+> These accounts exist only in `src/data/seed.ts` and `src/services/authService.ts` (see the `TEST_ACCOUNTS` constant). They are deliberately **not** shown anywhere in the product UI.
 
-### Driver
+### Try the full rider loop
 
-1. Switch to **Driver** in the sidebar or profile.
-2. Select **Offer a ride**.
-3. Complete route, recurring schedule, seats and contribution.
-4. Review incoming passenger requests.
-5. Inspect upcoming rides and earnings/payout activity.
+1. Log in with `test@comuta.app` / `ComutaTest123!` → Rider home shows **Your next commute**.
+2. **Plan a commute** (Ikorodu Hub → Victoria Island Hub, Tomorrow, 7:00 AM) → **Find available trips**.
+3. Compare trip cards (sort by Best match / Earliest / Lowest price), open a trip, check driver trust + vehicle + hub, **Reserve 1 seat** → review → **Continue to payment** → Pay.
+4. Enjoy the **"You're booked."** animation → trip is now in **Upcoming** → driver confirmation pending.
+5. Open the at-risk trip (`8:00 AM`, Ikorodu → VI) to see **"Something changed"** → **View alternatives** → switch trip or request a refund.
+6. On the confirmed trip, use **Pickup** → PIN `4827` → **I'm at pickup** → **Confirm pickup** → **live map** with Share trip and SOS.
+7. Completed trips let you **rate your driver**; everything lands in **Trips → Completed**.
+8. **Routes** shows your saved recurring route with pause/skip/cancel; **Account → Developer options** resets the prototype.
 
-### Operations
+### Try the driver loop
 
-Open `/ops` to review live trips, route-deviation alerts, corridor demand/supply, verification applications, payment signals and marketplace conversion.
+Log in with `driver@comuta.app` / `ComutaTest123!` → Driver home shows **your next commute** with 2 passengers and the **confirm-by-11:00-PM** deadline. Open the trip → **Confirm trip** → "Confirmed — your passengers have been notified." Check **Reliability**, **Earnings** (cost recovery + payouts), **Publish a commute**, and manage passenger PINs.
 
-## Brand system
+---
 
-### Identity
+## Product concept
 
-- **Name:** Comuta (suggestive of "commute"); movement, efficiency, everyday mobility.
-- **Logo:** a dark forest green circle holding two vertical bars, one white, one vibrant lime green, symbolising a road, a pathway and an abstract "C". The mark lives in `src/components/Brand.tsx` and the app icon in `public/comuta-icon.svg`.
+> **Plan → Compare → Trust → Reserve → Confirm → Prepare → Pickup → Track → Complete → Repeat**
 
-### Colour palette
+COMUTA is a planned shared-commuting product — **not** an Uber/Bolt clone:
 
-| Role | Tokens | Meaning |
-| --- | --- | --- |
-| Primary, Dark Forest Green | `--forest-950…500`, legacy `--green-950…600` | Trust, stability, nature |
-| Accent, Vibrant Lime Green | `--lime`, `--lime-600`, `--lime-soft` | Energy, growth, freshness |
-| Supporting, Teal / Blue-gray | `--teal-700…50`, `--slate-700…100` | Technology, calm |
-| Supporting, Black / Gray | `--ink`, `--muted`, `--line`, `--cream`, `--sand` | Sophistication |
-| Alerts, Red scale | `--red-700…50` | Warnings, safety, SOS |
+- **Recurring corridors first**: Ikorodu → Victoria Island, Ajah → VI, Lekki → VI, Ikeja → VI.
+- **Approved hubs only** — every pickup happens at a verified, monitored location.
+- **Driver commitment (T-8)** — drivers confirm by 11:00 PM so riders can plan around certainty.
+- **Recovery, not dead ends** — if a driver drops out, the booking is protected: alternatives or refund.
+- **Trip PIN, live sharing, SOS** — safety is visible, calm and immediate.
+- No Communities/Circles, no social feed, no chat between riders, no demo-account UI.
 
-All surfaces draw from these tokens in `src/styles.css`; alert and warning states use the red scale, live/route accents use the lime accent, and secondary data accents use teal/blue-gray.
+## Brand
 
-### Typography
+- **Primary** deep forest green `#0A251C`, **accent** COMUTA lime `#BDF23F`, muted green/teal ramps, soft neutral surfaces `#F9FBFB` / `#F0F4F4`, error red ramp.
+- **Typography** — Degular (fallback Manrope, loaded from Google Fonts).
+- The mark — dark green circle with white + lime bars — is used for splash, auth, landing and app icon; authenticated screens stay quiet and journey-first.
+- Illustration system is flat, geometric and mobility-specific (onboarding, empty states, success, failure, recovery, safety) — no stock SaaS imagery.
 
-One highly legible, clean geometric sans-serif, **Manrope** (400-800), carries every text role:
-
-| Role | Token | Usage |
-| --- | --- | --- |
-| Display | `--font-display` | Hero and manifest statements |
-| Headline | `--font-headline` | Section titles |
-| Title | `--font-title` | Card and panel titles, wordmark |
-| Body | `--font-body` | Paragraphs, controls |
-| Caption | `--font-caption` | Uppercase kickers, labels, metadata |
-
-### UI elements
-
-- Minimalist, rounded-corner buttons with a single primary action per screen. The onboarding flow is driven by a consistent **Continue** button.
-- Social sign-in options (**Continue with Apple**, **Continue with Google**) alongside phone sign-in in the auth flow.
-- Clean, rounded input fields for **ID type** and **Location** during profile setup, plus phone, name and emergency-contact fields.
-- Rounded corners throughout (cards, chips, modals, inputs) for a calm, frictionless feel.
-- Official **App Store** and **Google Play** badges in the mobile download section, linked to the launch listing. The badge artwork is served unmodified from Apple's and Google's official asset services per their marketing guidelines (set `APP_STORE_LINK` / `GOOGLE_PLAY_LINK` in `src/components/MarketingUi.tsx` once live).
-- Live motion illustration layer powered by **LottieFiles** (`src/components/LottieArt.tsx`). It uses the official `lottie-player` web component to render car, route and commuter animations streamed from the LottieFiles CDN, replacing static/custom illustrations in the hero, motion rail, voice section and marketing route cards. Member avatars remain clean flat vector art.
-
-### Brand values
-
-- **Trust & Security**, dark forest palette, identity/ID-type verification, location context, layered safety signals.
-- **Simplicity & Clarity**, minimal UI, generous whitespace, one geometric typeface, immediate answers.
-- **Sustainability & Vitality**, deep forest green with vibrant lime accents.
-- **Efficiency & Mobility**, the name and the road-like bars in the mark communicate movement, speed and effortless navigation.
-- **Modernity & Innovation**, geometric logo, social sign-in, structured token scales, contemporary components.
-- **Professionalism & Versatility**, organized colour scales and a fixed type hierarchy keep the brand consistent across web, PWA and (future) mobile.
-
-The UI is original, with product-pattern inspiration drawn from leading mobility platforms while retaining Comuta's own positioning: **Your route. Your people. Your commute.**
-
-## Technical notes
+## Tech
 
 - React + TypeScript + Vite
-- Responsive/PWA-ready web application
-- Lucide icon system
-- URL-based surface switching with browser history support
-- Local deterministic data for the prototype, with interaction state modelled in React
-- CSS-generated map and route previews to avoid exposing API keys in the client prototype
+- Tailwind CSS v4 (`@theme` tokens in `src/index.css`)
+- React Router v7 (route map below)
+- Zustand (persisted to `localStorage`, key `comuta.pwa.v2`)
+- Motion (Framer Motion) with the COMUTA motion durations in `src/constants`
+- lucide-react icons
+- `vite-plugin-pwa` — installable, offline shell, precached assets, offline fallback (`navigateFallback` → `index.html`)
 
-The product is ready to connect to the proposed NestJS, PostGIS and Redis services. Payment, identity, live location, messaging and emergency actions are intentionally demonstrated without initiating real external transactions or emergency calls.
+## Structure
 
-## Cross platform mobile
+```text
+src/
+  App.tsx                  Router + guards (auth, KYC, driver)
+  index.css                Tailwind theme — brand tokens, motion, a11y
+  types/                   Domain model (mirrors future API contracts)
+  constants/               Motion durations, status labels, test accounts
+  data/seed.ts             Deterministic mock data (relative dates, auto-refresh)
+  store/                   Zustand store — single source of truth, persisted
+  services/                Mock backend facade (swap for real APIs later)
+    authService, tripService, bookingService, paymentService,
+    routeService, driverService, notificationService,
+    safetyService, supportService
+  components/              brand/ ui/ illustrations/ map/ (ComutaMap)
+  layouts/                 AuthLayout, AppLayout (mobile bottom nav + desktop sidebar)
+  features/
+    auth/                  Splash, onboarding, login, signup, OTP, reset, KYC, roles
+    rider/                 Home, plan, search, trip detail, booking, payment,
+                           confirmation, trip state machine, pickup, live trip,
+                           history, routes, account, safety, notifications, support
+    driver/                Home, publish, routes, trips + passengers, confirmation,
+                           reliability, earnings, account
+    landing/               Public website (landing + company pages + footer)
+      Landing.tsx          Split-action hero (live site merge) + human sections
+      CompanyPage.tsx      /about /safety /drivers /help /privacy /terms /how-it-works
+      PublicNav.tsx        Shared sticky nav for every public page
+  components/brand/
+    SiteFooter.tsx         Live-site footer (Ride / Drive / Comuta sitemap)
+scripts/
+  smoke.mjs                SSR smoke test across all routes
+  smoke-driver.mjs         SSR smoke test for driver screens
+public/
+  manifest.webmanifest     PWA manifest + shortcuts
+  sitemap.xml              Public URL sitemap (base https://comuta.app)
+  robots.txt               Allows crawling, points to sitemap.xml
+  icons/                   Generated PNG icons (192/512 + maskable)
+```
 
-The production mobile client should be one Expo and React Native application for iOS and Android, with protected Rider and Driver route groups and a verified role switch. It should reuse API contracts and design tokens rather than wrapping the website or attempting to share DOM components.
+### Public website pages
 
-The implementation architecture, native capability choices, backend boundaries, navigation map and delivery sequence are documented in [`docs/cross-platform-mobile.md`](docs/cross-platform-mobile.md).
+The marketing site is multi-page, not a single landing: `/` (landing), `/how-it-works`, `/safety`, `/drivers`, `/about`, `/help`, `/privacy`, `/terms`, plus the auth screens (`/login`, `/signup`, `/splash`, `/onboarding`, `/forgot`). Every page shares the sticky nav (`PublicNav`) and the live-site footer (`SiteFooter`) with the site map: Ride / Drive / Comuta columns plus Privacy, Terms and Accessibility. `public/sitemap.xml` lists the crawlable URLs.
+
+### Trip state machine (visible in the UI)
+
+`confirmation_pending → confirmed → pickup → departed → in_transit → completed`, plus `at_risk` (driver hasn't confirmed / dropped) and `cancelled`. Payments: `pending → processing → successful / failed → refunded`. Verification: `pending → under_review → verified / rejected`.
+
+## Integration points (later)
+
+| Area | Now | Later |
+| --- | --- | --- |
+| Auth | `authService` (local accounts) | Supabase / real auth, biometrics |
+| Trips & bookings | `tripService` / `bookingService` (local state) | NestJS / Supabase API |
+| Payments | `paymentService` (mock Paystack checkout) | Paystack popup + webhooks |
+| Maps | `ComutaMap` (SVG corridor abstraction) | Mapbox / Google Maps (swap one component) |
+| Notifications | `notificationService` (local) | Push notifications |
+| Safety | `safetyService` (mock SOS/share) | Real emergency integration |
+
+The PWA is mobile-first with a desktop sidebar layout, reduced-motion support, focus-visible styles, 44px touch targets, skeletons and offline banner.

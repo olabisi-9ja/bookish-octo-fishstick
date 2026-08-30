@@ -62,7 +62,6 @@ Share contracts, domain types and design tokens. Do not share React DOM componen
   checkout/[bookingId]
   trips
   trip/[tripId]
-  communities
   profile
 
 (driver)
@@ -102,7 +101,7 @@ The NestJS API should enforce idempotency, state transition guards, role checks 
 
 ## Mobile API boundaries
 
-Start with versioned endpoints for authentication, profiles, verification, communities, rides, matches, bookings, payments, trips, safety, messaging, earnings and notifications. Generate the TypeScript client from an OpenAPI contract so web and mobile consume the same request and response definitions.
+Start with versioned endpoints for authentication, profiles, verification, hubs, routes, trips, bookings, payments, driver commitments, safety, earnings and notifications. Generate the TypeScript client from an OpenAPI contract so web and mobile consume the same request and response definitions.
 
 Socket.IO rooms should be authorised by the API. Suggested event families include:
 
@@ -134,7 +133,7 @@ Use battery aware location intervals, signed trip room access, server side devia
 3. Build Rider search, match details, booking and payment confirmation.
 4. Build Driver onboarding, ride publishing and passenger requests.
 5. Add active trip maps, Socket.IO, chat, sharing and safety controls.
-6. Add communities, history, ratings, receipts, earnings and payouts.
+6. Add history, ratings, receipts, earnings and payouts.
 7. Add offline handling, accessibility, analytics and release monitoring.
 8. Run device testing on representative lower memory Android devices and current iPhones.
 9. Complete privacy, background location and store review materials.

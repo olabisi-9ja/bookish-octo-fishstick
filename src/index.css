@@ -1,0 +1,159 @@
+@import 'tailwindcss';
+
+@theme {
+  /* ---- COMUTA brand system ---- */
+  /* Primary: deep forest green */
+  --color-forest-950: #041f17;
+  --color-forest-900: #0a251c;
+  --color-forest-800: #0f4431;
+  --color-forest-700: #155942;
+  --color-forest-600: #1c6e54;
+  --color-forest-500: #278465;
+  --color-forest-100: #d9efe4;
+  --color-forest-50: #eef8f2;
+
+  /* Accent: COMUTA lime */
+  --color-lime-400: #cdf26b;
+  --color-lime-500: #bdf23f;
+  --color-lime-600: #94c11b;
+  --color-lime-700: #6f8f0e;
+  --color-lime-50: #f5fbe4;
+  --color-lime-100: #e9f8c8;
+
+  /* Surfaces & neutrals */
+  --color-surface: #f9fbfb;
+  --color-surface-2: #f0f4f4;
+  --color-onsurface: #151e1e;
+  --color-variant: #405959;
+  --color-muted: #5e6c76;
+  --color-faint: #8ba0ae;
+  --color-line: #d8e0e4;
+  --color-line-soft: #e8edf1;
+  --color-ink: #131c20;
+
+  /* Supporting teal ramp */
+  --color-teal-700: #155e6e;
+  --color-teal-600: #1e7386;
+  --color-teal-500: #2b8ca0;
+  --color-teal-100: #dcf0f4;
+  --color-teal-50: #eef8fa;
+
+  /* Error red */
+  --color-red-700: #8c231a;
+  --color-red-600: #ac2f23;
+  --color-red-500: #c74435;
+  --color-red-400: #d96558;
+  --color-red-100: #f6dcd8;
+  --color-red-50: #fbefed;
+
+  /* Amber - attention (at-risk, needs attention) */
+  --color-amber-600: #b7791f;
+  --color-amber-500: #d19a2c;
+  --color-amber-100: #faeecf;
+  --color-amber-50: #fdf7e3;
+
+  --font-sans: 'Degular', 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, 'SF Mono', monospace;
+
+  --shadow-soft: 0 1px 2px rgba(10, 37, 28, 0.04), 0 8px 24px rgba(10, 37, 28, 0.06);
+  --shadow-lift: 0 2px 4px rgba(10, 37, 28, 0.05), 0 18px 44px rgba(10, 37, 28, 0.12);
+  --shadow-sheet: 0 -8px 40px rgba(10, 37, 28, 0.14);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    margin: 0;
+    background: var(--color-surface);
+    color: var(--color-onsurface);
+    font-family: var(--font-sans);
+    font-feature-settings: 'ss01' on;
+    -webkit-font-smoothing: antialiased;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  button {
+    font: inherit;
+    cursor: pointer;
+    border: 0;
+    background: none;
+    color: inherit;
+  }
+  input,
+  select,
+  textarea {
+    font: inherit;
+    color: inherit;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  img,
+  svg {
+    display: block;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  p {
+    margin: 0;
+  }
+  ::selection {
+    background: var(--color-lime-500);
+    color: var(--color-forest-950);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-forest-600);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .safe-b {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .safe-t {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .tap {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
