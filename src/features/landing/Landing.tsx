@@ -20,7 +20,6 @@ import {
   Users,
   Zap,
 } from 'lucide-react';
-import { LottieAnimation, LOTTIE } from '../../components/brand/LottieArt';
 import { SiteFooter } from '../../components/brand/SiteFooter';
 import { PublicNav } from './PublicNav';
 import { Avatar } from '../../components/ui/Misc';
@@ -148,25 +147,27 @@ export function Landing() {
 
       {/* ---- Split-action hero: functional ride search + driver earning panel ---- */}
       <section className="relative flex min-h-[780px] items-center overflow-hidden bg-forest-950 text-white">
+        {/* Live hero photograph: commuters on the corridor */}
+        <div
+          className="absolute inset-0 bg-cover bg-no-repeat [background-position:64%_center] md:[background-position:center_42%]"
+          style={{ backgroundImage: "url('/images/padigo-commuters.jpg')" }}
+          role="img"
+          aria-label="Commuters heading out on a Lagos route at dawn"
+        />
+        {/* Brand tint so the photo sits inside the forest-green palette */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(circle at 73% 32%, rgba(28,110,84,.34), transparent 44%), linear-gradient(120deg, #041f17 0%, #0a3325 100%)',
+              'radial-gradient(circle at 73% 32%, rgba(28,110,84,.30), transparent 46%), linear-gradient(120deg, rgba(4,31,23,.55) 0%, rgba(10,51,37,.35) 100%)',
           }}
         />
-        {/* Animated car — the live hero's centerpiece image */}
-        <div
-          className="pointer-events-none absolute -right-[3%] bottom-[58px] z-[1] hidden h-[430px] w-[560px] opacity-[.86] [filter:drop-shadow(0_34px_70px_rgba(0,0,0,.34))] lg:block"
-          aria-hidden="true"
-        >
-          <LottieAnimation src={LOTTIE.carBlue} speed={0.82} label="Animated COMUTA car moving through Lagos" style={{ width: '100%', height: '100%' }} />
-        </div>
+        {/* Legibility overlay for the hero copy and cards */}
         <div
           className="absolute inset-0 z-[2]"
           style={{
             background:
-              'linear-gradient(102deg, rgba(4,27,21,.94) 0%, rgba(6,33,25,.84) 38%, rgba(5,32,24,.4) 66%, rgba(5,32,24,.14) 100%), linear-gradient(0deg, rgba(4,27,21,.62), transparent 55%)',
+              'linear-gradient(102deg, rgba(4,27,21,.92) 0%, rgba(6,33,25,.82) 38%, rgba(5,32,24,.42) 66%, rgba(5,32,24,.18) 100%), linear-gradient(0deg, rgba(4,27,21,.55), transparent 55%)',
           }}
         />
 
