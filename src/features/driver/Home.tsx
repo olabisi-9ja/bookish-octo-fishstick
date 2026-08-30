@@ -54,7 +54,6 @@ export function DriverHome() {
               label={next.driverConfirmed ? 'Confirmed' : next.status === 'at_risk' ? 'Released' : 'Confirm by 11:00 PM'}
               tone={next.driverConfirmed ? 'lime' : next.status === 'at_risk' ? 'red' : 'amber'}
               dot
-              pulse={!next.driverConfirmed}
             />
           </div>
           <h2 className="mt-3 text-[22px] font-extrabold leading-tight tracking-tight">

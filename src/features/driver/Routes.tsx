@@ -20,7 +20,7 @@ export function DriverRoutes() {
           Publish
         </Button>
       </div>
-      <p className="mt-1 text-[13.5px] text-variant">Recurring commutes you drive — passengers book seats on each one.</p>
+      <p className="mt-1 text-[13.5px] text-variant">Recurring commutes you drive. Passengers book seats on each one.</p>
 
       <div className="mt-4 space-y-3">
         {routes.length === 0 && (
@@ -59,7 +59,7 @@ export function DriverRoutes() {
   );
 }
 
-/** Driver route detail — actions on a recurring route. */
+/** Driver route detail  -  actions on a recurring route. */
 export function DriverRouteDetail() {
   const navigate = useNavigate();
   const { id } = useParams();

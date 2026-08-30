@@ -63,7 +63,7 @@ export function DriverReliability() {
           <li>• Confirm commutes before the 11:00 PM deadline</li>
           <li>• Complete trips you've confirmed</li>
           <li>• Arrive at the pickup hub on time</li>
-          <li>• Riders see your score before booking — great scores get more bookings</li>
+          <li>• Riders see your score before booking. Great scores get more bookings</li>
         </ul>
       </div>
     </Page>

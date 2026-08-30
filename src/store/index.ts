@@ -1,5 +1,5 @@
 /**
- * COMUTA frontend store — single source of truth for UI state.
+ * COMUTA frontend store  -  single source of truth for UI state.
  * Persisted to localStorage. Services in `src/services` are the only layer
  * that mutates this store, mirroring how API calls would work later.
  */

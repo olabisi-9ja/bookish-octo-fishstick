@@ -1,7 +1,7 @@
 /**
  * Mock authentication service.
  *
- * Replace this module with real Supabase/Auth API calls later — the UI only
+ * Replace this module with real Supabase/Auth API calls later  -  the UI only
  * depends on these function signatures, never on the implementation.
  *
  * Local development accounts (seeded, never shown in the UI):
@@ -77,7 +77,7 @@ export const authService = {
     return { ok: true, session: toAuthSession(user, 'rider') };
   },
 
-  /** Send a 6-digit OTP (mock — always 4827). */
+  /** Send a 6-digit OTP (mock  -  always 4827). */
   async sendOtp(identifier: string): Promise<{ ok: boolean; error?: string }> {
     await delay(400);
     if (!identifier.trim()) return { ok: false, error: 'Enter your email or phone number.' };
@@ -132,7 +132,7 @@ export const authService = {
     useComuta.getState().refreshCalendar();
   },
 
-  /** Dev utility — clear all persisted state. */
+  /** Dev utility  -  clear all persisted state. */
   clearLocalState() {
     useComuta.getState().clearAll();
   },

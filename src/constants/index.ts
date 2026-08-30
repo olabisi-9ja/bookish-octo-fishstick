@@ -1,7 +1,7 @@
 import type { TripStatus, VerificationStatus, PaymentStatus } from '../types';
 
 /**
- * Motion durations (seconds) — the COMUTA motion system.
+ * Motion durations (seconds)  -  the COMUTA motion system.
  * Subtle, confident, restrained.
  */
 export const DURATION = {
@@ -15,7 +15,7 @@ export const DURATION = {
 export const EASE = [0.22, 0.61, 0.36, 1] as const;
 
 /**
- * Local development/test accounts — seeded by the mock auth service only.
+ * Local development/test accounts  -  seeded by the mock auth service only.
  * NEVER rendered in the product UI. Replace `authService` with a real
  * auth backend and delete this block when that happens.
  */

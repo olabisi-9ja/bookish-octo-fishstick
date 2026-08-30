@@ -10,7 +10,7 @@ import { TRIP_STATUS_LABEL } from '../../constants';
 import { DURATION } from '../../constants';
 
 /**
- * Trip card — the primary reusable decision component.
+ * Trip card  -  the primary reusable decision component.
  * Hierarchy: time → price → route → driver trust → vehicle → availability → hub.
  */
 export function TripCard({ trip, index = 0 }: { trip: TripWithMeta; index?: number }) {

@@ -1,4 +1,4 @@
-/** Mock support service — help centre categories and tickets. */
+/** Mock support service  -  help centre categories and tickets. */
 import { useComuta } from '../store';
 import { nid } from '../utils/format';
 

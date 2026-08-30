@@ -52,7 +52,7 @@ export function Plan() {
   return (
     <Page>
       <h1 className="text-[22px] font-extrabold tracking-tight text-onsurface">Plan a commute</h1>
-      <p className="mt-1 text-[13.5px] text-variant">Choose approved hubs — COMUTA only picks up at verified locations.</p>
+      <p className="mt-1 text-[13.5px] text-variant">Choose approved hubs. COMUTA only picks up at verified locations.</p>
 
       {/* Route fields */}
       <div className="relative mt-5 rounded-2xl border border-line bg-white p-4 shadow-soft">
@@ -162,7 +162,7 @@ export function Plan() {
   );
 }
 
-/** Hub picker — approved hubs are first-class UI. */
+/** Hub picker  -  approved hubs are first-class UI. */
 function HubPicker({
   open,
   role,

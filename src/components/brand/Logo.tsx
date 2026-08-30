@@ -1,5 +1,5 @@
 /**
- * COMUTA mark — dark green circle holding two vertical bars
+ * COMUTA mark  -  dark green circle holding two vertical bars
  * (one white, one lime): a road, a pathway, an abstract "C".
  */
 export function Mark({ size = 34, inverse = false }: { size?: number; inverse?: boolean }) {

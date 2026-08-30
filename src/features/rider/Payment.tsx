@@ -126,7 +126,7 @@ export function Payment() {
           <span className="rounded-full bg-surface-2 px-2.5 py-1 text-[11px] font-extrabold text-variant">Paystack</span>
         </div>
         <p className="mt-2 text-[12px] font-semibold text-faint">
-          Local mock checkout for this prototype — no real charge is made.
+          Local mock checkout for this prototype. No real charge is made.
         </p>
       </div>
 

@@ -17,7 +17,7 @@ import { DURATION, EASE } from '../../constants';
 import { ActiveTrip } from './ActiveTrip';
 import { PickupView } from './Pickup';
 
-/** One screen, driven by trip status — the state machine made visible. */
+/** One screen, driven by trip status  -  the state machine made visible. */
 export function TripScreen() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -120,10 +120,7 @@ function Timeline({ steps }: { steps: { label: string; done: boolean; current?: 
                 <CheckCircle2 size={14} className="text-white" />
               </span>
             ) : s.current ? (
-              <span className="relative grid h-6 w-6 place-items-center">
-                <span className="absolute h-6 w-6 animate-ping rounded-full bg-lime-500/50" />
-                <span className="relative h-6 w-6 rounded-full border-2 border-lime-500 bg-white" />
-              </span>
+              <span className="grid h-6 w-6 place-items-center rounded-full border-2 border-lime-500 bg-lime-50" />
             ) : (
               <span className="h-6 w-6 rounded-full border-2 border-line bg-white" />
             )}
@@ -175,7 +172,6 @@ function Upcoming({ trip, onRefresh }: { trip: TripWithMeta; onRefresh: () => vo
           label={confirmed ? 'Confirmed' : 'Awaiting driver'}
           tone={confirmed ? 'green' : trip.status === 'confirmation_pending' ? 'amber' : TRIP_STATUS_TONE[trip.status]}
           dot
-          pulse={!confirmed}
         />
       </div>
 
@@ -262,7 +258,7 @@ function Upcoming({ trip, onRefresh }: { trip: TripWithMeta; onRefresh: () => vo
   );
 }
 
-/** Something changed — driver hasn't confirmed. Booking protected. */
+/** Something changed  -  driver hasn't confirmed. Booking protected. */
 function AtRisk({ trip, onRefresh }: { trip: TripWithMeta; onRefresh: () => void }) {
   const navigate = useNavigate();
   const hubs = useComuta((s) => s.hubs);
@@ -287,7 +283,7 @@ function AtRisk({ trip, onRefresh }: { trip: TripWithMeta; onRefresh: () => void
           <ShieldCheck size={18} className="text-forest-950" />
         </span>
         <p className="text-[13.5px] font-bold leading-snug text-lime-700">
-          Booking protected — we're checking for another option. If nothing is found, you get a full refund.
+          Booking protected. We're checking for another option. If nothing is found, you get a full refund.
         </p>
       </div>
 
@@ -418,7 +414,7 @@ function Cancelled({ trip }: { trip: TripWithMeta }) {
   );
 }
 
-/** You're here — trip completed, rate your driver. */
+/** You're here  -  trip completed, rate your driver. */
 function Completion({ tripId, onDone }: { tripId: string; onDone: () => void }) {
   const navigate = useNavigate();
   const hubs = useComuta((s) => s.hubs);

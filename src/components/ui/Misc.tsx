@@ -45,15 +45,10 @@ const toneStyles: Record<Tone, string> = {
   lime: 'bg-lime-100 text-lime-700',
 };
 
-export function StatusChip({ label, tone = 'neutral', dot = false, pulse = false }: { label: string; tone?: Tone; dot?: boolean; pulse?: boolean }) {
+export function StatusChip({ label, tone = 'neutral', dot = false }: { label: string; tone?: Tone; dot?: boolean }) {
   return (
     <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold ${toneStyles[tone]}`}>
-      {dot && (
-        <span className="relative flex h-1.5 w-1.5">
-          {pulse && <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-current opacity-60" />}
-          <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-current" />
-        </span>
-      )}
+      {dot && <span className="h-1.5 w-1.5 rounded-full bg-current" aria-hidden />}
       {label}
     </span>
   );
@@ -88,7 +83,7 @@ export const VERIFICATION_STATUS_TONE: Record<VerificationStatus, Tone> = {
 
 /* ---------------- Skeletons ---------------- */
 export function Skeleton({ className = '' }: { className?: string }) {
-  return <div aria-hidden className={`animate-pulse rounded-lg bg-line-soft ${className}`} />;
+  return <div aria-hidden className={`animate- rounded-lg bg-line-soft ${className}`} />;
 }
 
 export function TripCardSkeleton() {

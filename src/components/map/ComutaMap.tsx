@@ -1,5 +1,5 @@
 /**
- * ComutaMap — a believable frontend map abstraction.
+ * ComutaMap  -  a believable frontend map abstraction.
  *
  * Until Mapbox/Google Maps is wired in, this renders a stylised SVG map with
  * hub markers, the planned route corridor and (optionally) a moving vehicle.

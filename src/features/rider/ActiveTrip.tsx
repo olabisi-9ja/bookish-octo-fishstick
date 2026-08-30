@@ -123,7 +123,7 @@ export function ActiveTrip({ tripId }: { tripId: string }) {
               {dayLabel(trip.date)} · {trip.departureTime}
             </p>
           </div>
-          <StatusChip label={`${remaining} min remaining`} tone="lime" dot pulse />
+          <StatusChip label={`${remaining} min remaining`} tone="lime" dot  />
         </div>
 
         <div className="mt-4 flex items-center gap-3 rounded-2xl border border-line bg-white p-3">
@@ -148,7 +148,7 @@ export function ActiveTrip({ tripId }: { tripId: string }) {
           </Button>
         </div>
         <p className="mt-3 text-center text-[11.5px] font-semibold text-faint">
-          PIN <span className="font-mono font-bold text-onsurface">{trip.pin}</span> — confirm before entering the vehicle
+          PIN <span className="font-mono font-bold text-onsurface">{trip.pin}</span>. Confirm it before entering the vehicle
         </p>
       </div>
 

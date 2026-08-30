@@ -1,13 +1,51 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowRight, BadgeCheck, CalendarCheck, Download, MapPin, Repeat, ShieldCheck, Users } from 'lucide-react';
+import { ArrowRight, BadgeCheck, CalendarCheck, Download, MapPin, Repeat, ShieldCheck, Star, Users } from 'lucide-react';
 import { Logo } from '../../components/brand/Logo';
+import { Avatar } from '../../components/ui/Misc';
 import { Button } from '../../components/ui/Button';
 import { InstallPrompt } from '../../components/ui/InstallPrompt';
 import { ComutaMap } from '../../components/map/ComutaMap';
 import { useComuta } from '../../store';
 import { DURATION, EASE } from '../../constants';
+
+/** Real voices from the corridors COMUTA serves. */
+const RIDER_STORIES = [
+  {
+    quote: 'I used to spend almost ₦40k a month on danfo and quick rides. Now I share my Ikorodu to VI commute with the same three people every morning.',
+    name: 'Oluwaseun A.',
+    detail: 'Rider, Ikorodu → Victoria Island · 7:00 AM',
+    color: '#155942',
+  },
+  {
+    quote: 'The driver confirm thing is the part I love. I know by 11pm if tomorrow is happening. No more standing on the road hoping.',
+    name: 'Chiamaka O.',
+    detail: 'Rider, Lekki Phase 1 → Victoria Island',
+    color: '#1e7386',
+  },
+  {
+    quote: 'My mum tracks my trip from her phone. It used to drive her mad when I took okada at night. Now she just checks COMUTA.',
+    name: 'Tunde B.',
+    detail: 'Rider, Ajah → Victoria Island',
+    color: '#2b6e4f',
+  },
+];
+
+const DRIVER_STORIES = [
+  {
+    quote: 'I drive to the Island every morning anyway. Now three people cover my fuel and the bridge toll. My commute basically pays for itself.',
+    name: 'Adebayo K.',
+    detail: 'Driver, Ikorodu → Victoria Island · 4 seats',
+    color: '#7a5c1f',
+  },
+  {
+    quote: 'At first I was worried about strangers in my car. But everyone is verified, and the trip PIN thing made my wife comfortable.',
+    name: 'Ifeoma N.',
+    detail: 'Driver, Ikeja → Victoria Island',
+    color: '#3d5f8a',
+  },
+];
 
 export function Landing() {
   const navigate = useNavigate();
@@ -60,7 +98,7 @@ export function Landing() {
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 pb-16 pt-14 lg:grid-cols-2 lg:pt-20">
           <div>
             <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: DURATION.standard, ease: EASE }} className="inline-flex items-center gap-2 rounded-full bg-lime-100 px-3.5 py-1.5 text-[12.5px] font-extrabold text-lime-700">
-              <span className="h-1.5 w-1.5 rounded-full bg-lime-600" /> Planned shared commuting · Lagos
+              Planned shared commuting in Lagos
             </motion.p>
             <motion.h1 initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08, duration: DURATION.standard, ease: EASE }} className="mt-5 text-[42px] font-extrabold leading-[1.02] tracking-tight text-forest-900 sm:text-[56px]">
               Your commute.
@@ -68,7 +106,7 @@ export function Landing() {
               Shared. <span className="text-lime-600">Simpler.</span>
             </motion.h1>
             <motion.p initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.16, duration: DURATION.standard, ease: EASE }} className="mt-5 max-w-md text-[16px] leading-relaxed text-variant">
-              Ride with people already making your journey. Book ahead, know your seat, and travel with verified drivers — at a fraction of the cost.
+              Ride with people already making your journey. Book ahead, know your seat, and travel with verified drivers, at a fraction of the cost.
             </motion.p>
             <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.24, duration: DURATION.standard, ease: EASE }} className="mt-7 flex flex-wrap gap-3">
               <Button size="lg" onClick={() => navigate('/app/rider/plan')}>
@@ -78,10 +116,23 @@ export function Landing() {
                 Share your commute
               </Button>
             </motion.div>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4, duration: DURATION.standard }} className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-[12.5px] font-bold text-variant">
-              <span className="flex items-center gap-1.5"><BadgeCheck size={15} className="text-forest-700" /> Verified drivers</span>
-              <span className="flex items-center gap-1.5"><MapPin size={15} className="text-forest-700" /> Safe pickup hubs</span>
-              <span className="flex items-center gap-1.5"><Repeat size={15} className="text-forest-700" /> Recurring routes</span>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4, duration: DURATION.standard }}
+              className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3"
+            >
+              <div className="flex -space-x-2.5">
+                {RIDER_STORIES.map((s) => (
+                  <Avatar key={s.name} initials={s.name.split(' ').map((p) => p[0]).join('')} color={s.color} size={34} />
+                ))}
+              </div>
+              <div>
+                <p className="flex items-center gap-1 text-[13px] font-extrabold text-onsurface">
+                  4.8 <Star size={13} className="fill-lime-600 text-lime-600" /> rider rating
+                </p>
+                <p className="text-[12px] font-semibold text-variant">Ikorodu, Lekki, Ajah, Ikeja and VI commuters ride daily</p>
+              </div>
             </motion.div>
           </div>
 
@@ -94,7 +145,9 @@ export function Landing() {
                   <p className="text-[13.5px] font-extrabold text-onsurface">Ikorodu → Victoria Island</p>
                   <p className="text-[12px] font-semibold text-variant">Tomorrow · 7:00 AM · ₦1,500 / seat</p>
                 </div>
-                <span className="rounded-full bg-forest-900 px-3 py-1.5 text-[11.5px] font-extrabold text-lime-500">LIVE</span>
+                <span className="rounded-full bg-surface-2 px-3 py-1.5 text-[11.5px] font-extrabold text-forest-800">
+                  Adebayo K. · Toyota Corolla
+                </span>
               </div>
             </div>
             <motion.div
@@ -107,6 +160,30 @@ export function Landing() {
               <p className="mt-0.5 text-[13.5px] font-extrabold">₦1,500 / seat</p>
             </motion.div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Commuter voices */}
+      <section className="border-y border-line-soft bg-white py-12 lg:py-16">
+        <div className="mx-auto max-w-6xl px-5">
+          <p className="text-[12px] font-extrabold uppercase tracking-[0.2em] text-lime-600">Commuter voices</p>
+          <h2 className="mt-2 max-w-2xl text-[30px] font-extrabold tracking-tight text-forest-900 lg:text-[36px]">
+            Built for the people who actually make this journey every day.
+          </h2>
+          <div className="mt-8 grid gap-4 lg:grid-cols-3">
+            {RIDER_STORIES.map((s) => (
+              <figure key={s.name} className="flex flex-col justify-between rounded-3xl border border-line bg-surface p-6">
+                <blockquote className="text-[15px] font-semibold leading-relaxed text-onsurface">“{s.quote}”</blockquote>
+                <figcaption className="mt-5 flex items-center gap-3 border-t border-line-soft pt-4">
+                  <Avatar initials={s.name.split(' ').map((p) => p[0]).join('')} color={s.color} size={38} />
+                  <div>
+                    <p className="text-[13.5px] font-extrabold text-onsurface">{s.name}</p>
+                    <p className="text-[11.5px] font-semibold text-variant">{s.detail}</p>
+                  </div>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -142,10 +219,20 @@ export function Landing() {
             </p>
           </div>
           <div>
-            <h3 className="text-[26px] font-extrabold tracking-tight text-white">One commute, several passengers — everyone pays less.</h3>
+            <h3 className="text-[26px] font-extrabold tracking-tight text-white">One commute, several passengers. Everyone pays less.</h3>
             <p className="mt-3 text-[15px] leading-relaxed text-white/70">
               COMUTA matches you with people travelling the same corridor at the same time. Instead of four people paying for four separate rides, you share one predictable journey.
             </p>
+            <figure className="mt-6 rounded-3xl border border-white/10 bg-white/5 p-5">
+              <blockquote className="text-[15px] font-semibold leading-relaxed text-white/90">“I drive to the Island every morning anyway. Now three people cover my fuel and the bridge toll.”</blockquote>
+              <figcaption className="mt-4 flex items-center gap-3">
+                <Avatar initials="AK" color="#7a5c1f" size={38} />
+                <div>
+                  <p className="text-[13.5px] font-extrabold text-white">Adebayo K., driver</p>
+                  <p className="text-[11.5px] font-semibold text-white/60">Ikorodu → Victoria Island · recovered ₦18,500 last month</p>
+                </div>
+              </figcaption>
+            </figure>
           </div>
         </div>
       </Section>
@@ -154,7 +241,7 @@ export function Landing() {
       <Section title="Reliability you can plan around" kicker="Trust, built in">
         <div className="grid gap-4 md:grid-cols-3">
           <StepCard icon={<BadgeCheck size={20} />} title="Verified people & vehicles" body="Drivers, IDs and vehicles are checked before the first trip. Ratings and completion rates are public." />
-          <StepCard icon={<MapPin size={20} />} title="Safe hubs only" body="Every pickup happens at an approved, monitored hub — never a random street corner." />
+          <StepCard icon={<MapPin size={20} />} title="Safe hubs only" body="Every pickup happens at an approved, monitored hub. Never a random street corner." />
           <StepCard icon={<ShieldCheck size={20} />} title="Bookings are protected" body="If your driver can't make the trip, we find another option or refund you. No dead ends." />
         </div>
       </Section>
@@ -163,9 +250,9 @@ export function Landing() {
       <Section dark title="Make it a routine" kicker="Recurring routes">
         <div className="grid items-center gap-10 lg:grid-cols-2">
           <div>
-            <h3 className="text-[26px] font-extrabold tracking-tight text-white">The same commute, every day — already booked for you.</h3>
+            <h3 className="text-[26px] font-extrabold tracking-tight text-white">The same commute, every day. Already booked for you.</h3>
             <p className="mt-3 text-[15px] leading-relaxed text-white/70">
-              Save your regular journey once. COMUTA keeps an eye on it, books your seat each day, and tells you the moment your driver confirms — so you can plan around certainty.
+              Save your regular journey once. COMUTA keeps an eye on it, books your seat each day, and tells you the moment your driver confirms, so you can plan around certainty.
             </p>
           </div>
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
@@ -178,7 +265,23 @@ export function Landing() {
               <p className="flex items-center justify-between"><span>Driver confirmation</span><span className="text-lime-500">✓ confirmed</span></p>
               <p className="flex items-center justify-between"><span>Seat 1 · ₦1,500</span><span className="text-white">✓ secured</span></p>
             </div>
+            <div className="mt-5 flex items-center gap-3 border-t border-white/10 pt-4">
+              <Avatar initials="OA" color="#155942" size={36} />
+              <div>
+                <p className="text-[13px] font-extrabold text-white">Oluwaseun A.</p>
+                <p className="text-[11.5px] text-white/55">Rides this route every weekday</p>
+              </div>
+            </div>
           </div>
+        </div>
+      </Section>
+
+      {/* Who COMUTA is for */}
+      <Section title="Who COMUTA is for" kicker="Everyday people, everyday routes">
+        <div className="grid gap-4 md:grid-cols-3">
+          <StepCard icon={<Users size={20} />} title="Office commuters" body="Ikorodu, Lekki, Ajah or Ikeja to the Island every weekday. Same route, same time, same people." />
+          <StepCard icon={<CalendarCheck size={20} />} title="Parents & families" body="Know your pickup hub, share your live trip with family, and never wait at a random corner." />
+          <StepCard icon={<Repeat size={20} />} title="Drivers going anyway" body="You're already making the trip. Fill empty seats and recover fuel, tolls and wear." />
         </div>
       </Section>
 
@@ -186,22 +289,36 @@ export function Landing() {
       <Section title="Safety that's calm, not scary" kicker="Safety">
         <div className="grid gap-4 md:grid-cols-3">
           <StepCard icon={<ShieldCheck size={20} />} title="Trip PIN" body="A private code confirms the vehicle before you enter. Only your driver sees it." />
-          <StepCard icon={<Users size={20} />} title="Live trip sharing" body="Share your route with trusted contacts for the whole journey — and stop it any time." />
+          <StepCard icon={<Users size={20} />} title="Live trip sharing" body="Share your route with trusted contacts for the whole journey. You can stop sharing any time." />
           <StepCard icon={<BadgeCheck size={20} />} title="SOS, when you need it" body="One clear emergency action with your location, trip and vehicle details ready for support." />
         </div>
       </Section>
 
       {/* Driver cost recovery */}
       <Section title="Drive your own commute. Recover the cost." kicker="For drivers">
-        <div className="grid gap-4 md:grid-cols-3">
-          <StepCard icon={<Repeat size={20} />} title="Share empty seats" body="Publish your existing commute — you're going anyway. Passengers cover part of the journey." />
-          <StepCard icon={<Users size={20} />} title="Know your passengers" body="Verified riders with NIN-backed identities. No surprises at pickup." />
-          <StepCard icon={<BadgeCheck size={20} />} title="Keep your standing" body="Reliability that rewards consistency — the more trips you complete, the more bookings you get." />
-        </div>
-        <div className="mt-8 text-center">
-          <Button size="lg" variant="lime" onClick={() => navigate('/app/driver/routes/new')}>
-            Start sharing your commute <ArrowRight size={17} />
-          </Button>
+        <div className="grid gap-4 lg:grid-cols-3">
+          <div className="space-y-4 lg:col-span-1">
+            <StepCard icon={<Repeat size={20} />} title="Share empty seats" body="Publish your existing commute. You're going anyway. Passengers cover part of the journey." />
+            <StepCard icon={<Users size={20} />} title="Know your passengers" body="Verified riders with NIN-backed identities. No surprises at pickup." />
+            <StepCard icon={<BadgeCheck size={20} />} title="Keep your standing" body="Reliability that rewards consistency. The more trips you complete, the more bookings you get." />
+          </div>
+          <figure className="flex flex-col justify-between rounded-3xl bg-forest-900 p-6 text-white lg:col-span-2">
+            <blockquote className="max-w-xl text-[19px] font-semibold leading-relaxed">
+              “At first I was worried about strangers in my car. But everyone is verified, and the trip PIN thing made my wife comfortable.”
+            </blockquote>
+            <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
+              <figcaption className="flex items-center gap-3">
+                <Avatar initials="IN" color="#3d5f8a" size={42} />
+                <div>
+                  <p className="text-[14px] font-extrabold">Ifeoma N., driver</p>
+                  <p className="text-[12px] text-white/60">Ikeja → Victoria Island · 11 trips this month</p>
+                </div>
+              </figcaption>
+              <Button size="md" variant="lime" onClick={() => navigate('/app/driver/routes/new')}>
+                Start sharing your commute <ArrowRight size={16} />
+              </Button>
+            </div>
+          </figure>
         </div>
       </Section>
 

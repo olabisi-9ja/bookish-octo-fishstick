@@ -10,7 +10,7 @@ import { useComuta } from '../../store';
 import { dayLabel } from '../../utils/dates';
 import { DURATION, EASE } from '../../constants';
 
-/** Meet your driver — trip PIN is the star. */
+/** Meet your driver  -  trip PIN is the star. */
 export function Pickup() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -94,7 +94,7 @@ export function PickupView({ trip, onBack }: { trip: TripWithMeta | null; onBack
         className="mt-4 rounded-2xl border-2 border-forest-900 bg-forest-900 p-5 text-center text-white shadow-lift"
       >
         <p className="flex items-center justify-center gap-1.5 text-[11px] font-extrabold uppercase tracking-[0.18em] text-lime-500">
-          <ShieldCheck size={13} /> Trip PIN — confirm this before entering
+          <ShieldCheck size={13} /> Trip PIN. Confirm this before entering
         </p>
         <p className="mt-2 font-mono text-[44px] font-bold tracking-[0.18em] text-white">{trip.pin}</p>
         <p className="mt-1 text-[12px] font-semibold text-white/60">Only enter a vehicle whose driver shows this exact code.</p>

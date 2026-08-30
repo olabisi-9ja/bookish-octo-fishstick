@@ -76,7 +76,6 @@ export function RiderHome() {
               label={next.trip.status === 'confirmed' ? 'Confirmed' : nextTrip?.status === 'at_risk' ? 'Needs attention' : 'Awaiting driver'}
               tone={next.trip.status === 'confirmed' ? 'lime' : nextTrip?.status === 'at_risk' ? 'red' : 'amber'}
               dot
-              pulse
             />
           </div>
           <h2 className="mt-3 text-[22px] font-extrabold leading-tight tracking-tight">

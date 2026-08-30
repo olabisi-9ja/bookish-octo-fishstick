@@ -1,4 +1,4 @@
-/** Mock trip service — search, detail, upcoming and history. */
+/** Mock trip service  -  search, detail, upcoming and history. */
 import { useComuta } from '../store';
 import type { Booking, SearchQuery, Trip } from '../types';
 import { addMinutesToClock, minutesUntil } from '../utils/dates';
@@ -111,14 +111,14 @@ export const tripService = {
     return useComuta.getState().bookings.find((b) => b.riderId === riderId && b.tripId === tripId);
   },
 
-  /** Rider arrives at pickup — trip moves to pickup state. */
+  /** Rider arrives at pickup  -  trip moves to pickup state. */
   async markAtPickup(tripId: string) {
     await delay(300);
     useComuta.getState().updateTrip(tripId, { status: 'pickup' });
     return { ok: true };
   },
 
-  /** Rider confirms pickup (PIN verified) — trip departs. */
+  /** Rider confirms pickup (PIN verified)  -  trip departs. */
   async confirmPickup(tripId: string) {
     await delay(400);
     useComuta.getState().updateTrip(tripId, { status: 'departed' });

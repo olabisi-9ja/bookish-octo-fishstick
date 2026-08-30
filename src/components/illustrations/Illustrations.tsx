@@ -1,5 +1,5 @@
 /**
- * COMUTA illustration system — flat geometric forms in the brand palette.
+ * COMUTA illustration system  -  flat geometric forms in the brand palette.
  * Used for onboarding, empty states, success, failure, verification, recovery.
  * Derived from the brand board: deep green + lime + muted green/teal ramps.
  */
@@ -33,7 +33,7 @@ function RoadBase() {
   );
 }
 
-/** Onboarding 1 — car with passengers on a shared route. */
+/** Onboarding 1  -  car with passengers on a shared route. */
 export function CommuteIllustration() {
   const rm = useReducedMotion();
   return (
@@ -81,7 +81,7 @@ export function CommuteIllustration() {
   );
 }
 
-/** Onboarding 2 — verified driver, shield, vehicle. */
+/** Onboarding 2  -  verified driver, shield, vehicle. */
 export function VerifyIllustration() {
   const rm = useReducedMotion();
   return (
@@ -116,7 +116,7 @@ export function VerifyIllustration() {
   );
 }
 
-/** Onboarding 3 — book ahead, know your seat. */
+/** Onboarding 3  -  book ahead, know your seat. */
 export function BookAheadIllustration() {
   const rm = useReducedMotion();
   return (
@@ -159,7 +159,7 @@ export function BookAheadIllustration() {
   );
 }
 
-/** Booking success — car travels the route, then a checkmark. */
+/** Booking success  -  car travels the route, then a checkmark. */
 export function BookingSuccessArt() {
   const rm = useReducedMotion();
   return (
@@ -205,7 +205,7 @@ export function BookingSuccessArt() {
   );
 }
 
-/** Payment failure — dashed card + alert. */
+/** Payment failure  -  dashed card + alert. */
 export function PaymentFailureArt() {
   const rm = useReducedMotion();
   return (
@@ -236,7 +236,7 @@ export function PaymentFailureArt() {
   );
 }
 
-/** No upcoming trips — road into the distance. */
+/** No upcoming trips  -  road into the distance. */
 export function NoTripsArt() {
   const rm = useReducedMotion();
   return (
@@ -254,7 +254,7 @@ export function NoTripsArt() {
   );
 }
 
-/** No saved routes — calendar + road. */
+/** No saved routes  -  calendar + road. */
 export function NoRoutesArt() {
   const rm = useReducedMotion();
   return (
@@ -287,7 +287,7 @@ export function NoRoutesArt() {
   );
 }
 
-/** No available trip — map pin on dashed route. */
+/** No available trip  -  map pin on dashed route. */
 export function NoTripArt() {
   const rm = useReducedMotion();
   return (
@@ -307,7 +307,7 @@ export function NoTripArt() {
   );
 }
 
-/** Driver cancelled — broken route with a gap. */
+/** Driver cancelled  -  broken route with a gap. */
 export function DriverCancelledArt() {
   const rm = useReducedMotion();
   return (
@@ -340,7 +340,7 @@ export function DriverCancelledArt() {
   );
 }
 
-/** Alternative found — two routes converging into a check. */
+/** Alternative found  -  two routes converging into a check. */
 export function AlternativeArt() {
   const rm = useReducedMotion();
   return (
@@ -372,7 +372,7 @@ export function AlternativeArt() {
   );
 }
 
-/** Trip complete — destination pin with check. */
+/** Trip complete  -  destination pin with check. */
 export function TripCompleteArt() {
   const rm = useReducedMotion();
   return (
@@ -410,7 +410,7 @@ export function TripCompleteArt() {
   );
 }
 
-/** Safety — shield + SOS. */
+/** Safety  -  shield + SOS. */
 export function SafetyArt() {
   const rm = useReducedMotion();
   return (
@@ -441,7 +441,7 @@ export function SafetyArt() {
   );
 }
 
-/** Offline — cloud slash + phone. */
+/** Offline  -  cloud slash + phone. */
 export function OfflineArt() {
   const rm = useReducedMotion();
   return (
@@ -476,7 +476,7 @@ export function OfflineArt() {
   );
 }
 
-/** Generic error — alert circle. */
+/** Generic error  -  alert circle. */
 export function ErrorArt() {
   const rm = useReducedMotion();
   return (
@@ -499,7 +499,7 @@ export function ErrorArt() {
   );
 }
 
-/** Verification success (KYC) — badge with check. */
+/** Verification success (KYC)  -  badge with check. */
 export function VerificationSuccessArt() {
   const rm = useReducedMotion();
   return (

@@ -1,4 +1,4 @@
-/** Mock driver service — commitments, publishing, passengers, operations. */
+/** Mock driver service  -  commitments, publishing, passengers, operations. */
 import { useComuta } from '../store';
 import type { Trip } from '../types';
 import { nid, pinCode } from '../utils/format';

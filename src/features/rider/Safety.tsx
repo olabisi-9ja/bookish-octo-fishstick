@@ -25,7 +25,7 @@ export function Safety() {
         </div>
         <h2 className="mt-3 text-[17px] font-extrabold tracking-tight">Ride with confidence</h2>
         <p className="mt-1 text-[13px] leading-relaxed text-white/70">
-          Verified drivers, approved hubs, trip PINs and live trip sharing — built into every commute.
+          Verified drivers, approved hubs, trip PINs and live trip sharing are built into every commute.
         </p>
       </div>
 
@@ -37,7 +37,7 @@ export function Safety() {
 
       <Sheet open={pinSheet} onClose={() => setPinSheet(false)} title="Your trip PIN">
         <p className="text-[13.5px] text-variant">
-          Every booking gets a unique PIN. Show it to your driver before entering — this is how you know the vehicle is the one you booked.
+          Every booking gets a unique PIN. Show it to your driver before entering. That's how you know the vehicle is the one you booked.
         </p>
         <div className="mt-4 rounded-2xl border-2 border-forest-900 bg-forest-900 p-5 text-center">
           <p className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-lime-500">Example PIN</p>

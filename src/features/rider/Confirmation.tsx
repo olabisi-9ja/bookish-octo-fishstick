@@ -9,7 +9,7 @@ import { useComuta } from '../../store';
 import { naira } from '../../utils/format';
 import { longDayLabel } from '../../utils/dates';
 
-/** The signature COMUTA moment — car travels the route, checkmark pops, "You're booked." */
+/** The signature COMUTA moment  -  car travels the route, checkmark pops, "You're booked." */
 export function Confirmation() {
   const { id } = useParams();
   const [params] = useSearchParams();
@@ -62,7 +62,7 @@ export function Confirmation() {
             <p className="text-[13px] font-extrabold text-onsurface">Driver confirmation pending</p>
             <p className="text-[12px] font-semibold text-variant">Your driver confirms by 11:00 PM today</p>
           </div>
-          <StatusChip label="Pending" tone="amber" dot pulse />
+          <StatusChip label="Pending" tone="amber" dot />
         </div>
       </div>
 

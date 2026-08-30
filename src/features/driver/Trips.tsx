@@ -86,7 +86,7 @@ function TripRow({ trip }: { trip: Trip }) {
   );
 }
 
-/** Driver trip detail — passengers, T-8 confirmation, live controls. */
+/** Driver trip detail  -  passengers, T-8 confirmation, live controls. */
 export function DriverTripDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -149,7 +149,6 @@ export function DriverTripDetail() {
           label={trip.driverConfirmed ? 'Confirmed' : trip.status === 'at_risk' ? 'Released' : 'Confirmation pending'}
           tone={trip.driverConfirmed ? 'green' : trip.status === 'at_risk' ? 'red' : 'amber'}
           dot
-          pulse={!trip.driverConfirmed && trip.status !== 'at_risk'}
         />
       </div>
       <p className="mt-1 text-[13px] font-semibold text-variant">
@@ -203,7 +202,7 @@ export function DriverTripDetail() {
       <section className="mt-4 rounded-2xl border border-line bg-white p-4">
         <h2 className="text-[13px] font-extrabold uppercase tracking-wider text-faint">Your passengers</h2>
         {passengers.length === 0 ? (
-          <p className="mt-3 py-2 text-center text-[13px] text-variant">No bookings yet — share your commute to attract riders.</p>
+          <p className="mt-3 py-2 text-center text-[13px] text-variant">No bookings yet. Share your commute to attract riders.</p>
         ) : (
           <div className="mt-3 space-y-2.5">
             {passengers.map((p) => (

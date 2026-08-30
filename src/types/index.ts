@@ -1,5 +1,5 @@
 /**
- * COMUTA domain model — frontend types.
+ * COMUTA domain model  -  frontend types.
  * These mirror the future API contracts (Supabase/Postgres) so the mocked
  * services can later be swapped for real HTTP calls without touching the UI.
  */
@@ -34,7 +34,7 @@ export interface User {
   lastName: string;
   email: string;
   phone: string;
-  /** Plain text only in the mock auth service — never in a real backend. */
+  /** Plain text only in the mock auth service  -  never in a real backend. */
   password: string;
   role: Role;
   verificationStatus: VerificationStatus;

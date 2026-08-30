@@ -198,7 +198,7 @@ export function buildSeed(now = new Date()): AppState {
 
   // ---- Bookings ----
   const bookings: Booking[] = [
-    // Primary test rider — next commute, confirmed
+    // Primary test rider  -  next commute, confirmed
     { id: 'b_next', tripId: 't_ikvi_0700', riderId: T.test, seats: 1, amount: priceIKVI, total: priceIKVI, paymentStatus: 'successful', status: 'confirmed', pin: '4827', createdAt: at(1, 18) },
     // Rider2 also on the same trip (so the driver sees 2 passengers)
     { id: 'b_next2', tripId: 't_ikvi_0700', riderId: T.rider2, seats: 1, amount: priceIKVI, total: priceIKVI, paymentStatus: 'successful', status: 'confirmed', pin: '4827', createdAt: at(1, 19) },
@@ -206,13 +206,13 @@ export function buildSeed(now = new Date()): AppState {
     { id: 'b_atrisk', tripId: 't_ikvi_0800', riderId: T.rider2, seats: 1, amount: 1300, total: 1300, paymentStatus: 'successful', status: 'confirmed', pin: '4827', createdAt: at(1, 20) },
     // Primary test rider on the at-risk trip too (demo of the recovery flow)
     { id: 'b_atrisk_test', tripId: 't_ikvi_0800', riderId: T.test, seats: 1, amount: 1300, total: 1300, paymentStatus: 'successful', status: 'confirmed', pin: '4827', createdAt: at(1, 20, 30) },
-    // Primary test rider — pending confirmation trip on Lekki corridor
+    // Primary test rider  -  pending confirmation trip on Lekki corridor
     { id: 'b_lekki', tripId: 't_lekvi_0715', riderId: T.test, seats: 1, amount: priceLEKVI, total: priceLEKVI, paymentStatus: 'successful', status: 'confirmed', pin: '4827', createdAt: at(1, 21) },
-    // History — completed yesterday (rated)
+    // History  -  completed yesterday (rated)
     { id: 'b_done', tripId: 't_ikvi_done', riderId: T.test, seats: 1, amount: priceIKVI, total: priceIKVI, paymentStatus: 'successful', status: 'completed', pin: '4827', rated: true, rating: 5, ratingComment: 'Smooth, on time as always.', createdAt: at(2, 18) },
-    // History — completed (unrated, for driver rating)
+    // History  -  completed (unrated, for driver rating)
     { id: 'b_done2', tripId: 't_ajvi_done', riderId: T.test, seats: 1, amount: priceAJVI, total: priceAJVI, paymentStatus: 'successful', status: 'completed', pin: '4827', createdAt: at(3, 18) },
-    // History — cancelled with refund
+    // History  -  cancelled with refund
     { id: 'b_cancelled', tripId: 't_ikvi_cancelled', riderId: T.test, seats: 1, amount: 1400, total: 1400, paymentStatus: 'refunded', status: 'cancelled', pin: '4827', refundRequested: true, createdAt: at(4, 12) },
   ];
 
@@ -241,14 +241,14 @@ export function buildSeed(now = new Date()): AppState {
   ];
 
   const payouts: PayoutRecord[] = [
-    { id: 'po_1', driverId: T.driver, amount: 13650, status: 'pending', method: 'Access Bank •••• 4412', note: 'Settlement — 12 shared trips (August)', createdAt: at(0, 7, 0) },
-    { id: 'po_2', driverId: T.driver, amount: 12400, status: 'completed', method: 'Access Bank •••• 4412', note: 'Settlement — 11 shared trips (July)', createdAt: at(31, 7, 0) },
-    { id: 'po_3', driverId: T.driver, amount: 10850, status: 'completed', method: 'Access Bank •••• 4412', note: 'Settlement — 9 shared trips (June)', createdAt: at(61, 7, 0) },
+    { id: 'po_1', driverId: T.driver, amount: 13650, status: 'pending', method: 'Access Bank •••• 4412', note: 'Settlement, 12 shared trips (August)', createdAt: at(0, 7, 0) },
+    { id: 'po_2', driverId: T.driver, amount: 12400, status: 'completed', method: 'Access Bank •••• 4412', note: 'Settlement, 11 shared trips (July)', createdAt: at(31, 7, 0) },
+    { id: 'po_3', driverId: T.driver, amount: 10850, status: 'completed', method: 'Access Bank •••• 4412', note: 'Settlement, 9 shared trips (June)', createdAt: at(61, 7, 0) },
   ];
 
   return {
     seededDay: today,
-    // The app starts logged out — the tester signs in with the seeded accounts.
+    // The app starts logged out  -  the tester signs in with the seeded accounts.
     session: null,
     users: TEST_USERS,
     vehicles: VEHICLES,

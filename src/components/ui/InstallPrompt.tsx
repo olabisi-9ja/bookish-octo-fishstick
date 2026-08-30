@@ -8,7 +8,7 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
-/** PWA install banner — shown only when the browser offers installation. */
+/** PWA install banner  -  shown only when the browser offers installation. */
 export function InstallPrompt({ compact = false }: { compact?: boolean }) {
   const [deferred, setDeferred] = useState<BeforeInstallPromptEvent | null>(null);
   const [dismissed, setDismissed] = useState(false);

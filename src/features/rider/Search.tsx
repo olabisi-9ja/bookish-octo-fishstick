@@ -85,7 +85,7 @@ export function Search() {
         <div className="flex items-center justify-between">
           <h1 className="text-[19px] font-extrabold tracking-tight text-onsurface">
             Available trips
-            {sorted && <span className="text-variant"> — {sorted.length}</span>}
+            {sorted && <span className="text-variant"> ({sorted.length})</span>}
           </h1>
           <div className="flex items-center gap-1 rounded-xl bg-surface-2 p-1" role="tablist" aria-label="Sort trips">
             {(

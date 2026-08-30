@@ -1,5 +1,5 @@
 /**
- * Mock payment service — models Paystack-style checkout locally.
+ * Mock payment service  -  models Paystack-style checkout locally.
  * The UI never pretends a real charge happened; swap this module for a real
  * Paystack integration later (popup → verify → webhook).
  */
@@ -48,7 +48,7 @@ export const paymentService = {
     return { ok: true };
   },
 
-  /** Create a processing record — used by the payment screen before completing. */
+  /** Create a processing record  -  used by the payment screen before completing. */
   begin(amount: number, method: string): { ref: string } {
     return { ref: refCode() };
   },

@@ -113,7 +113,7 @@ export function History() {
                 </div>
                 {booking.rated ? (
                   <p className="mt-2.5 rounded-lg bg-surface-2 px-3 py-2 text-[12px] font-semibold text-variant">
-                    You rated {booking.rating}★ {booking.ratingComment ? `— “${booking.ratingComment}”` : ''}
+                    You rated {booking.rating}★ {booking.ratingComment ? ` -  ${booking.ratingComment}”` : ''}
                   </p>
                 ) : (
                   <Button size="sm" variant="secondary" className="mt-2.5" onClick={() => navigate(`/app/rider/trip/${trip.id}`)}>

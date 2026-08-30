@@ -118,7 +118,7 @@ export function NewRoute() {
         <ArrowLeft size={16} /> Back
       </button>
       <h1 className="text-[22px] font-extrabold tracking-tight text-onsurface">Make this a routine</h1>
-      <p className="mt-1 text-[13.5px] text-variant">Pick your corridor, days and time — we'll keep it ready for you.</p>
+      <p className="mt-1 text-[13.5px] text-variant">Pick your corridor, days and time. We'll keep it ready for you.</p>
 
       <div className="mt-5 space-y-4">
         <div className="grid grid-cols-2 gap-3">
@@ -230,7 +230,7 @@ export function RouteDetailPage() {
       {skipped && (
         <div className="mt-3 rounded-2xl border border-lime-500/60 bg-lime-50 p-4">
           <p className="text-[13.5px] font-bold text-lime-700">
-            Next trip skipped — we won't look for a seat on your next departure day.
+            Next trip skipped. We won't look for a seat on your next departure day.
           </p>
         </div>
       )}

@@ -1,4 +1,4 @@
-/** Mock safety service — trip sharing, SOS and route-deviation monitoring. */
+/** Mock safety service  -  trip sharing, SOS and route-deviation monitoring. */
 import { useComuta } from '../store';
 import { nid } from '../utils/format';
 

@@ -64,7 +64,7 @@ export function Account() {
 
       <Sheet open={devSheet} onClose={() => setDevSheet(false)} title="Developer options">
         <p className="text-[13px] leading-relaxed text-variant">
-          Frontend-only build — everything lives in your browser's localStorage. Use this to reset the prototype to its seeded state.
+          Frontend-only build. Everything lives in your browser's localStorage. Use this to reset the prototype to its seeded state.
         </p>
         <Button
           block
@@ -108,7 +108,7 @@ export function PaymentMethods() {
           <StatusChip label="Default" tone="green" dot />
         </div>
         <p className="mt-3 border-t border-line-soft pt-3 text-[11.5px] font-semibold text-faint">
-          Mock payment method — real Paystack cards are added after integration.
+          Mock payment method. Real Paystack cards are added after integration.
         </p>
       </div>
       <Button block variant="secondary" className="mt-4" onClick={() => setCard((c) => (c.includes('4084') ? '5399 •••• 1029' : '4084 •••• 4084'))}>

@@ -7,7 +7,7 @@ const delay = (ms = 500) => new Promise((r) => setTimeout(r, ms));
 export const bookingService = {
   /**
    * Reserve seats on a trip. Decrements availability, creates the booking
-   * and notifies the driver — exactly what the real backend would do.
+   * and notifies the driver  -  exactly what the real backend would do.
    */
   async createBooking(input: {
     riderId: string;
