@@ -63,3 +63,14 @@ export function recommendedSeatPrice(distanceKm: number, durationMin: number) {
   const raw = RECURRENCE.base + distanceKm * RECURRENCE.perKm + durationMin * 4;
   return Math.max(RECURRENCE.minimum, Math.round(raw / 50) * 50);
 }
+
+/** Rough solo-trip fare for the same corridor (used for comparison on the landing hero). */
+export function taxiFare(distanceKm: number, durationMin: number) {
+  const raw = RECURRENCE.base + distanceKm * 45 + durationMin * 8 + RECURRENCE.protection;
+  return Math.max(800, Math.round(raw / 50) * 50);
+}
+
+/** Per-seat price band shown before booking. */
+export function priceBand(seat: number) {
+  return { low: Math.max(800, seat - 200), high: seat + 150 };
+}

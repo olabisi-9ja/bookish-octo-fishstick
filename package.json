@@ -12,6 +12,7 @@
     "smoke": "node scripts/smoke.mjs && node scripts/smoke-services.mjs"
   },
   "dependencies": {
+    "@lottiefiles/lottie-player": "^2.0.12",
     "@tailwindcss/vite": "^4.3.3",
     "@vitejs/plugin-react": "latest",
     "lucide-react": "^0.468.0",
