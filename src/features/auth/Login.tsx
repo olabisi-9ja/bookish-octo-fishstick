@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Apple, Chrome } from 'lucide-react';
 import { AuthLayout } from '../../layouts/AuthLayout';
 import { Button } from '../../components/ui/Button';
 import { Field, PasswordField, Segmented } from '../../components/ui/Inputs';
+import { SocialAuthButtons } from './SocialAuthButtons';
 import { authService } from '../../services/authService';
 import { useComuta } from '../../store';
 
@@ -48,13 +48,8 @@ export function Login() {
       <h1 className="text-[28px] font-extrabold tracking-tight text-onsurface">Welcome back</h1>
       <p className="mt-1.5 text-[14px] text-variant">Log in to continue.</p>
 
-      <div className="mt-6 grid grid-cols-2 gap-3">
-        <button className="flex h-12 items-center justify-center gap-2 rounded-xl border border-line bg-white text-[13px] font-bold text-ink hover:border-forest-600 tap">
-          <Chrome size={18} /> Google
-        </button>
-        <button className="flex h-12 items-center justify-center gap-2 rounded-xl bg-[#111827] text-[13px] font-bold text-white hover:bg-[#1f2937] tap">
-          <Apple size={18} /> Apple
-        </button>
+      <div className="mt-6">
+        <SocialAuthButtons />
       </div>
 
       <div className="my-5 flex items-center gap-3 text-[11px] font-bold uppercase tracking-wider text-faint">
