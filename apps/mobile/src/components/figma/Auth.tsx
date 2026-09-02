@@ -21,8 +21,9 @@ import {
   type ViewProps,
 } from 'react-native';
 import { Image } from 'react-native';
-import { semantic, palette, radii, spacing } from '@comuta/tokens';
+import { COLUMN_MAX_WIDTH, semantic, palette, radii, spacing } from '@comuta/tokens';
 import { Type } from './Type';
+import { useBreakpoint } from '../layout/Responsive';
 
 /** Figma: 20px gutter, 362px content width, 60px top/bottom padding. */
 export const GUTTER = 20;
@@ -44,16 +45,22 @@ export function Wordmark() {
 /**
  * The auth screen shell: surface background, gutter, 60px vertical padding and
  * a 28px gap between the wordmark, the heading pair and the body.
+ *
+ * Auth is single-pane at every width — there is no second column of content to
+ * show — so on tablet and desktop the column is centred at COLUMN_MAX_WIDTH
+ * rather than stretched. Stretching would pull the measured 362px controls out
+ * of proportion with the Figma type scale.
  */
 export function AuthScreen({ children, ...rest }: ViewProps) {
+  const { isWide } = useBreakpoint();
   return (
     <ScrollView
       style={styles.screen}
-      contentContainerStyle={styles.screenContent}
+      contentContainerStyle={[styles.screenContent, isWide && styles.screenContentWide]}
       keyboardShouldPersistTaps="handled"
       {...rest}
     >
-      {children}
+      <View style={[styles.stack, isWide && styles.stackWide]}>{children}</View>
     </ScrollView>
   );
 }
@@ -233,8 +240,10 @@ const styles = StyleSheet.create({
   screenContent: {
     paddingHorizontal: GUTTER,
     paddingVertical: 60,
-    gap: spacing[7], // 28
   },
+  screenContentWide: { alignItems: 'center' },
+  stack: { width: '100%', gap: spacing[7] }, // 28
+  stackWide: { maxWidth: COLUMN_MAX_WIDTH },
   heading: { gap: spacing[1] },
   dividerRow: {
     width: CONTENT_WIDTH,

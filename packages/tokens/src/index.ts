@@ -28,5 +28,8 @@ export type { FontWeight } from './fonts';
 export { spacing, gutter, radii, touchTarget, zIndex } from './spacing';
 export { shadows } from './shadows';
 
+export { breakpoints, breakpointFor, COLUMN_MAX_WIDTH } from './breakpoints';
+export type { BreakpointName } from './breakpoints';
+
 /** Figma artboard geometry — every designed screen frame is 402x874. */
 export const frame = { width: 402, height: 874 } as const;

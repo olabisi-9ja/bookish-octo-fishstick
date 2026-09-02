@@ -1,178 +1,114 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, Pressable } from 'react-native';
-import { useRouter } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { ArrowLeft } from 'lucide-react-native';
-import * as Haptics from 'expo-haptics';
-import { colors, fontFamily, fontSize, spacing, radii } from '../../constants/theme';
-import { Button } from '../../components/ui/Button';
-import { authService } from '../../services/authService';
-import { useComuta } from '../../store';
+/**
+ * OTP verification — Figma nodes 65:76 and 65:185 (email), 65:157 and 65:213
+ * (phone).
+ *
+ * The four frames are one screen: the channel changes the heading, the
+ * destination shown in the subtitle, and the "Wrong …?" label. It is chosen by
+ * the `channel` search param, defaulting to email.
+ */
+import { useState } from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { router, useLocalSearchParams } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+import { semantic, spacing } from '@comuta/tokens';
+import { Type } from '../../components/figma/Type';
+import {
+  AuthHeading,
+  AuthScreen,
+  ButtonLarge,
+  Wordmark,
+} from '../../components/figma/Auth';
+import { OTP_LENGTH, OtpInput } from '../../components/figma/OtpInput';
 
-const OTP_LENGTH = 6;
+type Channel = 'email' | 'phone';
 
-export default function OtpScreen() {
-  const router = useRouter();
-  const [code, setCode] = useState<string[]>(Array(OTP_LENGTH).fill(''));
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [resendTimer, setResendTimer] = useState(60);
-  const inputs = useRef<(TextInput | null)[]>([]);
+const COPY: Record<Channel, { title: string; wrong: string; fallback: string }> = {
+  email: { title: 'Verify your email', wrong: 'Wrong Email?', fallback: '[email]' },
+  phone: {
+    title: 'Verify your phone number',
+    wrong: 'Wrong number?',
+    fallback: '[phone number]',
+  },
+};
 
-  useEffect(() => {
-    inputs.current[0]?.focus();
-    const interval = setInterval(() => {
-      setResendTimer((t) => (t > 0 ? t - 1 : 0));
-    }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+export default function Otp() {
+  const params = useLocalSearchParams<{ channel?: Channel; destination?: string }>();
+  const channel: Channel = params.channel === 'phone' ? 'phone' : 'email';
+  const copy = COPY[channel];
 
-  const handleChange = (value: string, index: number) => {
-    if (!/^\d?$/.test(value)) return;
-    const newCode = [...code];
-    newCode[index] = value;
-    setCode(newCode);
-    setError('');
+  const [code, setCode] = useState('');
+  const complete = code.length === OTP_LENGTH;
 
-    if (value && index < OTP_LENGTH - 1) {
-      inputs.current[index + 1]?.focus();
-    }
-
-    // Auto-verify when complete
-    if (value && index === OTP_LENGTH - 1) {
-      const fullCode = newCode.join('');
-      if (fullCode.length === OTP_LENGTH) {
-        verifyCode(fullCode);
-      }
-    }
-  };
-
-  const handleKeyPress = (e: any, index: number) => {
-    if (e.nativeEvent.key === 'Backspace' && !code[index] && index > 0) {
-      inputs.current[index - 1]?.focus();
-      const newCode = [...code];
-      newCode[index - 1] = '';
-      setCode(newCode);
-    }
-  };
-
-  const verifyCode = async (fullCode: string) => {
-    setLoading(true);
-    const result = await authService.verifyOtp(fullCode);
-    setLoading(false);
-    if (!result.ok) {
-      setError(result.error || 'Invalid code.');
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-      return;
-    }
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    // Continue to KYC
-    router.replace('/(auth)/kyc');
-  };
-
-  const resendCode = async () => {
-    if (resendTimer > 0) return;
-    await authService.sendOtp('mock');
-    setResendTimer(60);
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-  };
+  const verify = () => router.push('/(auth)/kyc');
 
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-      {/* Back button */}
-      <Pressable onPress={() => router.back()} style={styles.backButton} hitSlop={12}>
-        <ArrowLeft size={24} color={colors.onsurface} />
-      </Pressable>
+    <AuthScreen>
+      <StatusBar style="dark" />
+      <Wordmark />
+      <AuthHeading
+        title={copy.title}
+        subtitle={`Enter the ${OTP_LENGTH}-digit code we sent to ${params.destination ?? copy.fallback}`}
+      />
 
-      <View style={styles.content}>
-        <Text style={styles.title}>Verify your account</Text>
-        <Text style={styles.subtitle}>
-          Enter the 6-digit code we sent to your email or phone number.
-        </Text>
-
-        {/* OTP boxes */}
-        <View style={styles.otpRow}>
-          {code.map((digit, i) => (
-            <TextInput
-              key={i}
-              ref={(ref) => { inputs.current[i] = ref; }}
-              style={[
-                styles.otpBox,
-                digit ? styles.otpBoxFilled : null,
-                error ? styles.otpBoxError : null,
-              ]}
-              value={digit}
-              onChangeText={(v) => handleChange(v, i)}
-              onKeyPress={(e) => handleKeyPress(e, i)}
-              keyboardType="number-pad"
-              maxLength={1}
-              selectionColor={colors.forest[600]}
-              textContentType="oneTimeCode"
-              autoComplete={i === 0 ? 'sms-otp' : undefined}
-            />
-          ))}
-        </View>
-
-        {error ? <Text style={styles.errorText}>{error}</Text> : null}
-
-        {/* Resend */}
-        <View style={styles.resendContainer}>
-          {resendTimer > 0 ? (
-            <Text style={styles.resendTimer}>
-              Resend code in {resendTimer}s
-            </Text>
-          ) : (
-            <Pressable onPress={resendCode}>
-              <Text style={styles.resendLink}>Resend code</Text>
-            </Pressable>
-          )}
-        </View>
-
-        <Text style={styles.voiceCall}>Didn't get it? Try voice call</Text>
-
-        <View style={styles.cta}>
-          <Button
-            label="Verify"
-            onPress={() => verifyCode(code.join(''))}
-            loading={loading}
-            disabled={code.join('').length < OTP_LENGTH}
+      <View style={styles.body}>
+        <View style={styles.codeGroup}>
+          <OtpInput value={code} onChange={setCode} onComplete={verify} autoFocus />
+          <InlineAction
+            prompt="Didn't get a code?"
+            action="Resend"
+            onPress={() => setCode('')}
+            align="flex-end"
           />
         </View>
 
-        <Pressable onPress={() => router.back()}>
-          <Text style={styles.wrongEmail}>Wrong email or phone? Go back</Text>
-        </Pressable>
+        <View style={styles.submitGroup}>
+          <ButtonLarge label="Verify and continue" onPress={verify} disabled={!complete} />
+          <InlineAction
+            prompt={copy.wrong}
+            action="Go back"
+            onPress={() => router.back()}
+            align="center"
+          />
+        </View>
       </View>
-    </SafeAreaView>
+    </AuthScreen>
+  );
+}
+
+/** Label-then-link row; Figma uses it right-aligned and centred on this screen. */
+function InlineAction({
+  prompt,
+  action,
+  onPress,
+  align,
+}: {
+  prompt: string;
+  action: string;
+  onPress: () => void;
+  align: 'flex-end' | 'center';
+}) {
+  return (
+    <View style={[styles.inlineRow, { justifyContent: align }]}>
+      <Type variant="labelSmall" color={semantic.onSurface}>
+        {prompt}
+      </Type>
+      <Pressable onPress={onPress} accessibilityRole="link" hitSlop={spacing[2]}>
+        <Type variant="titleSmall" color={semantic.primary}>
+          {action}
+        </Type>
+      </Pressable>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.surface },
-  backButton: { paddingHorizontal: spacing[5], paddingVertical: spacing[3] },
-  content: { flex: 1, paddingHorizontal: spacing[6], paddingTop: spacing[4] },
-  title: { fontFamily: fontFamily.bold, fontSize: fontSize.headlineLarge, color: colors.onsurface, marginBottom: spacing[2] },
-  subtitle: { fontFamily: fontFamily.regular, fontSize: fontSize.bodyMedium, color: colors.muted, marginBottom: spacing[8], lineHeight: 22 },
-  otpRow: { flexDirection: 'row', justifyContent: 'center', gap: 10, marginBottom: spacing[4] },
-  otpBox: {
-    width: 48,
-    height: 56,
-    borderWidth: 1.5,
-    borderColor: colors.line,
-    borderRadius: radii.lg,
-    textAlign: 'center',
-    fontFamily: fontFamily.bold,
-    fontSize: 22,
-    color: colors.onsurface,
-    backgroundColor: colors.white,
+  body: { gap: spacing[4] },
+  codeGroup: { gap: spacing[1] },
+  submitGroup: { gap: spacing[2], alignItems: 'center' },
+  inlineRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing[2],
+    width: '100%',
   },
-  otpBoxFilled: { borderColor: colors.forest[600], borderWidth: 2 },
-  otpBoxError: { borderColor: colors.red[500] },
-  errorText: { fontFamily: fontFamily.regular, fontSize: fontSize.bodySmall, color: colors.red[500], textAlign: 'center', marginBottom: spacing[4] },
-  resendContainer: { alignItems: 'center', marginBottom: spacing[2] },
-  resendTimer: { fontFamily: fontFamily.regular, fontSize: fontSize.bodySmall, color: colors.muted },
-  resendLink: { fontFamily: fontFamily.semibold, fontSize: fontSize.bodySmall, color: colors.forest[700] },
-  voiceCall: { fontFamily: fontFamily.medium, fontSize: fontSize.labelSmall, color: colors.teal[600], textAlign: 'center', marginBottom: spacing[8] },
-  cta: { marginBottom: spacing[6] },
-  wrongEmail: { fontFamily: fontFamily.medium, fontSize: fontSize.bodySmall, color: colors.muted, textAlign: 'center' },
 });
