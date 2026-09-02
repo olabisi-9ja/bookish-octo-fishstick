@@ -7,12 +7,14 @@ import { motion, useReducedMotion } from 'motion/react';
 import type { ReactNode } from 'react';
 import { DURATION, EASE } from '../../constants';
 
-const GREEN = '#0A251C';
-const LIME = '#BDF23F';
-const TEAL = '#1E7386';
-const SAND = '#F0F4F4';
-const NEUTRAL = '#D8E0E4';
-const RED = '#C74435';
+/* Figma ramps (design/design-tokens.json). Was on the legacy interpretation:
+   LIME #BDF23F -> accent-50 #AFE817, TEAL #1E7386 -> tertiary-40 #517B6D. */
+const GREEN = '#0A251C';       /* primary base   */
+const LIME = '#AFE817';        /* accent 50      */
+const TEAL = '#517B6D';        /* tertiary 40    */
+const SAND = '#F0F4F4';        /* neutral 95     */
+const NEUTRAL = '#C3D4D4';     /* neutral 80     */
+const RED = '#AB1103';         /* error 30       */
 
 function Frame({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
@@ -27,7 +29,7 @@ function RoadBase() {
     <>
       <rect x="0" y="118" width="220" height="42" fill={SAND} />
       <rect x="0" y="120" width="220" height="4" fill={NEUTRAL} />
-      <rect x="0" y="152" width="220" height="8" fill="#E3EAE8" />
+      <rect x="0" y="152" width="220" height="8" fill="#E1EAEA" />
       <line x1="0" y1="139" x2="220" y2="139" stroke="#fff" strokeWidth="3" strokeDasharray="10 12" />
     </>
   );
@@ -54,13 +56,13 @@ export function CommuteIllustration() {
       <circle cx="108" cy="80" r="4" fill={LIME} />
       <circle cx="206" cy="54" r="5" fill={GREEN} />
       {/* buildings */}
-      <rect x="26" y="38" width="26" height="52" rx="3" fill="#DCE6E4" />
+      <rect x="26" y="38" width="26" height="52" rx="3" fill="#E0EBE7" />
       <rect x="34" y="44" width="4" height="4" rx="1" fill="#fff" />
       <rect x="42" y="44" width="4" height="4" rx="1" fill="#fff" />
       <rect x="34" y="54" width="4" height="4" rx="1" fill="#fff" />
       <rect x="42" y="54" width="4" height="4" rx="1" fill="#fff" />
-      <rect x="150" y="20" width="30" height="42" rx="3" fill="#E9F8C8" />
-      <rect x="188" y="30" width="20" height="34" rx="3" fill="#DCE6E4" />
+      <rect x="150" y="20" width="30" height="42" rx="3" fill="#EFFAD1" />
+      <rect x="188" y="30" width="20" height="34" rx="3" fill="#E0EBE7" />
       {/* car */}
       <g transform="translate(92 108)">
         <rect x="0" y="6" width="44" height="15" rx="6" fill={GREEN} />
@@ -73,9 +75,9 @@ export function CommuteIllustration() {
         <circle cx="34" cy="21" r="2" fill="#fff" />
       </g>
       {/* passengers */}
-      <circle cx="104" cy="100" r="6" fill="#D9EFE4" />
+      <circle cx="104" cy="100" r="6" fill="#D7F4EA" />
       <circle cx="104" cy="92" r="5" fill={TEAL} />
-      <circle cx="118" cy="100" r="6" fill="#E7F9C0" />
+      <circle cx="118" cy="100" r="6" fill="#DFF6A2" />
       <circle cx="118" cy="92" r="5" fill={GREEN} />
     </Frame>
   );
@@ -87,8 +89,8 @@ export function VerifyIllustration() {
   return (
     <Frame>
       <RoadBase />
-      <rect x="18" y="30" width="34" height="40" rx="4" fill="#DCE6E4" />
-      <rect x="168" y="24" width="30" height="46" rx="4" fill="#E9F8C8" />
+      <rect x="18" y="30" width="34" height="40" rx="4" fill="#E0EBE7" />
+      <rect x="168" y="24" width="30" height="46" rx="4" fill="#EFFAD1" />
       {/* shield */}
       <motion.g
         initial={rm ? false : { scale: 0.6, opacity: 0 }}
@@ -100,7 +102,7 @@ export function VerifyIllustration() {
         <path d="M 101 55 L 108 63 L 119 49" stroke={GREEN} strokeWidth="5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
       </motion.g>
       {/* driver */}
-      <circle cx="62" cy="86" r="10" fill="#D9EFE4" />
+      <circle cx="62" cy="86" r="10" fill="#D7F4EA" />
       <rect x="50" y="94" width="24" height="26" rx="8" fill={TEAL} />
       <circle cx="62" cy="86" r="3.5" fill={GREEN} />
       {/* car */}
@@ -242,14 +244,14 @@ export function NoTripsArt() {
   return (
     <Frame>
       <rect width="220" height="160" fill={SAND} />
-      <circle cx="178" cy="38" r="14" fill="#E9F8C8" />
+      <circle cx="178" cy="38" r="14" fill="#EFFAD1" />
       {/* vanishing road */}
       <path d="M 70 160 L 102 74 L 118 74 L 150 160 Z" fill="#fff" />
       <path d="M 104 74 L 116 74 L 130 160 L 90 160 Z" fill={NEUTRAL} opacity="0.6" />
       <line x1="110" y1="74" x2="110" y2="160" stroke={LIME} strokeWidth="3" strokeDasharray="8 10" />
-      <rect x="0" y="140" width="220" height="20" fill="#E3EAE8" />
-      <rect x="18" y="52" width="30" height="34" rx="3" fill="#DCE6E4" />
-      <rect x="172" y="64" width="26" height="28" rx="3" fill="#DCE6E4" />
+      <rect x="0" y="140" width="220" height="20" fill="#E1EAEA" />
+      <rect x="18" y="52" width="30" height="34" rx="3" fill="#E0EBE7" />
+      <rect x="172" y="64" width="26" height="28" rx="3" fill="#E0EBE7" />
     </Frame>
   );
 }
@@ -416,8 +418,8 @@ export function SafetyArt() {
   return (
     <Frame>
       <rect width="220" height="160" fill={SAND} />
-      <rect x="30" y="30" width="36" height="44" rx="4" fill="#DCE6E4" />
-      <rect x="154" y="26" width="32" height="48" rx="4" fill="#E9F8C8" />
+      <rect x="30" y="30" width="36" height="44" rx="4" fill="#E0EBE7" />
+      <rect x="154" y="26" width="32" height="48" rx="4" fill="#EFFAD1" />
       <motion.g
         initial={rm ? false : { scale: 0.7, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -493,8 +495,8 @@ export function ErrorArt() {
       />
       <rect x="105" y="64" width="10" height="22" rx="4" fill="#fff" />
       <circle cx="110" cy="95" r="4.5" fill="#fff" />
-      <rect x="24" y="36" width="30" height="38" rx="4" fill="#DCE6E4" />
-      <rect x="166" y="42" width="26" height="32" rx="4" fill="#DCE6E4" />
+      <rect x="24" y="36" width="30" height="38" rx="4" fill="#E0EBE7" />
+      <rect x="166" y="42" width="26" height="32" rx="4" fill="#E0EBE7" />
     </Frame>
   );
 }
@@ -514,8 +516,8 @@ export function VerificationSuccessArt() {
         <circle cx="110" cy="80" r="30" fill={LIME} />
         <path d="M 94 80 L 105 92 L 126 68" stroke={GREEN} strokeWidth="7" fill="none" strokeLinecap="round" strokeLinejoin="round" />
       </motion.g>
-      <rect x="30" y="40" width="28" height="34" rx="4" fill="#DCE6E4" />
-      <rect x="162" y="36" width="28" height="38" rx="4" fill="#E9F8C8" />
+      <rect x="30" y="40" width="28" height="34" rx="4" fill="#E0EBE7" />
+      <rect x="162" y="36" width="28" height="38" rx="4" fill="#EFFAD1" />
     </Frame>
   );
 }

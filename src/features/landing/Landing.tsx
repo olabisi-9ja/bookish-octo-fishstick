@@ -46,6 +46,12 @@ import { SiteFooter } from '../../components/brand/SiteFooter';
 import { PublicNav } from './PublicNav';
 import { Button } from '../../components/ui/Button';
 import { InstallPrompt } from '../../components/ui/InstallPrompt';
+import {
+  BookAheadIllustration,
+  CommuteIllustration,
+  SafetyArt,
+  VerifyIllustration,
+} from '../../components/illustrations/Illustrations';
 import { useComuta } from '../../store';
 import { DURATION, EASE } from '../../constants';
 import { RECURRENCE, priceBand, recommendedSeatPrice, taxiFare } from '../../constants';
@@ -56,6 +62,22 @@ import { addDaysISO } from '../../utils/dates';
 
 const APP_STORE_LINK = 'https://apps.apple.com/ng/app/comuta/id0000000000';
 const GOOGLE_PLAY_LINK = 'https://play.google.com/store/apps/details?id=com.comuta.app';
+
+/**
+ * Photography. Only the hero shot exists today; the rest of the page carries the
+ * SVG illustration system instead, the way Uber's landing page does. To add a
+ * real photograph, drop the file in public/images/ and name it here - the band
+ * swaps from illustration to photo with no other change.
+ *
+ *   drive   ~16:10, a driver at their own car, doors open, morning light
+ *   safety  ~4:3,   a lit hub at dusk with people waiting under shelter
+ *   business ~3:2,  staff arriving at an office park from a shared car
+ */
+const IMAGES = {
+  hero: '/images/padigo-commuters.jpg',
+  drive: null as string | null,
+  safety: null as string | null,
+};
 
 const FEATURED_TRIP_IDS = ['t_ikvi_0700', 't_ajvi_0700', 't_lekvi_0715', 't_ikevi_0630'];
 
@@ -154,13 +176,24 @@ export function Landing() {
       {/* HERO - deep forest, with the seat search living inside it     */}
       {/* ============================================================ */}
       <section className="relative overflow-hidden bg-primary-base text-white">
+        {/* Lagos at golden hour, carrying the whole hero. Scrims keep the type
+            legible without washing the photograph out. */}
+        <img
+          src={IMAGES.hero}
+          alt=""
+          aria-hidden
+          fetchPriority="high"
+          className="absolute inset-0 h-full w-full object-cover object-[68%_center]"
+        />
         <div
           aria-hidden
-          className="pointer-events-none absolute -right-40 -top-40 h-[560px] w-[560px] rounded-full opacity-40 blur-3xl"
-          style={{ background: 'radial-gradient(circle, #16503d 0%, transparent 70%)' }}
+          className="absolute inset-0 bg-gradient-to-r from-primary-base from-16% via-primary-base/72 via-52% to-transparent"
         />
-        <div className="relative mx-auto grid max-w-6xl gap-12 px-5 pb-16 pt-14 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-10 lg:pb-24 lg:pt-20">
-          <div>
+        {/* just enough at the foot to seat the trust strip on the photograph */}
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-primary-base/85 via-transparent to-transparent" />
+
+        <div className="relative mx-auto max-w-6xl px-5 pb-16 pt-16 lg:pb-28 lg:pt-28">
+          <div className="max-w-[620px]">
             <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3 py-1.5 text-[13px] font-semibold text-primary-70">
               <MapPin size={14} aria-hidden /> Lagos · Ikorodu &#8646; Island
             </span>
@@ -244,7 +277,6 @@ export function Landing() {
             )}
           </div>
 
-          <HeroPreview price={seatPrice} />
         </div>
 
         <div className="relative border-t border-white/10">
@@ -279,24 +311,29 @@ export function Landing() {
             {[
               {
                 n: '01',
+                art: <CommuteIllustration />,
                 icon: <MapPin size={20} />,
                 title: 'Pick your corridor',
                 body: 'Choose the hub you leave from and the hub you are heading to. Hubs are fixed, lit and staffed, never a roadside pickup.',
               },
               {
                 n: '02',
+                art: <BookAheadIllustration />,
                 icon: <CalendarCheck size={20} />,
                 title: 'Reserve your seat',
                 body: 'Pay upfront at a fare that cannot move. Book a single morning, or set it to repeat every weekday and stop thinking about it.',
               },
               {
                 n: '03',
+                art: <VerifyIllustration />,
                 icon: <BadgeCheck size={20} />,
                 title: 'Your driver confirms',
                 body: 'Eight hours before departure your driver confirms the run, so you know the night before whether tomorrow is happening.',
               },
             ].map((s) => (
-              <div key={s.n} className="rounded-2xl border border-nv-90 bg-white p-6">
+              <div key={s.n} className="overflow-hidden rounded-2xl border border-nv-90 bg-white">
+                <div className="flex items-center justify-center bg-primary-99 px-6 py-7">{s.art}</div>
+                <div className="p-6">
                 <div className="flex items-center justify-between">
                   <span
                     className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary-95 text-primary-30"
@@ -308,6 +345,7 @@ export function Landing() {
                 </div>
                 <h3 className="mt-5 text-[20px] font-bold text-primary-base">{s.title}</h3>
                 <p className="mt-2 text-[14.5px] leading-[1.6] text-nv-40">{s.body}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -347,6 +385,8 @@ export function Landing() {
               </div>
             </div>
 
+            <div className="grid gap-6">
+            <HeroPreview price={seatPrice} />
             <ol className="grid gap-3">
               {[
                 { t: 'When you book', d: 'Seat reserved, fare locked, driver notified.', accent: false },
@@ -383,6 +423,7 @@ export function Landing() {
                 </li>
               ))}
             </ol>
+            </div>
           </div>
         </motion.div>
       </section>
@@ -573,6 +614,17 @@ export function Landing() {
               title="Everyone in the car has a name"
               sub="Sharing a commute only works if you know exactly who you are sharing it with. Verification is not a badge here, it is the entry requirement."
             />
+            <div className="mt-8 flex justify-start">
+              {IMAGES.safety ? (
+                <img
+                  src={IMAGES.safety}
+                  alt="A lit COMUTA pickup hub at dusk"
+                  className="w-full max-w-[420px] rounded-2xl object-cover"
+                />
+              ) : (
+                <SafetyArt />
+              )}
+            </div>
             <div className="mt-8">
               <Button size="lg" onClick={() => navigate('/safety')}>
                 Our safety standards
