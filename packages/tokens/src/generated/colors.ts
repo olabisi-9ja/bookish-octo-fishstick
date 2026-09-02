@@ -130,6 +130,9 @@ export const semantic = {
   onAccent: '#0a251c',
   error: '#ab1103',
   onError: '#ffffff',
+  surface: '#f9fbfb',
+  onSurface: '#151e1e',
+  onPrimaryContainer: '#21785b',
 } as const;
 
 export type PaletteRamp = keyof typeof palette;

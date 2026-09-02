@@ -1,376 +1,192 @@
-import React, { useRef, useState } from 'react';
+/**
+ * Onboarding carousel — Figma nodes 42:5, 191:429, 198:446, 200:463
+ * ("Splash screen 1-4").
+ *
+ * One layout across all four slides: wordmark + Skip, a 325px illustration
+ * band, then the copy and the button pinned apart by `justify-content:
+ * space-between`. Slide 4 drops Skip, widens the copy gap to 16, and changes
+ * the button to "Get started".
+ */
+import { useCallback, useRef, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
   FlatList,
-  ViewToken,
   Pressable,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+  type ImageSourcePropType,
+  type ListRenderItemInfo,
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
 } from 'react-native';
-import { useRouter } from 'expo-router';
-import { Svg, Circle, Rect, Path, G, Line } from 'react-native-svg';
-import { colors, fontFamily, fontSize, spacing, radii } from '../../constants/theme';
-import { Button } from '../../components/ui/Button';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+import { semantic, spacing } from '@comuta/tokens';
+import { Type } from '../../components/figma/Type';
+import {
+  ART_CROPS,
+  GUTTER,
+  OnboardingButton,
+  PagerDots,
+  SlideArt,
+  Wordmark,
+  type ArtCrop,
+} from '../../components/figma/Onboarding';
 
-const { width, height } = Dimensions.get('window');
+type Slide = {
+  node: string;
+  art: ImageSourcePropType;
+  crop: ArtCrop;
+  title: string;
+  body: string;
+  /** Figma uses gap 4 on slides 1-3 and gap 16 on slide 4. */
+  copyGap: number;
+  cta: string;
+  showSkip: boolean;
+};
 
-const SLIDES = [
+const SLIDES: Slide[] = [
   {
-    title: 'Your commute already\nhas a driver going\nyour way',
-    description:
-      'Lagos traffic is bad enough without\nwondering who\'s picking you up.',
-    illustration: 'car',
+    node: '42:5',
+    art: require('../../../assets/figma/onboarding-1.jpg') as ImageSourcePropType,
+    crop: ART_CROPS[1],
+    title: 'Your commute already has a driver going your way',
+    body: "Lagos traffic is bad enough without wondering who's picking you up.",
+    copyGap: spacing[1],
+    cta: 'Next',
+    showSkip: true,
   },
   {
-    title: 'No more guessing at\nthe bus stop',
-    description:
-      'Every driver on Comuta is verified:\nID, license, and vehicle checked\nbefore they can post a ride.',
-    illustration: 'id',
+    node: '191:429',
+    art: require('../../../assets/figma/onboarding-2.jpg') as ImageSourcePropType,
+    crop: ART_CROPS[2],
+    title: 'No more guessing at the bus stop',
+    body: 'Every driver on Comuta is verified: ID, license, and vehicle checked before they can post a ride',
+    copyGap: spacing[1],
+    cta: 'Next',
+    showSkip: true,
   },
   {
-    title: 'Pick your stop, pick your\ntime, pay to lock your\nseat',
-    description:
-      'Meet at a known landmark, not a\nrandom spot. Your seat is yours the\nmoment you pay.',
-    illustration: 'map',
+    node: '198:446',
+    art: require('../../../assets/figma/onboarding-3.jpg') as ImageSourcePropType,
+    crop: ART_CROPS[3],
+    title: 'Pick your stop, pick your time, pay to lock your seat',
+    body: 'Meet at a known landmark, not a random spot. Your seat is yours the moment you pay.',
+    copyGap: spacing[1],
+    cta: 'Next',
+    showSkip: true,
   },
   {
-    title: 'Built for people who\ncommute every day, by\npeople who do too',
-    description:
-      'Comuta connects commuters\nalready on the road, not a fleet of\nstrangers.',
-    illustration: 'city',
+    node: '200:463',
+    art: require('../../../assets/figma/onboarding-4.jpg') as ImageSourcePropType,
+    crop: ART_CROPS[4],
+    title: 'Built for people who commute every day, by people who do too',
+    body: 'Comuta connects commuters already on the road, not a fleet of strangers.',
+    copyGap: spacing[4],
+    cta: 'Get started',
+    showSkip: false,
   },
 ];
 
-// ─── Illustrations (SVG) ─────────────────────────────────────
-function CarIllustration() {
-  return (
-    <Svg width={260} height={200} viewBox="0 0 260 200">
-      {/* Bus stop pole */}
-      <Rect x="50" y="40" width="4" height="120" fill={colors.lime[500]} />
-      <Rect x="38" y="35" width="28" height="20" rx="3" fill={colors.lime[500]} />
-      <Rect x="42" y="40" width="20" height="12" rx="2" fill={colors.forest[900]} />
-      {/* Ground */}
-      <Rect x="20" y="155" width="220" height="8" rx="4" fill="rgba(255,255,255,0.15)" />
-      {/* Car body */}
-      <G>
-        <Rect x="100" y="110" width="120" height="45" rx="10" fill={colors.forest[700]} />
-        <Rect x="115" y="90" width="90" height="28" rx="8" fill={colors.forest[600]} />
-        {/* Windows */}
-        <Rect x="122" y="95" width="30" height="18" rx="4" fill={colors.lime[400]} opacity={0.4} />
-        <Rect x="158" y="95" width="30" height="18" rx="4" fill={colors.lime[400]} opacity={0.4} />
-        {/* Headlights */}
-        <Circle cx="214" cy="132" r="5" fill={colors.lime[500]} />
-        <Circle cx="106" cy="132" r="5" fill={colors.red[400]} opacity={0.6} />
-        {/* Wheels */}
-        <Circle cx="130" cy="155" r="13" fill={colors.forest[950]} />
-        <Circle cx="190" cy="155" r="13" fill={colors.forest[950]} />
-        <Circle cx="130" cy="155" r="5" fill="rgba(255,255,255,0.3)" />
-        <Circle cx="190" cy="155" r="5" fill="rgba(255,255,255,0.3)" />
-      </G>
-    </Svg>
-  );
-}
-
-function IdIllustration() {
-  return (
-    <Svg width={260} height={200} viewBox="0 0 260 200">
-      {/* ID Card */}
-      <Rect x="40" y="40" width="140" height="100" rx="12" fill="rgba(255,255,255,0.15)" />
-      <Rect x="48" y="48" width="124" height="84" rx="8" fill="rgba(255,255,255,0.1)" />
-      {/* Photo placeholder */}
-      <Rect x="58" y="58" width="36" height="44" rx="4" fill={colors.lime[500]} opacity={0.4} />
-      <Circle cx="76" cy="72" r="10" fill="rgba(255,255,255,0.3)" />
-      {/* Text lines */}
-      <Rect x="104" y="62" width="58" height="6" rx="3" fill="rgba(255,255,255,0.25)" />
-      <Rect x="104" y="76" width="42" height="6" rx="3" fill="rgba(255,255,255,0.15)" />
-      <Rect x="104" y="90" width="52" height="6" rx="3" fill="rgba(255,255,255,0.15)" />
-      {/* IDENTITY CARD header */}
-      <Rect x="58" y="114" width="104" height="8" rx="4" fill="rgba(255,255,255,0.2)" />
-      {/* Checkmark circle */}
-      <Circle cx="200" cy="90" r="30" fill={colors.lime[500]} />
-      <Path d="M188 90 L196 98 L212 82" stroke={colors.forest[900]} strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      {/* Arrow */}
-      <Path d="M165 100 Q180 110 195 95" stroke="rgba(255,255,255,0.3)" strokeWidth="2" fill="none" strokeDasharray="4,4" />
-    </Svg>
-  );
-}
-
-function MapIllustration() {
-  return (
-    <Svg width={260} height={200} viewBox="0 0 260 200">
-      {/* Phone frame */}
-      <Rect x="80" y="20" width="100" height="170" rx="14" fill="rgba(255,255,255,0.12)" />
-      <Rect x="86" y="32" width="88" height="146" rx="8" fill="rgba(255,255,255,0.08)" />
-      {/* Map route line */}
-      <Path d="M100 140 Q115 100 130 80 Q145 60 160 70" stroke={colors.lime[500]} strokeWidth="3" fill="none" />
-      {/* Pin A */}
-      <Circle cx="100" cy="140" r="8" fill={colors.forest[600]} />
-      <Circle cx="100" cy="140" r="3" fill={colors.white} />
-      {/* Pin B */}
-      <Circle cx="160" cy="70" r="8" fill={colors.lime[500]} />
-      <Circle cx="160" cy="70" r="3" fill={colors.forest[900]} />
-      {/* Map grid lines */}
-      <Line x1="90" y1="60" x2="170" y2="60" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
-      <Line x1="90" y1="100" x2="170" y2="100" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
-      <Line x1="120" y1="35" x2="120" y2="175" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
-      <Line x1="150" y1="35" x2="150" y2="175" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
-      {/* Seat badge */}
-      <Rect x="30" y="70" width="40" height="40" rx="10" fill={colors.lime[500]} />
-      <Rect x="38" y="80" width="24" height="4" rx="2" fill={colors.forest[900]} />
-      <Rect x="38" y="88" width="16" height="4" rx="2" fill={colors.forest[900]} />
-      {/* Price tag */}
-      <Rect x="190" y="120" width="45" height="30" rx="8" fill={colors.lime[500]} />
-      <Rect x="198" y="130" width="28" height="5" rx="2" fill={colors.forest[900]} />
-    </Svg>
-  );
-}
-
-function CityIllustration() {
-  return (
-    <Svg width={260} height={200} viewBox="0 0 260 200">
-      {/* Buildings skyline */}
-      <Rect x="20" y="80" width="30" height="80" rx="3" fill="rgba(255,255,255,0.12)" />
-      <Rect x="55" y="60" width="25" height="100" rx="3" fill="rgba(255,255,255,0.08)" />
-      <Rect x="85" y="90" width="20" height="70" rx="3" fill="rgba(255,255,255,0.15)" />
-      <Rect x="140" y="50" width="28" height="110" rx="3" fill="rgba(255,255,255,0.1)" />
-      <Rect x="175" y="70" width="22" height="90" rx="3" fill="rgba(255,255,255,0.12)" />
-      <Rect x="205" y="85" width="30" height="75" rx="3" fill="rgba(255,255,255,0.08)" />
-      {/* Windows on buildings */}
-      <Rect x="28" y="90" width="6" height="6" rx="1" fill={colors.lime[500]} opacity={0.3} />
-      <Rect x="28" y="104" width="6" height="6" rx="1" fill={colors.lime[500]} opacity={0.5} />
-      <Rect x="38" y="90" width="6" height="6" rx="1" fill={colors.lime[500]} opacity={0.4} />
-      <Rect x="148" y="60" width="6" height="6" rx="1" fill={colors.lime[500]} opacity={0.3} />
-      <Rect x="148" y="74" width="6" height="6" rx="1" fill={colors.lime[500]} opacity={0.5} />
-      <Rect x="158" y="60" width="6" height="6" rx="1" fill={colors.lime[500]} opacity={0.2} />
-      {/* Road */}
-      <Rect x="10" y="160" width="240" height="8" rx="4" fill="rgba(255,255,255,0.15)" />
-      {/* Car */}
-      <Rect x="110" y="138" width="50" height="22" rx="6" fill={colors.lime[500]} />
-      <Rect x="118" y="130" width="34" height="12" rx="4" fill={colors.lime[400]} />
-      <Circle cx="120" cy="160" r="6" fill={colors.forest[950]} />
-      <Circle cx="150" cy="160" r="6" fill={colors.forest[950]} />
-      <Circle cx="120" cy="160" r="2.5" fill="rgba(255,255,255,0.3)" />
-      <Circle cx="150" cy="160" r="2.5" fill="rgba(255,255,255,0.3)" />
-      {/* People dots */}
-      <Circle cx="95" cy="150" r="4" fill="rgba(255,255,255,0.3)" />
-      <Rect x="92" y="155" width="6" height="8" rx="2" fill="rgba(255,255,255,0.2)" />
-      <Circle cx="180" cy="148" r="4" fill="rgba(255,255,255,0.3)" />
-      <Rect x="177" y="153" width="6" height="8" rx="2" fill="rgba(255,255,255,0.2)" />
-    </Svg>
-  );
-}
-
-const ILLUSTRATIONS: Record<string, React.FC> = {
-  car: CarIllustration,
-  id: IdIllustration,
-  map: MapIllustration,
-  city: CityIllustration,
-};
-
 export default function Onboarding() {
-  const router = useRouter();
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const flatListRef = useRef<FlatList>(null);
+  const { width } = useWindowDimensions();
+  const [index, setIndex] = useState(0);
+  const listRef = useRef<FlatList<Slide>>(null);
 
-  const onViewableItemsChanged = useRef(
-    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
-      if (viewableItems.length > 0 && viewableItems[0].index != null) {
-        setCurrentIndex(viewableItems[0].index);
-      }
-    },
-  ).current;
+  const finish = useCallback(() => router.replace('/(auth)/signup'), []);
 
-  const viewabilityConfig = useRef({
-    viewAreaCoveragePercentThreshold: 50,
-  }).current;
-
-  const goNext = () => {
-    if (currentIndex < SLIDES.length - 1) {
-      flatListRef.current?.scrollToIndex({
-        index: currentIndex + 1,
-        animated: true,
-      });
-    } else {
-      router.replace('/(auth)/login');
+  const advance = useCallback(() => {
+    if (index >= SLIDES.length - 1) {
+      finish();
+      return;
     }
-  };
+    listRef.current?.scrollToIndex({ index: index + 1, animated: true });
+  }, [index, finish]);
 
-  const skip = () => {
-    router.replace('/(auth)/login');
-  };
+  const onMomentumEnd = useCallback(
+    (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+      const next = Math.round(e.nativeEvent.contentOffset.x / width);
+      setIndex(next);
+    },
+    [width]
+  );
+
+  const renderSlide = useCallback(
+    ({ item }: ListRenderItemInfo<Slide>) => (
+      <View style={[styles.slide, { width }]}>
+        <View style={[styles.header, !item.showSkip && styles.headerNoSkip]}>
+          <Wordmark />
+          {item.showSkip ? (
+            <Pressable onPress={finish} accessibilityRole="button" hitSlop={spacing[2]}>
+              <Type variant="titleSmall" color={semantic.primary}>
+                Skip
+              </Type>
+            </Pressable>
+          ) : null}
+        </View>
+
+        <SlideArt source={item.art} crop={item.crop} />
+
+        <View style={styles.body}>
+          <View style={{ gap: item.copyGap }}>
+            <Type variant="displaySmall" color={semantic.primary}>
+              {item.title}
+            </Type>
+            <Type variant="headlineSmall" color={semantic.onPrimaryContainer}>
+              {item.body}
+            </Type>
+          </View>
+        </View>
+      </View>
+    ),
+    [width, finish]
+  );
 
   return (
-    <View style={styles.container}>
-      {/* Header */}
-      <SafeAreaView edges={['top']} style={styles.headerSafe}>
-        <View style={styles.header}>
-          <View style={styles.logoRow}>
-            <Svg width={28} height={28} viewBox="0 0 100 100">
-              <Circle cx="50" cy="50" r="48" fill={colors.white} />
-              <Circle cx="50" cy="50" r="44" fill={colors.forest[900]} />
-              <Rect x="34" y="28" width="8" height="44" rx="4" fill={colors.white} />
-              <Rect x="58" y="28" width="8" height="44" rx="4" fill={colors.lime[500]} />
-            </Svg>
-            <Text style={styles.logoText}>Comuta</Text>
-          </View>
-          {currentIndex < SLIDES.length - 1 && (
-            <Pressable onPress={skip} hitSlop={12}>
-              <Text style={styles.skipText}>Skip</Text>
-            </Pressable>
-          )}
-        </View>
-      </SafeAreaView>
-
-      {/* Slides */}
+    <View style={styles.root}>
+      <StatusBar style="dark" />
       <FlatList
-        ref={flatListRef}
+        ref={listRef}
         data={SLIDES}
+        keyExtractor={(s) => s.node}
+        renderItem={renderSlide}
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        onViewableItemsChanged={onViewableItemsChanged}
-        viewabilityConfig={viewabilityConfig}
-        keyExtractor={(_, i) => String(i)}
-        renderItem={({ item }) => {
-          const Illustration = ILLUSTRATIONS[item.illustration];
-          return (
-            <View style={styles.slide}>
-              {/* Illustration area */}
-              <View style={styles.illustrationArea}>
-                <Illustration />
-              </View>
-
-              {/* Text */}
-              <View style={styles.textArea}>
-                <Text style={styles.slideTitle}>{item.title}</Text>
-                <Text style={styles.slideDescription}>
-                  {item.description}
-                </Text>
-              </View>
-            </View>
-          );
-        }}
+        onMomentumScrollEnd={onMomentumEnd}
+        getItemLayout={(_, i) => ({ length: width, offset: width * i, index: i })}
       />
 
-      {/* Footer: Dots + Button */}
-      <SafeAreaView edges={['bottom']} style={styles.footerSafe}>
-        <View style={styles.footer}>
-          <View style={styles.dots}>
-            {SLIDES.map((_, i) => (
-              <View
-                key={i}
-                style={[styles.dot, i === currentIndex && styles.dotActive]}
-              />
-            ))}
-          </View>
-
-          <Pressable style={styles.ctaButton} onPress={goNext}>
-            <Text style={styles.ctaText}>
-              {currentIndex === SLIDES.length - 1 ? 'Get started' : 'Next'}
-            </Text>
-          </Pressable>
-        </View>
-      </SafeAreaView>
+      {/* Pinned to the frame bottom so it does not scroll with the slides. */}
+      <View style={styles.footer}>
+        <PagerDots count={SLIDES.length} index={index} />
+        <OnboardingButton label={SLIDES[index].cta} onPress={advance} />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.forest[900],
-  },
-  headerSafe: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 10,
-  },
+  root: { flex: 1, backgroundColor: semantic.surface, paddingVertical: 60 },
+  slide: { flex: 1, alignItems: 'center' },
   header: {
+    width: '100%',
+    paddingHorizontal: GUTTER,
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: spacing[5],
-    paddingTop: spacing[2],
-    paddingBottom: spacing[4],
   },
-  logoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  logoText: {
-    fontFamily: fontFamily.bold,
-    fontSize: fontSize.titleLarge,
-    color: colors.white,
-  },
-  skipText: {
-    fontFamily: fontFamily.medium,
-    fontSize: fontSize.bodyMedium,
-    color: 'rgba(255,255,255,0.6)',
-  },
-  slide: {
-    width,
+  headerNoSkip: { justifyContent: 'flex-start' },
+  body: {
     flex: 1,
-    justifyContent: 'center',
-    paddingTop: 80,
-  },
-  illustrationArea: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 220,
-    marginBottom: spacing[8],
-  },
-  textArea: {
-    paddingHorizontal: spacing[6],
-  },
-  slideTitle: {
-    fontFamily: fontFamily.bold,
-    fontSize: 28,
-    color: colors.white,
-    lineHeight: 36,
-    marginBottom: spacing[4],
-  },
-  slideDescription: {
-    fontFamily: fontFamily.regular,
-    fontSize: fontSize.bodyMedium,
-    color: 'rgba(255,255,255,0.6)',
-    lineHeight: 22,
-  },
-  footerSafe: {
-    paddingHorizontal: spacing[6],
+    width: '100%',
+    paddingHorizontal: GUTTER,
+    paddingTop: spacing[4],
   },
   footer: {
-    paddingBottom: spacing[6],
-    gap: spacing[6],
-  },
-  dots: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-  },
-  dotActive: {
-    width: 24,
-    backgroundColor: colors.lime[500],
-  },
-  ctaButton: {
-    height: 56,
-    borderRadius: radii.lg,
-    backgroundColor: colors.forest[700],
     alignItems: 'center',
-    justifyContent: 'center',
-  },
-  ctaText: {
-    fontFamily: fontFamily.semibold,
-    fontSize: 16,
-    color: colors.white,
+    gap: spacing[3],
+    paddingBottom: spacing[5],
+    paddingHorizontal: GUTTER,
   },
 });
