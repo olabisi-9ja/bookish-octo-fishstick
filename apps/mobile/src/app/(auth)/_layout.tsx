@@ -1,5 +1,9 @@
+import { Platform } from 'react-native';
 import { Stack } from 'expo-router';
 import { colors } from '../../constants/theme';
+
+/** See the note in src/app/_layout.tsx. */
+const SCREEN_ANIMATION = Platform.OS === 'web' ? 'fade' : 'slide_from_right';
 
 export default function AuthLayout() {
   return (
@@ -7,7 +11,7 @@ export default function AuthLayout() {
       screenOptions={{
         headerShown: false,
         contentStyle: { backgroundColor: colors.surface },
-        animation: 'slide_from_right',
+        animation: SCREEN_ANIMATION,
       }}
     >
       <Stack.Screen name="onboarding" options={{ animation: 'fade' }} />

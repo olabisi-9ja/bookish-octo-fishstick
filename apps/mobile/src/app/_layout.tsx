@@ -4,8 +4,16 @@ import { StatusBar } from 'expo-status-bar';
 import { useFonts, Manrope_400Regular, Manrope_500Medium, Manrope_600SemiBold, Manrope_700Bold, Manrope_800ExtraBold } from '@expo-google-fonts/manrope';
 import * as SplashScreen from 'expo-splash-screen';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import { colors } from '../constants/theme';
+
+/**
+ * React Native Web keeps both screens mounted through a sliding transition and
+ * resolves each to a measured pixel width, so a horizontal slide in a browser
+ * shows the outgoing screen as a stale strip beside the incoming one. Native
+ * has neither problem, so only the web preview cross-fades.
+ */
+const SCREEN_ANIMATION = Platform.OS === 'web' ? 'fade' : 'slide_from_right';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -33,7 +41,7 @@ export default function RootLayout() {
         screenOptions={{
           headerShown: false,
           contentStyle: { backgroundColor: colors.surface },
-          animation: 'slide_from_right',
+          animation: SCREEN_ANIMATION,
         }}
       >
         <Stack.Screen name="index" />

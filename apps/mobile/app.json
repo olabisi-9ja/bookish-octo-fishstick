@@ -15,7 +15,8 @@
         "NSLocationWhenInUseUsageDescription": "Comuta needs your location to find nearby hubs and show your position during trips.",
         "NSLocationAlwaysAndWhenInUseUsageDescription": "Comuta uses background location during active trips so passengers can track the ride.",
         "NSCameraUsageDescription": "Comuta needs camera access to capture your ID documents and selfie for verification."
-      }
+      },
+      "usesAppleSignIn": true
     },
     "android": {
       "package": "app.comuta.mobile",
@@ -47,7 +48,9 @@
           "imageWidth": 120
         }
       ],
-      "expo-font"
+      "expo-font",
+      "expo-apple-authentication",
+      "@react-native-google-signin/google-signin"
     ],
     "experiments": {
       "typedRoutes": true,
