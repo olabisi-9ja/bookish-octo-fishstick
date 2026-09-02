@@ -57,7 +57,7 @@ export const PAYMENT_LABEL: Record<PaymentStatus, string> = {
 
 export const ID_TYPES = ['NIN', "Driver's licence", "Voter's card", 'International passport'] as const;
 
-export const RECURRENCE = { base: 400, perKm: 40, protection: 120, minimum: 900, platformRate: 0.09 } as const;
+export const RECURRENCE = { base: 400, perKm: 40, protection: 120, minimum: 900, platformRate: 0.1 } as const;
 
 export function recommendedSeatPrice(distanceKm: number, durationMin: number) {
   const raw = RECURRENCE.base + distanceKm * RECURRENCE.perKm + durationMin * 4;

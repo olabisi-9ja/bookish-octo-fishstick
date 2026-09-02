@@ -60,6 +60,122 @@
   --shadow-sheet: 0 -8px 40px rgba(10, 37, 28, 0.14);
 }
 
+/* ------------------------------------------------------------------ */
+/* FIGMA TOKENS - the canonical brand ramps.                           */
+/* Generated from design/design-tokens.json, which was pulled verbatim */
+/* from Figma tGWQGJbGogndVTvpVjzxYa nodes 22:52 (colour) and 29:422   */
+/* (type). Figma is law: NEW work uses these.                          */
+/*                                                                     */
+/* The legacy --color-forest-* / --color-lime-* ramps above are an      */
+/* earlier interpretation and do NOT match Figma (forest-800 #0f4431   */
+/* vs primary-20 #16503d, lime-500 #bdf23f vs accent-50 #afe817, ...).  */
+/* P1 migrates the remaining screens onto these and deletes them.      */
+/* ------------------------------------------------------------------ */
+@theme {
+  --color-primary-0: #000000;
+  --color-primary-10: #0b281e;
+  --color-primary-20: #16503d;
+  --color-primary-30: #21785b;
+  --color-primary-40: #2ba17a;
+  --color-primary-50: #36c998;
+  --color-primary-60: #5ed4ad;
+  --color-primary-70: #87dec1;
+  --color-primary-80: #afe9d6;
+  --color-primary-90: #d7f4ea;
+  --color-primary-93: #e3f7f1;
+  --color-primary-95: #ebfaf5;
+  --color-primary-99: #fbfefd;
+  --color-primary-100: #ffffff;
+  /* standalone key swatch - NOT a ramp member, darker than primary-10 */
+  --color-primary-base: #0a251c;
+
+  --color-accent-0: #000000;
+  --color-accent-10: #232e05;
+  --color-accent-20: #465d09;
+  --color-accent-30: #698b0e;
+  --color-accent-40: #8cba12;
+  --color-accent-50: #afe817;
+  --color-accent-60: #bfed45;
+  --color-accent-70: #d1f279;
+  --color-accent-80: #dff6a2;
+  --color-accent-90: #effad1;
+  --color-accent-93: #f4fcde;
+  --color-accent-95: #f7fde8;
+  --color-accent-99: #fdfffa;
+  --color-accent-100: #ffffff;
+  --color-accent-base: #d1f279;
+
+  --color-tertiary-0: #000000;
+  --color-tertiary-10: #141f1b;
+  --color-tertiary-20: #283e36;
+  --color-tertiary-30: #3d5c51;
+  --color-tertiary-40: #517b6d;
+  --color-tertiary-50: #659a88;
+  --color-tertiary-60: #90b6a9;
+  --color-tertiary-70: #a3c2b7;
+  --color-tertiary-80: #c1d7cf;
+  --color-tertiary-90: #e0ebe7;
+  --color-tertiary-93: #e9f1ee;
+  --color-tertiary-95: #f0f5f3;
+  --color-tertiary-99: #fcfdfd;
+  --color-tertiary-100: #ffffff;
+
+  --color-ntl-0: #000000;
+  --color-ntl-10: #151e1e;
+  --color-ntl-20: #2b3c3c;
+  --color-ntl-30: #405959;
+  --color-ntl-40: #557777;
+  --color-ntl-50: #6a9595;
+  --color-ntl-60: #88aaaa;
+  --color-ntl-70: #a6bfbf;
+  --color-ntl-80: #c3d4d4;
+  --color-ntl-90: #e1eaea;
+  --color-ntl-93: #eaf0f0;
+  --color-ntl-95: #f0f4f4;
+  --color-ntl-99: #fcfdfd;
+  --color-ntl-100: #ffffff;
+
+  --color-nv-10: #171c1a;
+  --color-nv-20: #2f3734;
+  --color-nv-30: #46534f;
+  --color-nv-40: #5d6f69;
+  --color-nv-50: #758a83;
+  --color-nv-60: #90a29c;
+  --color-nv-70: #acb9b5;
+  --color-nv-80: #c8d0cd;
+  --color-nv-90: #e3e8e6;
+  --color-nv-93: #ecefee;
+  --color-nv-95: #f1f3f3;
+  --color-nv-99: #fcfdfd;
+
+  --color-danger-10: #320501;
+  --color-danger-20: #640a02;
+  --color-danger-30: #ab1103;
+  --color-danger-40: #c81404;
+  --color-danger-50: #fb1904;
+  --color-danger-60: #fb4737;
+  --color-danger-70: #fc7569;
+  --color-danger-80: #fda39b;
+  --color-danger-90: #fed1cd;
+
+  /* M3 type scale, Degular -> Switzer. Flat 1.5 line-height, 0 tracking. */
+  --text-display-lg: 57px;
+  --text-display-md: 45px;
+  --text-display-sm: 36px;
+  --text-headline-lg: 32px;
+  --text-headline-md: 28px;
+  --text-headline-sm: 24px;
+  --text-title-lg: 22px;
+  --text-title-md: 16px;
+  --text-title-sm: 14px;
+  --text-body-lg: 16px;
+  --text-body-md: 14px;
+  --text-body-sm: 12px;
+  --text-label-lg: 14px;
+  --text-label-md: 12px;
+  --text-label-sm: 11px;
+}
+
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
