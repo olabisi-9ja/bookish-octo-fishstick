@@ -10,80 +10,209 @@
     "$note": "Material 3 tonal ramps. Tone 0 = #000000 and tone 100 = #ffffff in every ramp. 'base' is the standalone key swatch that sits to the left of each ramp and is NOT always a member of it (primary.base is darker than tone 10).",
     "primary": {
       "base": "#0a251c",
-      "0": "#000000", "10": "#0b281e", "20": "#16503d", "30": "#21785b",
-      "40": "#2ba17a", "50": "#36c998", "60": "#5ed4ad", "70": "#87dec1",
-      "80": "#afe9d6", "90": "#d7f4ea", "93": "#e3f7f1", "95": "#ebfaf5",
-      "99": "#fbfefd", "100": "#ffffff"
+      "0": "#000000",
+      "10": "#0b281e",
+      "20": "#16503d",
+      "30": "#21785b",
+      "40": "#2ba17a",
+      "50": "#36c998",
+      "60": "#5ed4ad",
+      "70": "#87dec1",
+      "80": "#afe9d6",
+      "90": "#d7f4ea",
+      "93": "#e3f7f1",
+      "95": "#ebfaf5",
+      "99": "#fbfefd",
+      "100": "#ffffff"
     },
     "secondary": {
       "base": "#d1f279",
-      "0": "#000000", "10": "#232e05", "20": "#465d09", "30": "#698b0e",
-      "40": "#8cba12", "50": "#afe817", "60": "#bfed45", "70": "#d1f279",
-      "80": "#dff6a2", "90": "#effad1", "93": "#f4fcde", "95": "#f7fde8",
-      "99": "#fdfffa", "100": "#ffffff"
+      "0": "#000000",
+      "10": "#232e05",
+      "20": "#465d09",
+      "30": "#698b0e",
+      "40": "#8cba12",
+      "50": "#afe817",
+      "60": "#bfed45",
+      "70": "#d1f279",
+      "80": "#dff6a2",
+      "90": "#effad1",
+      "93": "#f4fcde",
+      "95": "#f7fde8",
+      "99": "#fdfffa",
+      "100": "#ffffff"
     },
     "tertiary": {
       "base": "#90b6a9",
-      "0": "#000000", "10": "#141f1b", "20": "#283e36", "30": "#3d5c51",
-      "40": "#517b6d", "50": "#659a88", "60": "#90b6a9", "70": "#a3c2b7",
-      "80": "#c1d7cf", "90": "#e0ebe7", "93": "#e9f1ee", "95": "#f0f5f3",
-      "99": "#fcfdfd", "100": "#ffffff"
+      "0": "#000000",
+      "10": "#141f1b",
+      "20": "#283e36",
+      "30": "#3d5c51",
+      "40": "#517b6d",
+      "50": "#659a88",
+      "60": "#90b6a9",
+      "70": "#a3c2b7",
+      "80": "#c1d7cf",
+      "90": "#e0ebe7",
+      "93": "#e9f1ee",
+      "95": "#f0f5f3",
+      "99": "#fcfdfd",
+      "100": "#ffffff"
     },
     "neutral": {
       "base": "#050707",
-      "0": "#000000", "10": "#151e1e", "20": "#2b3c3c", "30": "#405959",
-      "40": "#557777", "50": "#6a9595", "60": "#88aaaa", "70": "#a6bfbf",
-      "80": "#c3d4d4", "90": "#e1eaea", "93": "#eaf0f0", "95": "#f0f4f4",
-      "99": "#fcfdfd", "100": "#ffffff"
+      "0": "#000000",
+      "10": "#151e1e",
+      "20": "#2b3c3c",
+      "30": "#405959",
+      "40": "#557777",
+      "50": "#6a9595",
+      "60": "#88aaaa",
+      "70": "#a6bfbf",
+      "80": "#c3d4d4",
+      "90": "#e1eaea",
+      "93": "#eaf0f0",
+      "95": "#f0f4f4",
+      "99": "#fcfdfd",
+      "100": "#ffffff"
     },
     "neutralVariant": {
       "base": "#101312",
-      "0": "#000000", "10": "#171c1a", "20": "#2f3734", "30": "#46534f",
-      "40": "#5d6f69", "50": "#758a83", "60": "#90a29c", "70": "#acb9b5",
-      "80": "#c8d0cd", "90": "#e3e8e6", "93": "#ecefee", "95": "#f1f3f3",
-      "99": "#fcfdfd", "100": "#ffffff"
+      "0": "#000000",
+      "10": "#171c1a",
+      "20": "#2f3734",
+      "30": "#46534f",
+      "40": "#5d6f69",
+      "50": "#758a83",
+      "60": "#90a29c",
+      "70": "#acb9b5",
+      "80": "#c8d0cd",
+      "90": "#e3e8e6",
+      "93": "#ecefee",
+      "95": "#f1f3f3",
+      "99": "#fcfdfd",
+      "100": "#ffffff"
     },
     "error": {
       "base": "#ab1103",
-      "0": "#000000", "10": "#320501", "20": "#640a02", "30": "#ab1103",
-      "40": "#c81404", "50": "#fb1904", "60": "#fb4737", "70": "#fc7569",
-      "80": "#fda39b", "90": "#fed1cd", "93": "#fedfdc", "95": "#ffe8e6",
-      "99": "#fffafa", "100": "#ffffff"
+      "0": "#000000",
+      "10": "#320501",
+      "20": "#640a02",
+      "30": "#ab1103",
+      "40": "#c81404",
+      "50": "#fb1904",
+      "60": "#fb4737",
+      "70": "#fc7569",
+      "80": "#fda39b",
+      "90": "#fed1cd",
+      "93": "#fedfdc",
+      "95": "#ffe8e6",
+      "99": "#fffafa",
+      "100": "#ffffff"
     }
   },
   "semantic": {
-    "$note": "The ONLY layer screens are allowed to import. Screens never reference a raw tone.",
+    "$note": "M3 role names as they appear in the Figma file's own variables (--primary, --on-primary, --surface-container, --inverse-on-surface, --outline-variant, --on-primary-container). This is the ONLY layer screens import; a screen never references a raw tone.",
     "primary": "#0a251c",
     "onPrimary": "#ffffff",
+    "primaryContainer": "#d7f4ea",
+    "onPrimaryContainer": "#21785b",
     "accent": "#d1f279",
     "onAccent": "#0a251c",
     "error": "#ab1103",
-    "onError": "#ffffff"
+    "onError": "#ffffff",
+    "surfaceContainer": "#f0f4f4",
+    "inverseOnSurface": "#f0f4f4",
+    "outlineVariant": "#c3d4d4",
+    "surface": "#f9fbfb"
   },
   "typography": {
     "$note": "Degular is unlicensed for this project — substitute Switzer (Fontshare, free, self-hosted) behind the token. Keep DM Mono for PINs and booking references. Line-height is a flat 1.5x on every role; letter-spacing is 0 everywhere.",
     "fontFamily": {
-      "sans": { "figma": "Degular", "substitute": "Switzer" },
+      "sans": {
+        "figma": "Degular",
+        "substitute": "Switzer"
+      },
       "mono": "DM Mono"
     },
     "lineHeightRatio": 1.5,
     "letterSpacing": 0,
     "scale": {
-      "displayLarge":   { "size": 57, "weight": 400, "lineHeight": 85.5 },
-      "displayMedium":  { "size": 45, "weight": 400, "lineHeight": 67.5 },
-      "displaySmall":   { "size": 36, "weight": 400, "lineHeight": 54 },
-      "headlineLarge":  { "size": 32, "weight": 400, "lineHeight": 48 },
-      "headlineMedium": { "size": 28, "weight": 400, "lineHeight": 42 },
-      "headlineSmall":  { "size": 24, "weight": 400, "lineHeight": 36 },
-      "titleLarge":     { "size": 22, "weight": 400, "lineHeight": 33 },
-      "titleMedium":    { "size": 16, "weight": 500, "lineHeight": 24 },
-      "titleSmall":     { "size": 14, "weight": 500, "lineHeight": 21 },
-      "bodyLarge":      { "size": 16, "weight": 400, "lineHeight": 24 },
-      "bodyMedium":     { "size": 14, "weight": 500, "lineHeight": 21 },
-      "bodySmall":      { "size": 12, "weight": 500, "lineHeight": 18 },
-      "labelLarge":     { "size": 14, "weight": 500, "lineHeight": 21 },
-      "labelMedium":    { "size": 12, "weight": 500, "lineHeight": 18 },
-      "labelSmall":     { "size": 11, "weight": 500, "lineHeight": 16.5 }
+      "displayLarge": {
+        "size": 57,
+        "weight": "400",
+        "lineHeight": 85.5
+      },
+      "displayMedium": {
+        "size": 45,
+        "weight": "400",
+        "lineHeight": 67.5
+      },
+      "displaySmall": {
+        "size": 36,
+        "weight": "400",
+        "lineHeight": 54
+      },
+      "headlineLarge": {
+        "size": 32,
+        "weight": "400",
+        "lineHeight": 48
+      },
+      "headlineMedium": {
+        "size": 28,
+        "weight": "400",
+        "lineHeight": 42
+      },
+      "headlineSmall": {
+        "size": 24,
+        "weight": "400",
+        "lineHeight": 36
+      },
+      "titleLarge": {
+        "size": 22,
+        "weight": "400",
+        "lineHeight": 33
+      },
+      "titleMedium": {
+        "size": 16,
+        "weight": "500",
+        "lineHeight": 24
+      },
+      "titleSmall": {
+        "size": 14,
+        "weight": "500",
+        "lineHeight": 21
+      },
+      "bodyLarge": {
+        "size": 16,
+        "weight": "400",
+        "lineHeight": 24
+      },
+      "bodyMedium": {
+        "size": 14,
+        "weight": "500",
+        "lineHeight": 21
+      },
+      "bodySmall": {
+        "size": 12,
+        "weight": "500",
+        "lineHeight": 18
+      },
+      "labelLarge": {
+        "size": 14,
+        "weight": "500",
+        "lineHeight": 21
+      },
+      "labelMedium": {
+        "size": 12,
+        "weight": "500",
+        "lineHeight": 18
+      },
+      "labelSmall": {
+        "size": 11,
+        "weight": "500",
+        "lineHeight": 16.5
+      }
     }
   }
 }

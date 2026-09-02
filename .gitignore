@@ -7,3 +7,12 @@ dist/
 .DS_Store
 coverage/
 .vite/
+
+# expo
+.expo/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+expo-env.d.ts

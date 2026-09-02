@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "COMUTA",
+    "slug": "comuta",
+    "scheme": "comuta",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "backgroundColor": "#0a251c",
+      "resizeMode": "contain"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.comuta.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "COMUTA uses the camera to verify your identity documents and take your verification selfie.",
+        "NSPhotoLibraryUsageDescription": "COMUTA needs photo access so you can upload your identity documents.",
+        "NSLocationWhenInUseUsageDescription": "COMUTA uses your location to show nearby pickup hubs and track your trip."
+      }
+    },
+    "android": {
+      "package": "com.comuta.app",
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": true,
+      "adaptiveIcon": { "backgroundColor": "#0a251c" },
+      "permissions": [
+        "CAMERA",
+        "POST_NOTIFICATIONS",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      ["expo-camera", { "cameraPermission": "COMUTA uses the camera to verify your identity documents." }],
+      ["expo-splash-screen", { "backgroundColor": "#0a251c", "resizeMode": "contain" }]
+    ],
+    "experiments": { "typedRoutes": true }
+  }
+}
