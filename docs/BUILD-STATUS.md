@@ -77,11 +77,19 @@ is not a picker.
 
 ## Also outstanding
 
-1. **PWA conversion.** The decision was that the Expo app becomes the
-   installable PWA. `expo export --platform web` already works and `app.json`
-   is `output: "static"`. Still needed: web manifest, service worker, install
-   prompt. Then retire `apps/pwa`'s app screens and extract the landing page to
+1. **PWA conversion.** Confirmed on 2026-09-03: login and the installable PWA
+   should both come from the Expo app, not the Vite app. `expo export
+   --platform web` already works and `app.json` is `output: "static"`. Still
+   needed: web manifest, service worker, install prompt. Then retire
+   `apps/pwa`'s app screens — it still carries a full parallel implementation,
+   17 rider files, 9 auth, 5 driver — and extract the landing page to
    `apps/landing`.
+
+   **Landing page redesign** is queued behind the same files; the research and
+   a blocker worth reading first are in `docs/LANDING-BRIEF.md`. Short version:
+   the live page at `bookish-octo-fishstick-delta.vercel.app` is **not** built
+   from this branch, so confirm which branch Vercel deploys before editing
+   anything.
 
 2. **Adaptive desktop layouts.** The responsive foundation is in
    (`useBreakpoint`, `CenteredColumn`, `TwoPane`; breakpoints in the token
