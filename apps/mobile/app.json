@@ -53,6 +53,7 @@
       "@react-native-google-signin/google-signin"
     ],
     "experiments": {
+      "baseUrl": "/next",
       "typedRoutes": true,
       "reactCompiler": true
     }

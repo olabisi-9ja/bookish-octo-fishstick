@@ -14,7 +14,11 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
         navigateFallback: '/index.html',
-        navigateFallbackDenylist: [/^\/api\//],
+        navigateFallbackDenylist: [/^\/api\//, /^\/next\//],
+        // /next is the Expo build, not part of this app's shell. Without
+        // the denylist the SW answers every /next navigation with this
+        // app's index.html and the Expo app never loads for anyone who
+        // has already visited the site.
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,

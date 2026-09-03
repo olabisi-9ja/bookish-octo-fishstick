@@ -13,6 +13,7 @@
     "mobile:export": "npm run export -w comuta-mobile",
     "pwa": "npm run dev -w comuta-pwa",
     "pwa:build": "npm run build -w comuta-pwa",
+    "build:web": "node scripts/build-web.mjs",
     "typecheck": "npm run typecheck --workspaces --if-present"
   },
   "engines": {
