@@ -140,6 +140,9 @@ export const semantic = {
   inverseOnSurface: '#f0f4f4',
   onErrorContainer: '#ab1103',
   outline: '#6a9595',
+  primaryContainer: '#d7f4ea',
+  tertiaryContainer: '#e0ebe7',
+  outlineVariant: '#c3d4d4',
 } as const;
 
 export type PaletteRamp = keyof typeof palette;
