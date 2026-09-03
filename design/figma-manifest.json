@@ -205,5 +205,28 @@
     "locationRow": "158:772",
     "logo": "21:3"
   },
-  "fidelityRule": "Build every screen from get_design_context on its node id and verify against get_screenshot. Never reconstruct a screen from a screenshot alone."
+  "fidelityRule": "Build every screen from get_design_context on its node id and verify against get_screenshot. Never reconstruct a screen from a screenshot alone.",
+  "frameNameCorrections": {
+    "$note": "Frames whose Figma layer name does not describe their content. The name is Figma's, verbatim; the screen was built for what the frame actually shows.",
+    "228:264": {
+      "figmaName": "Reset Password - Phone",
+      "actually": "post-signup confirmation, \"You're in!\"",
+      "builtAs": "(auth)/welcome"
+    },
+    "103:708": {
+      "figmaName": "Reset Password - Phone",
+      "actually": "KYC pending, \"We're reviewing your documents\"",
+      "builtAs": "(auth)/documents-review"
+    },
+    "191:417": {
+      "figmaName": "Continue with Google",
+      "actually": "onboarding pager dots",
+      "builtAs": "PagerDots in components/figma/Onboarding.tsx"
+    },
+    "58:142": {
+      "figmaName": "Continue with Google",
+      "actually": "bordered text input row",
+      "builtAs": "Field in components/figma/Auth.tsx"
+    }
+  }
 }

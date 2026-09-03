@@ -32,14 +32,22 @@ const COPY: Record<Channel, { title: string; wrong: string; fallback: string }> 
 };
 
 export default function Otp() {
-  const params = useLocalSearchParams<{ channel?: Channel; destination?: string }>();
+  const params = useLocalSearchParams<{
+    channel?: Channel;
+    destination?: string;
+    /** 'reset' arrives from the forgot-password screen; otherwise this is signup. */
+    flow?: 'reset' | 'signup';
+  }>();
   const channel: Channel = params.channel === 'phone' ? 'phone' : 'email';
   const copy = COPY[channel];
 
   const [code, setCode] = useState('');
   const complete = code.length === OTP_LENGTH;
 
-  const verify = () => router.push('/(auth)/kyc');
+  const verify = () =>
+    router.replace(
+      params.flow === 'reset' ? '/(auth)/reset-password' : '/(auth)/welcome'
+    );
 
   return (
     <AuthScreen>

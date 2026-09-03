@@ -19,6 +19,10 @@ export default function AuthLayout() {
       <Stack.Screen name="signup" />
       <Stack.Screen name="otp" />
       <Stack.Screen name="forgot" />
+      <Stack.Screen name="reset-password" />
+      <Stack.Screen name="password-reset-done" options={{ animation: 'fade' }} />
+      <Stack.Screen name="welcome" options={{ animation: 'fade' }} />
+      <Stack.Screen name="documents-review" options={{ animation: 'fade' }} />
       <Stack.Screen name="kyc" />
       <Stack.Screen name="role-select" />
       <Stack.Screen name="driver-onboarding" />
