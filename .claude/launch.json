@@ -7,6 +7,12 @@
       "runtimeArgs": ["expo", "start", "--web", "--port", "8081"],
       "cwd": "apps/mobile",
       "port": 8081
+    },
+    {
+      "name": "comuta-pwa",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "pwa"],
+      "port": 4173
     }
   ]
 }

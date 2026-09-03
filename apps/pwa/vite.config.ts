@@ -34,6 +34,17 @@ export default defineConfig({
       devOptions: { enabled: false },
     }),
   ],
+  /*
+   * The monorepo hoists apps/mobile's pinned react 19.2.3 to the root while
+   * apps/pwa resolves its own nested copy. Hoisted packages (react-router-dom,
+   * motion) then bind to a DIFFERENT React than the app does, and every hook
+   * throws "Invalid hook call" - the page renders blank. Dedupe forces one
+   * copy regardless of how npm decides to hoist.
+   */
+  resolve: {
+    dedupe: ['react', 'react-dom'],
+  },
+
   server: {
     host: '0.0.0.0',
     port: 4173,
