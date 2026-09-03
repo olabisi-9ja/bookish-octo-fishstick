@@ -38,18 +38,44 @@ that build ships *nothing*.
 `master` is just an old local branch whose landing page happens to match what
 that stale alias serves, which is what made this look like a branching problem.
 
-### The fix
+### The fix, and what is left
 
-- `vercel.json` at the repo root (added 2026-09-03) gives Vercel the build it
-  was missing: `buildCommand: npm run pwa:build`, `outputDirectory:
-  apps/pwa/dist`, an SPA rewrite so client-side routes resolve on first load,
-  and cache headers that keep `sw.js` revalidating while hashed assets go
-  immutable.
-- It only takes effect once it is on `main`.
-- Afterwards the `-delta` alias still has to be re-pointed at the current
-  production deployment, or it will keep serving the pre-restructure build
-  forever. That is a dashboard action (or `vercel alias set`), not a code
-  change.
+Done and verified on 2026-09-03:
+
+- `vercel.json` supplies the missing build: `buildCommand: npm run pwa:build`,
+  `outputDirectory: apps/pwa/dist`, an SPA rewrite so client-side routes
+  resolve on first load, and cache headers (`sw.js` revalidates, hashed assets
+  immutable). Note the rewrite means a genuinely missing asset returns
+  `index.html` with a 200 rather than a 404 &mdash; the usual trade for
+  client-side routing.
+- `installCommand: npm install --no-package-lock`. The first real build failed
+  with `Cannot find module '../rolldown-binding.linux-x64-gnu.node'`:
+  `package-lock.json` was generated on Windows and npm records optional
+  platform packages only for the resolving platform, so it carries
+  `@rolldown/binding-win32-x64-msvc` and no Linux equivalent at all.
+- Production build of `main` @ `22d886f` is `READY`, and its log shows a real
+  compile (`Build Completed in /vercel/output [1m]`) rather than the previous
+  `[233ms]` no-op.
+
+Still outstanding, both account actions rather than code:
+
+1. **The `-delta` alias is still stale.** `bookish-octo-fishstick-delta.
+   vercel.app` returns 200 and still serves the pre-restructure page. The new
+   production deployment is aliased only to
+   `bookish-octo-fishstick-olabisi-side-projects.vercel.app` and
+   `...-git-main-...`. Re-point it, or the public URL never changes.
+2. **Deployment protection is on.** `ssoProtection` is enabled with
+   `deploymentType: all_except_custom_domains`, and all three current
+   `.vercel.app` URLs return `302` to a Vercel login. Oddly `-delta` is still
+   `200` and public, so re-pointing it may or may not carry that exemption
+   over &mdash; check it immediately afterwards. If it starts redirecting, the
+   protection setting has to change, or a custom domain has to be attached,
+   before the site is publicly reachable.
+
+Also worth doing separately: `react`, `react-dom` and `@vitejs/plugin-react`
+are declared as `"latest"`, which is what made the lockfile worth bypassing in
+the first place. Pinning them and regenerating a multi-platform lockfile would
+let CI install from the lockfile again.
 
 ## What the three references actually do
 
