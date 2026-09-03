@@ -25,7 +25,7 @@
  * design system's. Display roles use tightened leading rather than the M3 flat
  * 1.5, which is an app-UI value and reads wrong at 57px on a web hero.
  */
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import {
@@ -96,6 +96,26 @@ export function Landing() {
   const [to, setTo] = useState('Victoria Island');
   const [when, setWhen] = useState<'today' | 'tomorrow'>('tomorrow');
   const [recurring, setRecurring] = useState(true);
+
+  /*
+   * The sticky mobile bar repeats the hero's own "Find seats" button, so
+   * while the planner is on screen the two sit stacked on top of each other.
+   * Uber only reveals its bar once the form has scrolled away; this does the
+   * same. Defaults to hidden, and stays hidden if IntersectionObserver is
+   * missing, because a duplicate button is worse than no sticky bar.
+   */
+  const planner = useRef<HTMLDivElement>(null);
+  const [showStickyCta, setShowStickyCta] = useState(false);
+
+  useEffect(() => {
+    const el = planner.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+    const io = new IntersectionObserver(([entry]) => setShowStickyCta(!entry.isIntersecting), {
+      rootMargin: '-72px 0px 0px 0px',
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   const tomorrow = addDaysISO(1);
 
@@ -177,7 +197,7 @@ export function Landing() {
             </p>
 
             {/* the working entry point: Uber's idea, our model */}
-            <div className="mt-8 rounded-2xl bg-white p-3 text-ntl-10 shadow-lift sm:p-4">
+            <div ref={planner} className="mt-8 rounded-2xl bg-white p-3 text-ntl-10 shadow-lift sm:p-4">
               <div className="grid gap-2 sm:grid-cols-2">
                 <HeroField label="From" value={from} onChange={setFrom} hubs={hubs} />
                 <HeroField label="To" value={to} onChange={setTo} hubs={hubs} />
@@ -244,7 +264,7 @@ export function Landing() {
             )}
           </div>
 
-          <HeroPreview price={seatPrice} />
+          <HeroVisual price={seatPrice} />
         </div>
 
         <div className="relative border-t border-white/10">
@@ -500,7 +520,16 @@ export function Landing() {
       {/* DRIVE AND EARN - the second audience                          */}
       {/* ============================================================ */}
       <section className="bg-accent-base py-16 text-primary-base lg:py-24">
-        <motion.div {...fade} className="mx-auto grid max-w-6xl gap-10 px-5 lg:grid-cols-2 lg:items-center">
+        <motion.div
+          {...fade}
+          className="mx-auto grid max-w-6xl gap-10 px-5 lg:grid-cols-2 lg:items-center lg:gap-14"
+        >
+          <Figure
+            src="/images/driver-earning.jpg"
+            alt="A driver in a white shirt at the wheel, on his way through the city."
+            ratio="aspect-[4/3.4]"
+          />
+
           <div>
             <span className="text-[12.5px] font-bold uppercase tracking-wide text-primary-20/70">
               Drive with COMUTA
@@ -525,38 +554,24 @@ export function Landing() {
                 </li>
               ))}
             </ul>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-8 rounded-2xl bg-primary-base p-6 text-white">
+              <p className="font-mono text-[38px] font-medium leading-none text-accent-base">
+                {naira(Math.round(seatPrice * 3 * COMMUTE_DAYS_PER_MONTH * (1 - RECURRENCE.platformRate)))}
+              </p>
+              <p className="mt-2 text-[13.5px] leading-[1.55] text-white/60">
+                a month before fuel &mdash; three seats at {naira(seatPrice)},{' '}
+                {COMMUTE_DAYS_PER_MONTH} working days, after COMUTA&rsquo;s{' '}
+                {Math.round(RECURRENCE.platformRate * 100)}% share.
+              </p>
+            </div>
+
+            <div className="mt-7 flex flex-wrap gap-3">
               <Button size="lg" onClick={() => navigate('/signup?role=driver')}>
                 Start earning
               </Button>
               <Button variant="outline" size="lg" onClick={() => navigate('/drivers')}>
                 Driver requirements
               </Button>
-            </div>
-          </div>
-
-          <div className="rounded-3xl bg-primary-base p-7 text-white">
-            <p className="text-[13px] font-semibold uppercase tracking-wide text-primary-70">
-              A four-seat car, one corridor
-            </p>
-            <p className="mt-4 font-mono text-[44px] font-medium leading-none text-accent-base">
-              {naira(Math.round(seatPrice * 3 * COMMUTE_DAYS_PER_MONTH * (1 - RECURRENCE.platformRate)))}
-            </p>
-            <p className="mt-2 text-[14px] text-white/60">
-              a month before fuel &mdash; three seats at {naira(seatPrice)}, {COMMUTE_DAYS_PER_MONTH}{' '}
-              working days, after COMUTA&rsquo;s {Math.round(RECURRENCE.platformRate * 100)}% share.
-            </p>
-            <div className="mt-6 grid grid-cols-3 gap-3 border-t border-white/10 pt-6 text-center">
-              {[
-                { k: '3', v: 'seats' },
-                { k: Math.round(RECURRENCE.platformRate * 100) + '%', v: 'platform share' },
-                { k: 'T-8', v: 'confirm window' },
-              ].map((s) => (
-                <div key={s.v}>
-                  <p className="text-[20px] font-bold text-white">{s.k}</p>
-                  <p className="mt-0.5 text-[12px] text-white/50">{s.v}</p>
-                </div>
-              ))}
             </div>
           </div>
         </motion.div>
@@ -566,21 +581,16 @@ export function Landing() {
       {/* SAFETY                                                        */}
       {/* ============================================================ */}
       <Section tinted>
-        <motion.div {...fade} className="grid gap-10 lg:grid-cols-2 lg:items-center">
+        <motion.div {...fade} className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-14">
           <div>
             <SectionHead
               align="left"
               title="Everyone in the car has a name"
               sub="Sharing a commute only works if you know exactly who you are sharing it with. Verification is not a badge here, it is the entry requirement."
             />
-            <div className="mt-8">
-              <Button size="lg" onClick={() => navigate('/safety')}>
-                Our safety standards
-              </Button>
-            </div>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {[
+
+            <ul className="mt-8 grid gap-5">
+              {[
               {
                 icon: <BadgeCheck size={19} />,
                 t: 'Verified identity',
@@ -601,19 +611,34 @@ export function Landing() {
                 t: 'PIN at pickup',
                 d: 'A code only you and your driver hold confirms you are in the right car.',
               },
-            ].map((c) => (
-              <div key={c.t} className="rounded-2xl border border-nv-90 bg-white p-5">
-                <span
-                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-95 text-primary-30"
-                  aria-hidden
-                >
-                  {c.icon}
-                </span>
-                <h3 className="mt-4 text-[16px] font-bold text-primary-base">{c.t}</h3>
-                <p className="mt-1.5 text-[14px] leading-[1.55] text-nv-40">{c.d}</p>
-              </div>
-            ))}
+              ].map((c) => (
+                <li key={c.t} className="flex items-start gap-4">
+                  <span
+                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-95 text-primary-30"
+                    aria-hidden
+                  >
+                    {c.icon}
+                  </span>
+                  <div>
+                    <h3 className="text-[16px] font-bold text-primary-base">{c.t}</h3>
+                    <p className="mt-1 text-[14px] leading-[1.55] text-nv-40">{c.d}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-9">
+              <Button size="lg" onClick={() => navigate('/safety')}>
+                Our safety standards
+              </Button>
+            </div>
           </div>
+
+          <Figure
+            src="/images/rider-smiling.jpg"
+            alt="A rider relaxed in the passenger seat on the way in to work."
+            ratio="aspect-[4/4.2]"
+          />
         </motion.div>
       </Section>
 
@@ -643,19 +668,11 @@ export function Landing() {
                 </Button>
               </div>
             </div>
-            <dl className="grid grid-cols-2 gap-3">
-              {[
-                { k: 'One invoice', v: 'for every sponsored seat' },
-                { k: 'Fixed cost', v: 'per head, per month' },
-                { k: 'Attendance', v: 'you can actually see' },
-                { k: 'No fleet', v: 'to buy or maintain' },
-              ].map((s) => (
-                <div key={s.k} className="rounded-2xl bg-white p-5">
-                  <dt className="text-[16px] font-bold text-primary-base">{s.k}</dt>
-                  <dd className="mt-1 text-[13.5px] leading-[1.5] text-nv-40">{s.v}</dd>
-                </div>
-              ))}
-            </dl>
+            <Figure
+              src="/images/lagos-street.jpg"
+              alt="Morning traffic on a main road into Lagos, seen from above."
+              ratio="aspect-[4/3]"
+            />
           </div>
         </motion.div>
       </Section>
@@ -701,8 +718,67 @@ export function Landing() {
         </motion.div>
       </Section>
 
-      {/* sticky mobile CTA, Uber's persistent bar */}
-      <div className="sticky bottom-0 z-20 border-t border-nv-90 bg-white/95 p-3 backdrop-blur lg:hidden">
+      {/* ============================================================ */}
+      {/* SIGN UP - the page's closing argument                         */}
+      {/* ============================================================ */}
+      <section className="relative isolate overflow-hidden bg-primary-base text-white">
+        <img
+          src="/images/lagos-commuters.jpg"
+          alt=""
+          aria-hidden
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 -z-10 h-full w-full object-cover opacity-[0.18]"
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 bg-gradient-to-r from-primary-base via-primary-base/85 to-primary-base/40"
+        />
+        <motion.div {...fade} className="mx-auto max-w-6xl px-5 py-20 lg:py-28">
+          <div className="max-w-[42ch]">
+            <h2 className="text-[34px] font-bold leading-[1.12] tracking-[-0.015em] sm:text-[44px]">
+              Tomorrow morning is already being planned.
+            </h2>
+            <p className="mt-5 text-[16.5px] leading-[1.6] text-white/70">
+              Creating an account is free and takes a minute. Verify once, then book the seat you
+              need the night before you need it &mdash; or publish the seats you are already driving.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Button variant="lime" size="lg" onClick={() => navigate('/signup')}>
+                Create your free account <ArrowRight size={17} aria-hidden />
+              </Button>
+              <Button
+                variant="tertiary"
+                size="lg"
+                className="text-white hover:bg-white/10"
+                onClick={() => navigate('/signup?role=driver')}
+              >
+                Sign up to drive
+              </Button>
+            </div>
+            <p className="mt-5 text-[13.5px] text-white/50">
+              Already with us?{' '}
+              <button
+                type="button"
+                onClick={() => navigate('/login')}
+                className="font-bold text-accent-base underline underline-offset-4"
+              >
+                Log in
+              </button>
+            </p>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* sticky mobile CTA, Uber's persistent bar - only once the hero
+          planner is out of view, so the two never stack */}
+      <div
+        className={
+          'sticky bottom-0 z-20 border-t border-nv-90 bg-white/95 p-3 backdrop-blur transition-opacity duration-200 lg:hidden ' +
+          (showStickyCta ? 'opacity-100' : 'pointer-events-none opacity-0')
+        }
+        aria-hidden={!showStickyCta}
+      >
         <Button block size="lg" onClick={search}>
           Find seats <ArrowRight size={17} aria-hidden />
         </Button>
@@ -786,6 +862,57 @@ function HeroField({
   );
 }
 
+/**
+ * One photograph, treated the same way everywhere: fixed ratio so the grid
+ * never shifts as images arrive, cover-cropped, and lazy below the fold.
+ * Every call passes a real alt - these carry meaning, they are not decoration.
+ */
+function Figure({
+  src,
+  alt,
+  ratio = 'aspect-[4/3]',
+  className = '',
+  eager = false,
+}: {
+  src: string;
+  alt: string;
+  ratio?: string;
+  className?: string;
+  eager?: boolean;
+}) {
+  return (
+    <img
+      src={src}
+      alt={alt}
+      loading={eager ? 'eager' : 'lazy'}
+      decoding="async"
+      className={'w-full rounded-3xl object-cover ' + ratio + ' ' + className}
+    />
+  );
+}
+
+/**
+ * Hero visual. Uber puts an illustration beside its planner and Lyft leads
+ * with photography; photography is the right call here, because the thing
+ * being sold is who is in the car. The confirmed-seat card overlaps the
+ * photograph so the proof sits on top of the promise.
+ */
+function HeroVisual({ price }: { price: number }) {
+  return (
+    <div className="mx-auto w-full max-w-[430px] lg:max-w-[470px]">
+      <Figure
+        src="/images/hero-rideshare.jpg"
+        alt="A driver at the wheel while a rider settles into the back seat of a car."
+        ratio="aspect-[4/3.2]"
+        eager
+      />
+      <div className="-mt-16 px-3">
+        <HeroPreview price={price} />
+      </div>
+    </div>
+  );
+}
+
 /** Static product preview: a confirmed seat, the way the app shows it. */
 function HeroPreview({ price }: { price: number }) {
   return (
@@ -793,7 +920,7 @@ function HeroPreview({ price }: { price: number }) {
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: DURATION.story, ease: EASE, delay: 0.1 }}
-      className="mx-auto w-full max-w-[360px] rounded-3xl bg-white p-5 text-ntl-10 shadow-lift"
+      className="mx-auto w-full max-w-[340px] rounded-3xl bg-white p-5 text-ntl-10 shadow-lift"
       aria-hidden
     >
       <div className="flex items-center justify-between">

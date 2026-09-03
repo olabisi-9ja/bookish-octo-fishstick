@@ -53,10 +53,13 @@ type PageData = {
   actionTo: string;
   faq?: FaqItem[];
   requirements?: { title: string; intro: string; items: string[] };
+  /** Photograph for the page's image band. Legal pages deliberately have none. */
+  image?: { src: string; alt: string };
 };
 
 const PAGES: Record<string, PageData> = {
   '/how-it-works': {
+    image: { src: '/images/lagos-street.jpg', alt: 'Morning traffic on one of the main roads into Lagos.' },
     eyebrow: 'THE COMUTA METHOD',
     title: 'A dependable commute starts with',
     accent: 'a route you already travel.',
@@ -97,6 +100,7 @@ const PAGES: Record<string, PageData> = {
     actionTo: '/app/rider/plan',
   },
   '/safety': {
+    image: { src: '/images/rider-smiling.jpg', alt: 'A rider settled in the passenger seat on the way in to work.' },
     eyebrow: 'SAFETY AT EVERY STAGE',
     title: 'Trust is built before',
     accent: 'anyone enters the car.',
@@ -137,6 +141,7 @@ const PAGES: Record<string, PageData> = {
     actionTo: '/app/rider/safety',
   },
   '/drivers': {
+    image: { src: '/images/driver-earning.jpg', alt: 'A driver in a white shirt at the wheel, on his way through the city.' },
     eyebrow: 'DRIVE WITH COMUTA',
     title: 'Share the journey you are',
     accent: 'already making.',
@@ -189,6 +194,7 @@ const PAGES: Record<string, PageData> = {
     actionTo: '/signup',
   },
   '/about': {
+    image: { src: '/images/lagos-commuters.jpg', alt: 'Commuters boarding a yellow bus on a Lagos street.' },
     eyebrow: 'WHY COMUTA',
     title: 'Building better commutes',
     accent: 'one corridor at a time.',
@@ -229,6 +235,7 @@ const PAGES: Record<string, PageData> = {
     actionTo: '/signup',
   },
   '/help': {
+    image: { src: '/images/hero-rideshare.jpg', alt: 'A driver at the wheel while a rider settles into the back seat.' },
     eyebrow: 'COMUTA SUPPORT',
     title: 'Get help with your',
     accent: 'account, ride or safety.',
@@ -375,7 +382,7 @@ const PAGES: Record<string, PageData> = {
   },
 };
 
-const ICON_TILES = ['bg-forest-100 text-forest-700', 'bg-lime-100 text-lime-700', 'bg-[#dcf0f4] text-[#155e6e]'];
+const ICON_TILES = ['bg-primary-90 text-primary-20', 'bg-accent-90 text-accent-20', 'bg-tertiary-90 text-tertiary-20'];
 
 function Faq({ items }: { items: FaqItem[] }) {
   const [open, setOpen] = useState(0);
@@ -383,8 +390,8 @@ function Faq({ items }: { items: FaqItem[] }) {
     <section className="border-t border-line-soft bg-surface py-14 lg:py-20" id="faq">
       <div className="mx-auto max-w-6xl px-5">
         <div className="mx-auto max-w-[700px] text-center">
-          <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-forest-700">COMMON QUESTIONS</p>
-          <h2 className="mt-3 text-[30px] font-extrabold tracking-tight text-forest-900 lg:text-[38px]">Frequently asked questions</h2>
+          <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary-20">COMMON QUESTIONS</p>
+          <h2 className="mt-3 text-[30px] font-extrabold tracking-tight text-primary-base lg:text-[38px]">Frequently asked questions</h2>
         </div>
         <div className="mx-auto mt-8 max-w-[760px] divide-y divide-line-soft rounded-3xl border border-line bg-white">
           {items.map((item, i) => (
@@ -415,15 +422,15 @@ function ContactBlock() {
     <section className="border-t border-line-soft bg-white py-14 lg:py-16" id="contact">
       <div className="mx-auto grid max-w-6xl gap-8 px-5 md:grid-cols-3">
         <div>
-          <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-forest-700">CONTACT</p>
-          <h2 className="mt-2 text-[24px] font-extrabold tracking-tight text-forest-900">Talk to a person</h2>
+          <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary-20">CONTACT</p>
+          <h2 className="mt-2 text-[24px] font-extrabold tracking-tight text-primary-base">Talk to a person</h2>
           <p className="mt-2 text-[14px] leading-relaxed text-variant">
             Account and booking questions get a reply within one business day. Safety issues are treated immediately.
           </p>
         </div>
         <div className="rounded-3xl border border-line bg-surface p-6">
           <p className="text-[13px] font-extrabold text-onsurface">Support email</p>
-          <p className="mt-1 text-[15px] font-bold text-forest-700">support@comuta.app</p>
+          <p className="mt-1 text-[15px] font-bold text-primary-20">support@comuta.app</p>
           <p className="mt-3 text-[12.5px] leading-relaxed text-variant">Include your trip or booking reference when you write in.</p>
         </div>
         <div className="rounded-3xl border border-line bg-surface p-6">
@@ -442,14 +449,14 @@ function Requirements({ title, intro, items }: { title: string; intro: string; i
     <section className="border-t border-line-soft bg-white py-14 lg:py-16" id="requirements">
       <div className="mx-auto max-w-6xl px-5">
         <div className="mx-auto max-w-[700px] text-center">
-          <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-forest-700">BEFORE YOU PUBLISH</p>
-          <h2 className="mt-3 text-[30px] font-extrabold tracking-tight text-forest-900 lg:text-[36px]">{title}</h2>
+          <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary-20">BEFORE YOU PUBLISH</p>
+          <h2 className="mt-3 text-[30px] font-extrabold tracking-tight text-primary-base lg:text-[36px]">{title}</h2>
           <p className="mt-3 text-[15px] leading-relaxed text-variant">{intro}</p>
         </div>
         <div className="mx-auto mt-8 grid max-w-[820px] gap-3 sm:grid-cols-2">
           {items.map((item) => (
             <div key={item} className="flex items-start gap-3 rounded-2xl border border-line bg-surface p-4">
-              <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-forest-700" />
+              <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-primary-20" />
               <p className="text-[13.5px] font-bold leading-relaxed text-onsurface">{item}</p>
             </div>
           ))}
@@ -478,20 +485,20 @@ export function CompanyPage() {
       <PublicNav />
       <main>
         {/* Hero */}
-        <section className="relative overflow-hidden bg-forest-950 text-white">
+        <section className="relative overflow-hidden bg-primary-base text-white">
           <div
             className="pointer-events-none absolute inset-0"
             style={{ background: 'radial-gradient(circle at 82% 48%, rgba(189,242,63,.13), transparent 31%)' }}
           />
-          <div className="pointer-events-none absolute -right-[120px] -top-[150px] h-[570px] w-[570px] rounded-full border border-lime-500/15" aria-hidden="true" />
-          <div className="pointer-events-none absolute -right-[30px] -top-[60px] h-[390px] w-[390px] rounded-full border border-lime-500/20" aria-hidden="true" />
+          <div className="pointer-events-none absolute -right-[120px] -top-[150px] h-[570px] w-[570px] rounded-full border border-accent-50/15" aria-hidden="true" />
+          <div className="pointer-events-none absolute -right-[30px] -top-[60px] h-[390px] w-[390px] rounded-full border border-accent-50/20" aria-hidden="true" />
           <div className="relative z-[2] mx-auto grid max-w-6xl items-center gap-10 px-5 py-16 lg:grid-cols-[1.15fr_0.7fr] lg:gap-24 lg:py-24">
             <div>
-              <p className="flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.14em] text-lime-500">
+              <p className="flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.14em] text-accent-50">
                 <Sparkles size={14} /> {page.eyebrow}
               </p>
               <h1 className="mt-5 max-w-[780px] text-[40px] font-extrabold leading-[1.06] tracking-tight sm:text-[52px] lg:text-[58px]">
-                {page.title} <br /> <span className="text-lime-500">{page.accent}</span>
+                {page.title} <br /> <span className="text-accent-50">{page.accent}</span>
               </h1>
               <p className="mt-6 max-w-[680px] text-[16px] leading-[1.7] text-white/70">{page.intro}</p>
               <div className="mt-8 flex flex-wrap items-center gap-6">
@@ -509,16 +516,16 @@ export function CompanyPage() {
             </div>
             {/* Route card */}
             <div className="mx-auto w-full max-w-[420px] rotate-[1.5deg] rounded-[22px] bg-white p-6 text-onsurface shadow-[0_25px_70px_rgba(0,0,0,.28)]">
-              <p className="text-[9px] font-extrabold uppercase tracking-[0.14em] text-forest-700">COMUTA ROUTE NETWORK</p>
-              <div className="mt-4 h-[150px] overflow-hidden rounded-[15px] bg-[#edf1e9]" aria-hidden="true">
+              <p className="text-[9px] font-extrabold uppercase tracking-[0.14em] text-primary-20">COMUTA ROUTE NETWORK</p>
+              <div className="mt-4 h-[150px] overflow-hidden rounded-[15px] bg-ntl-95" aria-hidden="true">
                 <LottieAnimation src={LOTTIE.carBlue} speed={0.82} label="Animated COMUTA car between Ajah and Victoria Island" style={{ width: '100%', height: '100%' }} />
               </div>
               <div className="mt-4 flex items-center justify-between text-[15px] font-extrabold">
                 <span>Ajah</span>
-                <ArrowRight size={17} className="text-forest-700" />
+                <ArrowRight size={17} className="text-primary-20" />
                 <span>Victoria Island</span>
               </div>
-              <p className="mt-4 flex items-center gap-2 text-[12px] font-bold text-forest-700">
+              <p className="mt-4 flex items-center gap-2 text-[12px] font-bold text-primary-20">
                 <BadgeCheck size={15} /> Verified people on a recurring route
               </p>
               <p className="mt-2 flex items-center gap-2 text-[11.5px] font-semibold text-variant">
@@ -538,7 +545,7 @@ export function CompanyPage() {
                   i < 2 ? 'border-b border-line-soft md:border-b-0' : ''
                 }`}
               >
-                <span className="block text-[28px] font-extrabold leading-none tracking-tight text-forest-700 lg:text-[40px]">{p.value}</span>
+                <span className="block text-[28px] font-extrabold leading-none tracking-tight text-primary-20 lg:text-[40px]">{p.value}</span>
                 <span className="mt-2 block text-[9.5px] font-extrabold uppercase tracking-[0.08em] text-variant">{p.label}</span>
               </div>
             ))}
@@ -549,8 +556,8 @@ export function CompanyPage() {
         <section className="py-14 lg:py-24">
           <div className="mx-auto max-w-6xl px-5">
             <div className="mx-auto max-w-[700px] text-center">
-              <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-forest-700">{page.sectionKicker}</p>
-              <h2 className="mt-3 text-[30px] font-extrabold tracking-tight text-forest-900 lg:text-[40px]">{page.sectionTitle}</h2>
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-primary-20">{page.sectionKicker}</p>
+              <h2 className="mt-3 text-[30px] font-extrabold tracking-tight text-primary-base lg:text-[40px]">{page.sectionTitle}</h2>
               <p className="mt-3 text-[15px] leading-relaxed text-variant">{page.sectionIntro}</p>
             </div>
             <div className="mt-10 grid gap-[18px] md:grid-cols-3">
@@ -564,7 +571,7 @@ export function CompanyPage() {
                   <ul className="mt-5 grid gap-2.5 border-t border-line-soft pt-4">
                     {points.map((point) => (
                       <li key={point} className="flex items-center gap-2 text-[12.5px] font-bold text-onsurface">
-                        <CheckCircle2 size={15} className="shrink-0 text-forest-700" /> {point}
+                        <CheckCircle2 size={15} className="shrink-0 text-primary-20" /> {point}
                       </li>
                     ))}
                   </ul>
@@ -574,6 +581,22 @@ export function CompanyPage() {
           </div>
         </section>
 
+        {/* Photograph band - the references all break their card grids with
+            a real image before asking for anything. */}
+        {page.image && (
+          <section className="pb-14 lg:pb-20">
+            <div className="mx-auto max-w-6xl px-5">
+              <img
+                src={page.image.src}
+                alt={page.image.alt}
+                loading="lazy"
+                decoding="async"
+                className="aspect-[16/7] w-full rounded-[25px] object-cover"
+              />
+            </div>
+          </section>
+        )}
+
         {page.requirements && <Requirements {...page.requirements} />}
         {page.faq && <Faq items={page.faq} />}
         {page.faq && <ContactBlock />}
@@ -581,10 +604,10 @@ export function CompanyPage() {
         {/* Callout */}
         <section className="py-4 pb-16 lg:pb-24">
           <div className="mx-auto max-w-6xl px-5">
-            <div className="relative flex flex-col items-start justify-between gap-8 overflow-hidden rounded-[25px] bg-forest-900 p-8 text-white md:flex-row md:items-center md:p-12">
-              <div className="pointer-events-none absolute -right-[70px] -top-[110px] h-[280px] w-[280px] rounded-full border border-lime-500/15" aria-hidden="true" />
+            <div className="relative flex flex-col items-start justify-between gap-8 overflow-hidden rounded-[25px] bg-primary-base p-8 text-white md:flex-row md:items-center md:p-12">
+              <div className="pointer-events-none absolute -right-[70px] -top-[110px] h-[280px] w-[280px] rounded-full border border-accent-50/15" aria-hidden="true" />
               <div className="relative z-[2]">
-                <p className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.12em] text-lime-500">
+                <p className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.12em] text-accent-50">
                   <ShieldCheck size={14} /> Verified recurring carpools
                 </p>
                 <h2 className="mt-3 max-w-[560px] text-[26px] font-extrabold tracking-tight lg:text-[31px]">{page.calloutTitle}</h2>
@@ -592,6 +615,32 @@ export function CompanyPage() {
               </div>
               <Button variant="lime" className="relative z-[2] shrink-0" onClick={() => navigate(page.actionTo)}>
                 {page.action} <ArrowRight size={17} />
+              </Button>
+            </div>
+          </div>
+        </section>
+        {/* Sign up - every public page closes by asking for an account */}
+        <section className="bg-primary-base py-16 text-white lg:py-20">
+          <div className="mx-auto flex max-w-6xl flex-col items-start gap-8 px-5 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h2 className="max-w-[24ch] text-[28px] font-extrabold leading-[1.15] tracking-tight lg:text-[34px]">
+                Start with one seat, tomorrow morning.
+              </h2>
+              <p className="mt-3 max-w-[52ch] text-[15px] leading-relaxed text-white/65">
+                A free account takes a minute. Verify once, then book the seat you need or publish
+                the ones you are already driving.
+              </p>
+            </div>
+            <div className="flex shrink-0 flex-wrap gap-3">
+              <Button variant="lime" onClick={() => navigate('/signup')}>
+                Create your free account <ArrowRight size={17} />
+              </Button>
+              <Button
+                variant="tertiary"
+                className="text-white hover:bg-white/10"
+                onClick={() => navigate('/login')}
+              >
+                Log in
               </Button>
             </div>
           </div>
