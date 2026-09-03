@@ -1,37 +1,55 @@
 # Landing page redesign — brief
 
-Written 2026-09-03, at the end of the rider-flow session. Nothing has been
-built yet; this is the research and the one blocker that has to be resolved
-first.
+Written 2026-09-03 at the end of the rider-flow session, and revised the same
+day once the page was actually built and the deploy question was checked
+rather than inferred.
 
-## Resolve this before writing any code
+## The deploy question, answered
 
-**The deployed landing page is not built from this branch.** Editing
-`apps/pwa/src/features/landing/Landing.tsx` on `feat/monorepo-figma-tokens`
-would not change what is live at `bookish-octo-fishstick-delta.vercel.app`.
+Two earlier readings of this were wrong. Recording the whole thing so nobody
+re-derives it a third time.
 
-What the search found:
+**What was claimed first:** production is built from `master` or an `arena/*`
+branch, and there are two competing landing pages. Wrong &mdash; inferred from
+`git` searching and from what the public URL served, never checked.
 
-| Ref | Has the live hero copy ("Your route. Your people.")? |
-|---|---|
-| `feat/monorepo-figma-tokens` (this branch) | no — a *different* landing design |
-| `origin/main` | no |
-| `master` (local only) | **yes** |
-| seven `origin/arena/*` branches | yes |
+**What was claimed second:** production builds from `main`, and the latest
+production build contains the redesign. Half right. It builds from `main`, but
+that build ships *nothing*.
 
-`master` is 1 commit ahead of `origin/main` and 43 behind it. Its
-`Landing.tsx` is 961 lines against this branch's 947, and diffing the two is
-773 insertions / 787 deletions — they are near-total rewrites of each other,
-not variations.
+**What is actually true**, from the Vercel API and build logs on 2026-09-03:
 
-So there are **two competing landing pages** in the repo, and the one nobody is
-working on is the one in production.
+1. **Every production deployment since the monorepo restructure is empty.**
+   The build log for `main` @ `3806a5c` reads, in full:
+   `Running "vercel build"` &rarr; `Build Completed in /vercel/output [233ms]`.
+   No install, no compile. The project has `framework: null`, and commit
+   `b9621de` moved the Vite app from the repo root to `apps/pwa`. The root
+   `package.json` has no `build` script, so Vercel finds nothing to do and
+   deploys an empty output. Hence `404: NOT_FOUND` on
+   `bookish-octo-fishstick-olabisi-side-projects.vercel.app`.
 
-First step for the next session: confirm which branch Vercel builds — the
-Vercel MCP server is connected (`list_projects` / `list_deployments` will say),
-or the Vercel dashboard shows it under the project's Git settings. Then decide
-whether the redesign lands on that branch or whether production should be
-repointed at `main` once the monorepo branch merges. Do not guess.
+2. **The public `-delta` URL only works because it is stale.**
+   `bookish-octo-fishstick-delta.vercel.app` is still attached to
+   `dpl_HBPLgwAa6ostErsg9SnJj8HbonNg` &mdash; `main` @ `ad12723`, "Rebrand
+   PadiGo to Comuta" &mdash; the last deployment built *before* the
+   restructure, and so the last one with real output. That is why it shows an
+   old landing page while `main` has carried the redesign for days.
+
+`master` is just an old local branch whose landing page happens to match what
+that stale alias serves, which is what made this look like a branching problem.
+
+### The fix
+
+- `vercel.json` at the repo root (added 2026-09-03) gives Vercel the build it
+  was missing: `buildCommand: npm run pwa:build`, `outputDirectory:
+  apps/pwa/dist`, an SPA rewrite so client-side routes resolve on first load,
+  and cache headers that keep `sw.js` revalidating while hashed assets go
+  immutable.
+- It only takes effect once it is on `main`.
+- Afterwards the `-delta` alias still has to be re-pointed at the current
+  production deployment, or it will keep serving the pre-restructure build
+  forever. That is a dashboard action (or `vercel alias set`), not a code
+  change.
 
 ## What the three references actually do
 
