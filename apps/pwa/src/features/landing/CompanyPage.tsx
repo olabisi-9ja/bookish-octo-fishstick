@@ -66,10 +66,10 @@ const PAGES: Record<string, PageData> = {
     intro:
       'COMUTA compares complete routes, timing, recurrence and trust so riders and drivers can form carpools that work beyond a single journey.',
     proof: [
-      { value: '35%', label: 'route compatibility' },
-      { value: '20%', label: 'pickup proximity' },
-      { value: '10%', label: 'recurring fit' },
-      { value: '8%', label: 'trust, rating and price' },
+      { value: 'Route', label: 'overlap along the corridor' },
+      { value: 'Timing', label: 'departure window fit' },
+      { value: 'Recurring', label: 'days you both travel' },
+      { value: 'Trust', label: 'verification and rating' },
     ],
     sectionKicker: 'BUILT FOR RECURRING TRAVEL',
     sectionTitle: 'From route to regular carpool',
@@ -107,7 +107,7 @@ const PAGES: Record<string, PageData> = {
     intro:
       'COMUTA combines identity checks, vehicle review, trip controls and a responsive safety team so every safety signal has context and a clear owner.',
     proof: [
-      { value: '6', label: 'verification signals' },
+      { value: 'Layered', label: 'verification steps' },
       { value: '24/7', label: 'trip safety access' },
       { value: '1 tap', label: 'trip sharing' },
       { value: 'Live', label: 'route monitoring' },
@@ -148,9 +148,9 @@ const PAGES: Record<string, PageData> = {
     intro:
       'COMUTA helps verified drivers fill empty seats on scheduled routes, manage trusted passenger requests and receive transparent cost contributions.',
     proof: [
-      { value: '3', label: 'sample seats per trip' },
-      { value: '₦24.6k', label: 'sample weekly contribution' },
-      { value: '4.9', label: 'sample driver rating' },
+      { value: 'Scheduled', label: 'seats you publish' },
+      { value: 'Transparent', label: 'cost contribution' },
+      { value: 'Verified', label: 'passenger requests' },
       { value: 'Weekly', label: 'payout schedule' },
     ],
     sectionKicker: 'BUILT FOR RECURRING TRAVEL',
