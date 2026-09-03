@@ -135,6 +135,11 @@ export const semantic = {
   onPrimaryContainer: '#21785b',
   surfaceContainer: '#f0f4f4',
   onSurfaceVariant: '#405959',
+  surfaceVariant: '#e1eaea',
+  onTertiaryContainer: '#3d5c51',
+  inverseOnSurface: '#f0f4f4',
+  onErrorContainer: '#ab1103',
+  outline: '#6a9595',
 } as const;
 
 export type PaletteRamp = keyof typeof palette;

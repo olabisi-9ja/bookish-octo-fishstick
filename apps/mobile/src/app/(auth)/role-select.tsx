@@ -1,173 +1,108 @@
-import React from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { useRouter } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Svg, Circle, Rect } from 'react-native-svg';
-import { Car, MapPin, ArrowRight } from 'lucide-react-native';
-import * as Haptics from 'expo-haptics';
-import { colors, fontFamily, fontSize, spacing, radii, shadows } from '../../constants/theme';
-import { useComuta } from '../../store';
+/**
+ * Role selection — Figma node 99:437.
+ *
+ * Two stacked choice cards. The rider card is primary with a hairline outline;
+ * the driver card is the accent. Each carries a 30px icon, a title-small label
+ * and a body-small line of detail, all centred.
+ */
+import { Pressable, StyleSheet, View } from 'react-native';
+import { router } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+import type { SvgProps } from 'react-native-svg';
+import { semantic, radii, spacing } from '@comuta/tokens';
+import { Type } from '../../components/figma/Type';
+import { AuthHeading, AuthScreen, Wordmark } from '../../components/figma/Auth';
+import Seatbelt from '../../../assets/figma/icon-seatbelt.svg';
+import TruckDriver from '../../../assets/figma/icon-truck-driver.svg';
+
+/** Figma draws both role icons at 30px. */
+const ICON_SIZE = 30;
 
 export default function RoleSelect() {
-  const router = useRouter();
-  const session = useComuta((s) => s.session);
-
-  const selectRider = () => {
-    if (session) {
-      useComuta.getState().setSession({ ...session, role: 'rider', onboarded: true });
-    }
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    router.replace('/(rider)/home');
-  };
-
-  const selectDriver = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    router.push('/(auth)/driver-onboarding');
-  };
-
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
-      <View style={styles.content}>
-        {/* Logo */}
-        <View style={styles.logoContainer}>
-          <Svg width={40} height={40} viewBox="0 0 100 100">
-            <Circle cx="50" cy="50" r="48" fill={colors.forest[900]} />
-            <Rect x="34" y="28" width="8" height="44" rx="4" fill={colors.white} />
-            <Rect x="58" y="28" width="8" height="44" rx="4" fill={colors.lime[500]} />
-          </Svg>
-          <Text style={styles.logoText}>Comuta</Text>
-        </View>
+    <AuthScreen>
+      <StatusBar style="dark" />
+      <Wordmark />
+      <AuthHeading
+        title="Want to give rides too?"
+        subtitle="You're already set up to book rides. Add driving to earn back your fuel costs."
+      />
 
-        <Text style={styles.title}>Want to give rides too?</Text>
-        <Text style={styles.subtitle}>
-          You're already set up as a Rider below. Add driving to earn from your daily commute.
-        </Text>
-
-        {/* Option 1: Start riding */}
-        <Pressable
-          onPress={selectRider}
-          style={({ pressed }) => [styles.optionCard, styles.optionRider, pressed && styles.cardPressed]}
-        >
-          <View style={styles.optionContent}>
-            <View style={styles.optionIconWrap}>
-              <Svg width={60} height={40} viewBox="0 0 60 40">
-                <Rect x="5" y="10" width="50" height="22" rx="6" fill={colors.forest[700]} />
-                <Rect x="12" y="3" width="36" height="12" rx="4" fill={colors.forest[600]} />
-                <Rect x="16" y="6" width="12" height="7" rx="2" fill={colors.lime[400]} opacity={0.4} />
-                <Rect x="32" y="6" width="12" height="7" rx="2" fill={colors.lime[400]} opacity={0.4} />
-                <Circle cx="18" cy="32" r="5" fill={colors.forest[950]} />
-                <Circle cx="42" cy="32" r="5" fill={colors.forest[950]} />
-              </Svg>
-            </View>
-            <Text style={styles.optionTitle}>Start riding for now</Text>
-            <Text style={styles.optionSubtitle}>
-              Find verified commuters going your way daily.
-            </Text>
-          </View>
-          <ArrowRight size={20} color={colors.forest[600]} />
-        </Pressable>
-
-        {/* Option 2: I want to drive too */}
-        <Pressable
-          onPress={selectDriver}
-          style={({ pressed }) => [styles.optionCard, styles.optionDriver, pressed && styles.cardPressed]}
-        >
-          <View style={styles.optionContent}>
-            <View style={styles.optionIconWrap}>
-              <Svg width={60} height={40} viewBox="0 0 60 40">
-                <Rect x="5" y="10" width="50" height="22" rx="6" fill={colors.lime[600]} />
-                <Rect x="12" y="3" width="36" height="12" rx="4" fill={colors.lime[500]} />
-                <Rect x="16" y="6" width="12" height="7" rx="2" fill={colors.forest[800]} opacity={0.3} />
-                <Rect x="32" y="6" width="12" height="7" rx="2" fill={colors.forest[800]} opacity={0.3} />
-                <Circle cx="18" cy="32" r="5" fill={colors.forest[950]} />
-                <Circle cx="42" cy="32" r="5" fill={colors.forest[950]} />
-              </Svg>
-            </View>
-            <Text style={styles.optionTitle}>I want to drive too</Text>
-            <Text style={styles.optionSubtitle}>
-              Earn from your commute by sharing rides daily.
-            </Text>
-          </View>
-          <ArrowRight size={20} color={colors.forest[600]} />
-        </Pressable>
-
-        <Text style={styles.note}>
-          You're already set as a Rider. Completing driver onboarding gives you access to both modes.
-        </Text>
+      <View style={styles.choices}>
+        <RoleCard
+          Icon={Seatbelt}
+          title="Just riding for now"
+          detail="You can start booking rides right away."
+          background={semantic.primary}
+          foreground={semantic.onPrimary}
+          outlined
+          onPress={() => router.replace('/(rider)/home')}
+        />
+        <RoleCard
+          Icon={TruckDriver}
+          title="I want to drive too"
+          detail="You'll need to upload your license and vehicle details next."
+          background={semantic.accent}
+          foreground={semantic.primary}
+          onPress={() => router.push('/(auth)/driver-onboarding')}
+        />
       </View>
-    </SafeAreaView>
+    </AuthScreen>
+  );
+}
+
+function RoleCard({
+  Icon,
+  title,
+  detail,
+  background,
+  foreground,
+  outlined,
+  onPress,
+}: {
+  Icon: React.FC<SvgProps>;
+  title: string;
+  detail: string;
+  background: string;
+  foreground: string;
+  outlined?: boolean;
+  onPress: () => void;
+}) {
+  return (
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={`${title}. ${detail}`}
+      style={({ pressed }) => [
+        styles.card,
+        { backgroundColor: background },
+        outlined && styles.cardOutlined,
+        pressed && styles.cardPressed,
+      ]}
+    >
+      <Icon width={ICON_SIZE} height={ICON_SIZE} color={foreground} />
+      <Type variant="titleSmall" color={foreground}>
+        {title}
+      </Type>
+      <Type variant="bodySmall" color={foreground} style={styles.detail}>
+        {detail}
+      </Type>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.surface },
-  content: {
-    flex: 1,
-    paddingHorizontal: spacing[6],
-    paddingTop: spacing[4],
-  },
-  logoContainer: {
-    flexDirection: 'row',
+  choices: { gap: spacing[4], width: '100%' },
+  card: {
+    width: '100%',
+    gap: spacing[1],
     alignItems: 'center',
-    gap: 8,
-    marginBottom: spacing[8],
+    justifyContent: 'center',
+    paddingHorizontal: spacing[5],
+    paddingVertical: spacing[2],
+    borderRadius: radii.md,
   },
-  logoText: {
-    fontFamily: fontFamily.bold,
-    fontSize: fontSize.titleLarge,
-    color: colors.forest[900],
-  },
-  title: {
-    fontFamily: fontFamily.bold,
-    fontSize: fontSize.headlineLarge,
-    color: colors.onsurface,
-    marginBottom: spacing[2],
-  },
-  subtitle: {
-    fontFamily: fontFamily.regular,
-    fontSize: fontSize.bodyMedium,
-    color: colors.muted,
-    lineHeight: 22,
-    marginBottom: spacing[8],
-  },
-  optionCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: spacing[5],
-    borderRadius: radii.xl,
-    backgroundColor: colors.white,
-    marginBottom: spacing[4],
-    borderWidth: 2,
-    borderColor: colors.lineSoft,
-    ...shadows.soft,
-  },
-  optionRider: {},
-  optionDriver: {},
-  cardPressed: {
-    borderColor: colors.forest[600],
-    backgroundColor: colors.forest[50],
-  },
-  optionContent: { flex: 1 },
-  optionIconWrap: { marginBottom: spacing[3] },
-  optionTitle: {
-    fontFamily: fontFamily.semibold,
-    fontSize: fontSize.titleMedium,
-    color: colors.onsurface,
-    marginBottom: 4,
-  },
-  optionSubtitle: {
-    fontFamily: fontFamily.regular,
-    fontSize: fontSize.bodySmall,
-    color: colors.muted,
-    lineHeight: 18,
-  },
-  note: {
-    fontFamily: fontFamily.regular,
-    fontSize: fontSize.labelSmall,
-    color: colors.faint,
-    textAlign: 'center',
-    marginTop: spacing[8],
-    paddingHorizontal: spacing[4],
-    lineHeight: 18,
-  },
+  cardOutlined: { borderWidth: 1, borderColor: semantic.outline },
+  cardPressed: { opacity: 0.85 },
+  detail: { textAlign: 'center' },
 });

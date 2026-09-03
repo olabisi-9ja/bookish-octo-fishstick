@@ -123,7 +123,12 @@
     "onSurface": "#151e1e",
     "onPrimaryContainer": "#21785b",
     "surfaceContainer": "#f0f4f4",
-    "onSurfaceVariant": "#405959"
+    "onSurfaceVariant": "#405959",
+    "surfaceVariant": "#e1eaea",
+    "onTertiaryContainer": "#3d5c51",
+    "inverseOnSurface": "#f0f4f4",
+    "onErrorContainer": "#ab1103",
+    "outline": "#6a9595"
   },
   "typography": {
     "$note": "Degular is unlicensed for this project — substitute Switzer (Fontshare, free, self-hosted) behind the token. Keep DM Mono for PINs and booking references. Line-height is a flat 1.5x on every role; letter-spacing is 0 everywhere.",
