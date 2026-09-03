@@ -37,12 +37,14 @@ export default function BookingConfirm() {
   const users = useComuta((s) => s.users);
   const hubs = useComuta((s) => s.hubs);
   const driverProfiles = useComuta((s) => s.driverProfiles);
+  const vehicles = useComuta((s) => s.vehicles);
 
   const trip = trips.find((t) => t.id === params.tripId) || trips[0];
   const driver = users.find((u) => u.id === trip?.driverId);
   const fromHub = hubs.find((h) => h.id === trip?.fromId);
   const toHub = hubs.find((h) => h.id === trip?.toId);
   const profile = driver ? driverProfiles[driver.id] : undefined;
+  const vehicle = profile ? vehicles.find((v) => v.id === profile.vehicleId) : undefined;
 
   if (!trip) {
     return (
@@ -87,7 +89,7 @@ export default function BookingConfirm() {
               <Star size={12} color={colors.amber[500]} fill={colors.amber[500]} />
               <Text style={styles.ratingText}>{profile?.rating?.toFixed(1) || '4.8'}</Text>
               <Text style={styles.separator}>·</Text>
-              <Text style={styles.ratingText}>{profile?.totalTrips || 120}+ trips</Text>
+              <Text style={styles.ratingText}>{profile?.completedTrips || 120}+ trips</Text>
             </View>
           </View>
 
@@ -103,7 +105,7 @@ export default function BookingConfirm() {
         </Animated.View>
 
         {/* Vehicle info */}
-        {profile?.vehicleModel && (
+        {vehicle && (
           <Animated.View entering={FadeInDown.delay(60).duration(300)} style={styles.vehicleCard}>
             <Svg width={56} height={32} viewBox="0 0 56 32">
               <Rect x="5" y="8" width="46" height="18" rx="5" fill={colors.forest[100]} />
@@ -112,8 +114,10 @@ export default function BookingConfirm() {
               <Circle cx="40" cy="26" r="4" fill={colors.forest[300]} />
             </Svg>
             <View style={styles.vehicleInfo}>
-              <Text style={styles.vehicleModel}>{profile.vehicleModel}</Text>
-              <Text style={styles.vehiclePlate}>{profile.licensePlate || 'ABC 123 XY'}</Text>
+              <Text style={styles.vehicleModel}>
+                {vehicle.make} {vehicle.model}
+              </Text>
+              <Text style={styles.vehiclePlate}>{vehicle.plate}</Text>
             </View>
           </Animated.View>
         )}

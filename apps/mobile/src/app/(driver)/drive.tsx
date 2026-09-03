@@ -330,7 +330,7 @@ export default function DriverHome() {
 
                 <Text style={styles.inputLabel}>Date</Text>
                 <View style={styles.rowGrid}>
-                  {[todayISO(), addDaysISO(todayISO(), 1)].map((dateISO, i) => (
+                  {[todayISO(), addDaysISO(1)].map((dateISO, i) => (
                     <Pressable
                       key={dateISO}
                       style={[styles.choiceBox, draft.date === dateISO && styles.choiceBoxActive]}
