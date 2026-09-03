@@ -28,6 +28,7 @@ import {
   Users,
 } from 'lucide-react';
 import { PublicNav } from './PublicNav';
+import { Figure } from './Landing';
 import { SiteFooter } from '../../components/brand/SiteFooter';
 import { LottieAnimation, LOTTIE } from '../../components/brand/LottieArt';
 import { Button } from '../../components/ui/Button';
@@ -586,13 +587,7 @@ export function CompanyPage() {
         {page.image && (
           <section className="pb-14 lg:pb-20">
             <div className="mx-auto max-w-6xl px-5">
-              <img
-                src={page.image.src}
-                alt={page.image.alt}
-                loading="lazy"
-                decoding="async"
-                className="aspect-[16/7] w-full rounded-[25px] object-cover"
-              />
+              <Figure src={page.image.src} alt={page.image.alt} className="rounded-[25px]" />
             </div>
           </section>
         )}

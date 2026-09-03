@@ -527,7 +527,6 @@ export function Landing() {
           <Figure
             src="/images/driver-earning.jpg"
             alt="A driver in a white shirt at the wheel, on his way through the city."
-            ratio="aspect-[4/3.4]"
           />
 
           <div>
@@ -637,7 +636,6 @@ export function Landing() {
           <Figure
             src="/images/rider-smiling.jpg"
             alt="A rider relaxed in the passenger seat on the way in to work."
-            ratio="aspect-[4/4.2]"
           />
         </motion.div>
       </Section>
@@ -671,7 +669,6 @@ export function Landing() {
             <Figure
               src="/images/lagos-street.jpg"
               alt="Morning traffic on a main road into Lagos, seen from above."
-              ratio="aspect-[4/3]"
             />
           </div>
         </motion.div>
@@ -867,26 +864,41 @@ function HeroField({
  * never shifts as images arrive, cover-cropped, and lazy below the fold.
  * Every call passes a real alt - these carry meaning, they are not decoration.
  */
-function Figure({
+const PHOTO: Record<string, { w: number; h: number }> = {
+  '/images/hero-rideshare.jpg': { w: 1400, h: 933 },
+  '/images/driver-earning.jpg': { w: 1400, h: 2100 },
+  '/images/rider-smiling.jpg': { w: 1400, h: 933 },
+  '/images/lagos-street.jpg': { w: 1200, h: 1800 },
+  '/images/lagos-commuters.jpg': { w: 1400, h: 1120 },
+  '/images/padigo-commuters.jpg': { w: 1312, h: 816 },
+};
+
+export function Figure({
   src,
   alt,
-  ratio = 'aspect-[4/3]',
   className = '',
   eager = false,
 }: {
   src: string;
   alt: string;
-  ratio?: string;
   className?: string;
   eager?: boolean;
 }) {
+  const dim = PHOTO[src];
+  const portrait = dim ? dim.h > dim.w : false;
   return (
     <img
       src={src}
       alt={alt}
+      width={dim?.w}
+      height={dim?.h}
       loading={eager ? 'eager' : 'lazy'}
       decoding="async"
-      className={'w-full rounded-3xl object-cover ' + ratio + ' ' + className}
+      className={
+        'h-auto w-full rounded-3xl ' +
+        (portrait ? 'mx-auto max-w-[420px] ' : '') +
+        className
+      }
     />
   );
 }
@@ -903,10 +915,9 @@ function HeroVisual({ price }: { price: number }) {
       <Figure
         src="/images/hero-rideshare.jpg"
         alt="A driver at the wheel while a rider settles into the back seat of a car."
-        ratio="aspect-[4/3.2]"
         eager
       />
-      <div className="-mt-16 px-3">
+      <div className="-mt-10 px-3">
         <HeroPreview price={price} />
       </div>
     </div>
