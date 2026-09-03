@@ -227,6 +227,24 @@
       "figmaName": "Continue with Google",
       "actually": "bordered text input row",
       "builtAs": "Field in components/figma/Auth.tsx"
+    },
+    "103:679": {
+      "figmaName": "Where should we send your earnings?",
+      "issue": "Bank-details form carries two fields copy-pasted from the vehicle screen: the first is labelled 'Vehicle make and model' (placeholder 'e.g. Toyota Corolla') where it should be the bank, and 'Account holder name' is placeheld 'e.g. LND-234-AB', a licence plate.",
+      "builtAs": "(auth)/payout — labels and placeholders describe the field actually being collected"
+    },
+    "103:584": {
+      "figmaName": "Confirm your vehicle documents",
+      "issue": "Heading text still reads \"Upload your driver's license\" from the previous step; subtitle and both tiles are about vehicle registration.",
+      "builtAs": "(auth)/vehicle-documents — heading follows the frame name and the fields"
+    }
+  },
+  "gaps": {
+    "$note": "Screens or fields the product needs that no Figma frame specifies. Not invented in code — they need frames.",
+    "vehicleSeatCapacity": {
+      "where": "103:534 Tell us about your vehicle",
+      "missing": "Seat capacity. A driver publishes seats, so capacity bounds every trip they can post; the PRD and screen inventory both require it.",
+      "status": "not built - needs a frame"
     }
   }
 }

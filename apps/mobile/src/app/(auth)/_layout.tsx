@@ -26,6 +26,10 @@ export default function AuthLayout() {
       <Stack.Screen name="kyc" />
       <Stack.Screen name="role-select" />
       <Stack.Screen name="driver-onboarding" />
+      <Stack.Screen name="vehicle-details" />
+      <Stack.Screen name="vehicle-documents" />
+      <Stack.Screen name="selfie" />
+      <Stack.Screen name="payout" />
     </Stack>
   );
 }
