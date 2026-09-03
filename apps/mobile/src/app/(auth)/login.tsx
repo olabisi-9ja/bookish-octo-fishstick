@@ -40,7 +40,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [reveal, setReveal] = useState(false);
 
-  const submit = () => router.replace('/(rider)/home');
+  const submit = () => router.replace('/(rider)/ride');
 
   return (
     <AuthScreen>

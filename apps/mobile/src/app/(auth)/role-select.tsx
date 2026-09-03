@@ -36,7 +36,7 @@ export default function RoleSelect() {
           background={semantic.primary}
           foreground={semantic.onPrimary}
           outlined
-          onPress={() => router.replace('/(rider)/home')}
+          onPress={() => router.replace('/(rider)/ride')}
         />
         <RoleCard
           Icon={TruckDriver}

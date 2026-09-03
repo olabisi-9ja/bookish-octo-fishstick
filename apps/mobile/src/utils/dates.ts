@@ -87,3 +87,20 @@ export function greeting(): string {
   if (h < 17) return 'Good afternoon';
   return 'Good evening';
 }
+
+/**
+ * Clock label to the 24-hour form the Figma date pill draws: "6:00 AM" → "6:00",
+ * "10:30 PM" → "22:30" (118:137, 247:365).
+ */
+export function toClock24(label: string): string {
+  const [h, m] = parseClock(label);
+  return `${h}:${String(m).padStart(2, '0')}`;
+}
+
+/**
+ * Clock label to the compact form the results subtitle draws:
+ * "6:00 AM" → "6:00am" (247:433).
+ */
+export function toClockCompact(label: string): string {
+  return label.replace(/\s*(AM|PM)$/i, (_, suffix: string) => suffix.toLowerCase());
+}

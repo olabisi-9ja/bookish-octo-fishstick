@@ -1,18 +1,25 @@
 /**
- * Rider home — Figma node 118:137.
+ * Rider home — Figma nodes 118:137, 158:908, 162:1076 and 247:365.
  *
  * Header (small wordmark + alert badge), greeting, the search card, a trips
  * summary, the become-a-driver prompt, and the tab bar pinned to the bottom
  * (the frame root is justify-between).
+ *
+ * Those four frames are one screen, not four: they are the same card with the
+ * search draft filled in a field at a time — empty, pickup set, both set, then
+ * a time chosen. The draft lives in store/rideSearch and the routes that set
+ * it are (rider)/location-search and (rider)/date-time.
  */
-import { useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, View, type ImageSourcePropType } from 'react-native';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { COLUMN_MAX_WIDTH, semantic, radii, shadows, spacing } from '@comuta/tokens';
 import { Type } from '../../components/figma/Type';
-import { TabBar } from '../../components/figma/TabBar';
+import { FloatingTabBar, TAB_BAR_CLEARANCE } from '../../components/figma/TabBar';
 import { useBreakpoint } from '../../components/layout/Responsive';
+import { useComuta } from '../../store';
+import { useRideSearch, type SearchField } from '../../store/rideSearch';
+import { toClock24 } from '../../utils/dates';
 import AlertBadge from '../../../assets/figma/icon-alert-badge.svg';
 import LocationArrow from '../../../assets/figma/icon-location-arrow.svg';
 import LocationAdd from '../../../assets/figma/icon-location-add.svg';
@@ -24,10 +31,47 @@ import FormNext from '../../../assets/figma/icon-form-next.svg';
 
 const GUTTER = 20;
 
+/**
+ * The alert badge exports at 82x80 because it carries a soft shadow around a
+ * 42x40 plate inset at (18,18) — the same packaging as `bx:arrow-back`. Drawn
+ * at 42x40 the whole canvas scales down and the bell renders about half size,
+ * so the asset is drawn at its natural size and offset instead, leaving a
+ * 42x40 footprint in the header row.
+ */
+const ALERT_ASSET = { width: 82, height: 80, inset: 18 };
+
+/** Opens the location search bound to one of the two fields. */
+function openSearch(field: SearchField) {
+  router.push({ pathname: '/(rider)/location-search', params: { field } });
+}
+
 export default function RiderHome() {
   const { isWide } = useBreakpoint();
-  const [pickup, setPickup] = useState<string | null>(null);
-  const [dropoff, setDropoff] = useState<string | null>(null);
+
+  const hubs = useComuta((s) => s.hubs);
+  const pickupHubId = useRideSearch((s) => s.pickupHubId);
+  const dropoffHubId = useRideSearch((s) => s.dropoffHubId);
+  const day = useRideSearch((s) => s.day);
+  const time = useRideSearch((s) => s.time);
+
+  const pickup = hubs.find((h) => h.id === pickupHubId)?.name ?? null;
+  const dropoff = hubs.find((h) => h.id === dropoffHubId)?.name ?? null;
+
+  // The pill reads "Today by 22:30" — a 24-hour clock, no suffix (118:137).
+  const dayLabel = day === 'today' ? 'Today' : 'Tomorrow';
+  const clock = toClock24(time);
+
+  /**
+   * The frame always draws "Search rides" enabled, including with both fields
+   * empty (118:137), so it stays enabled and sends the rider to whichever
+   * field is still missing rather than growing a disabled state Figma never
+   * specified.
+   */
+  function search() {
+    if (!pickupHubId) return openSearch('pickup');
+    if (!dropoffHubId) return openSearch('dropoff');
+    router.push('/(rider)/search-results');
+  }
 
   return (
     <View style={styles.root}>
@@ -45,8 +89,13 @@ export default function RiderHome() {
               accessibilityRole="image"
               accessibilityLabel="Comuta"
             />
-            <Pressable accessibilityRole="button" accessibilityLabel="Notifications" hitSlop={spacing[2]}>
-              <AlertBadge width={42} height={40} />
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Notifications"
+              hitSlop={spacing[2]}
+              style={styles.alert}
+            >
+              <AlertBadge width={ALERT_ASSET.width} height={ALERT_ASSET.height} style={styles.alertAsset} />
             </Pressable>
           </View>
 
@@ -60,17 +109,17 @@ export default function RiderHome() {
                 Where are you headed?
               </Type>
 
-              <LocationRow
+              <CardLocationRow
                 Icon={LocationArrow}
                 placeholder="Choose pickup location"
                 value={pickup}
-                onPress={() => router.push('/(rider)/hub-select')}
+                onPress={() => openSearch('pickup')}
               />
-              <LocationRow
+              <CardLocationRow
                 Icon={LocationAdd}
                 placeholder="Choose drop-off location"
                 value={dropoff}
-                onPress={() => router.push('/(rider)/hub-select')}
+                onPress={() => openSearch('dropoff')}
               />
 
               <View style={styles.whenRow}>
@@ -80,18 +129,19 @@ export default function RiderHome() {
                 <Pressable
                   style={styles.whenPill}
                   accessibilityRole="button"
-                  accessibilityLabel="Select date and time. Today by 22:30"
+                  accessibilityLabel={`Select date and time. ${dayLabel} by ${clock}`}
+                  onPress={() => router.push('/(rider)/date-time')}
                 >
                   <DateTime width={18} height={18} />
                   <View style={styles.whenValue}>
                     <Type variant="titleSmall" color={semantic.primary}>
-                      Today
+                      {dayLabel}
                     </Type>
                     <Type variant="labelSmall" color={semantic.primary}>
                       by
                     </Type>
                     <Type variant="titleSmall" color={semantic.primary}>
-                      22:30
+                      {clock}
                     </Type>
                   </View>
                   <Caret width={18} height={18} />
@@ -101,7 +151,7 @@ export default function RiderHome() {
               <Pressable
                 style={({ pressed }) => [styles.searchButton, pressed && styles.pressed]}
                 accessibilityRole="button"
-                onPress={() => router.push('/(rider)/search-results')}
+                onPress={search}
               >
                 <Type variant="titleSmall" color={semantic.onPrimary}>
                   Search rides
@@ -142,15 +192,17 @@ export default function RiderHome() {
         </View>
       </ScrollView>
 
-      <View style={[styles.tabWrap, isWide && styles.tabWrapWide]}>
-        <TabBar />
-      </View>
+      <FloatingTabBar />
     </View>
   );
 }
 
-/** One of the two location rows inside the search card. */
-function LocationRow({
+/**
+ * One of the two location rows inside the search card. Named apart from the
+ * `LocationRow` in components/figma: this is the card's field row, that is the
+ * search screens' result row (Figma component 158:772).
+ */
+function CardLocationRow({
   Icon,
   placeholder,
   value,
@@ -171,7 +223,7 @@ function LocationRow({
       <Icon width={20} height={20} />
       <Type
         variant="bodySmall"
-        color={value ? semantic.primary : semantic.outlineVariant}
+        color={value ? semantic.onPrimaryContainer : semantic.outlineVariant}
       >
         {value ?? placeholder}
       </Type>
@@ -182,13 +234,15 @@ function LocationRow({
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: semantic.surface },
   // Bottom padding clears the floating tab pill, which overlays the scroll view.
-  content: { paddingHorizontal: GUTTER, paddingTop: 60, paddingBottom: spacing[24] },
+  content: { paddingHorizontal: GUTTER, paddingTop: 60, paddingBottom: TAB_BAR_CLEARANCE },
   contentWide: { alignItems: 'center' },
   stack: { width: '100%', gap: spacing[7] },
   stackWide: { maxWidth: COLUMN_MAX_WIDTH },
 
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   wordmark: { width: 98, height: 40 },
+  alert: { width: 42, height: 40 },
+  alertAsset: { position: 'absolute', left: -ALERT_ASSET.inset, top: -ALERT_ASSET.inset },
 
   searchGroup: { gap: spacing[4] },
   searchCard: {
@@ -254,8 +308,6 @@ const styles = StyleSheet.create({
   driverCopy: { flexDirection: 'row', alignItems: 'center', gap: spacing[2], flexShrink: 1 },
   driverText: { gap: spacing[1], flexShrink: 1 },
 
-  tabWrap: { paddingHorizontal: GUTTER, paddingBottom: 60 },
-  tabWrapWide: { alignSelf: 'center', width: '100%', maxWidth: COLUMN_MAX_WIDTH + GUTTER * 2 },
 
   pressed: { opacity: 0.85 },
 });

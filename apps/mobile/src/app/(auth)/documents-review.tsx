@@ -20,7 +20,7 @@ export default function DocumentsReview() {
         body="This usually takes less than 24 hours. We'll notify you once you're approved to start posting rides."
         bodyColor={semantic.onPrimaryContainer}
         actionLabel="Continue"
-        onAction={() => router.replace('/(rider)/home')}
+        onAction={() => router.replace('/(rider)/ride')}
       />
     </>
   );

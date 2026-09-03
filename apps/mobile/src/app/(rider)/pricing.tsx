@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { FloatingTabBar, TAB_BAR_CLEARANCE } from '../../components/figma/TabBar';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { TrendingDown, Info, ChevronRight, MapPin } from 'lucide-react-native';
 import { colors, fontFamily, fontSize, spacing, radii, shadows } from '../../constants/theme';
@@ -86,6 +87,7 @@ export default function PricingScreen() {
           </Animated.View>
         ))}
       </ScrollView>
+          <FloatingTabBar />
     </SafeAreaView>
   );
 }
@@ -94,7 +96,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.surface },
   headerRow: { paddingHorizontal: spacing[5], paddingTop: spacing[4], paddingBottom: spacing[3] },
   screenTitle: { fontFamily: fontFamily.bold, fontSize: fontSize.headlineLarge, color: colors.onsurface },
-  listContent: { paddingHorizontal: spacing[5], paddingBottom: spacing[10] },
+  listContent: { paddingHorizontal: spacing[5], paddingBottom: TAB_BAR_CLEARANCE},
   
   // Explainer
   explainerCard: { backgroundColor: colors.forest[50], borderRadius: radii.xl, padding: spacing[5], marginBottom: spacing[5], borderWidth: 1, borderColor: colors.forest[100] },

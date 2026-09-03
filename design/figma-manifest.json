@@ -203,7 +203,9 @@
     "dropdownIdType": "91:129",
     "tabBar": "158:759",
     "locationRow": "158:772",
-    "logo": "21:3"
+    "logo": "21:3",
+    "locationRowPressed": "158:773",
+    "": "Each component on page 0:1 publishes a Default (rest) and a Variant2 (pressed/active) state. Verified against code: buttonLarge 77:450 and onboarding button 204:515 press to primary-colors/primary-color-30 #21785b (palette.primary[30]); location buttons 158:772 presses to outline-variant; id type 91:129 activates to secondary #d1f279 (semantic.accent); button 58:120 is selected/unselected, not a press state."
   },
   "fidelityRule": "Build every screen from get_design_context on its node id and verify against get_screenshot. Never reconstruct a screen from a screenshot alone.",
   "frameNameCorrections": {
@@ -237,6 +239,21 @@
       "figmaName": "Confirm your vehicle documents",
       "issue": "Heading text still reads \"Upload your driver's license\" from the previous step; subtitle and both tiles are about vehicle registration.",
       "builtAs": "(auth)/vehicle-documents — heading follows the frame name and the fields"
+    },
+    "247:433": {
+      "figmaName": "date and time picker",
+      "actually": "the Available rides results list — route summary over driver/price rows. Not a picker at all; the real picker is 163:1151.",
+      "builtAs": "(rider)/search-results"
+    },
+    "158:983": {
+      "figmaName": "rider drop off search",
+      "issue": "Verbatim duplicate of the pickup frame 151:450: the title still reads \"Where are you starting from?\" and both saved places still read \"Closest pickup to home/work\" on the screen that chooses a destination.",
+      "builtAs": "(rider)/location-search?field=dropoff — title \"Where are you headed?\" (the phrase the home card already uses for the destination) and \"Closest drop-off to home/work\""
+    },
+    "151:450": {
+      "figmaName": "rider pickup search",
+      "issue": "Sets the subtitle 16px and left-aligned where the otherwise identical drop-off frame 158:983 sets it 12px and centred.",
+      "builtAs": "both follow 158:983 — a centred subtitle under the centred title — since they are one screen in two roles"
     }
   },
   "gaps": {
@@ -245,6 +262,26 @@
       "where": "103:534 Tell us about your vehicle",
       "missing": "Seat capacity. A driver publishes seats, so capacity bounds every trip they can post; the PRD and screen inventory both require it.",
       "status": "not built - needs a frame"
+    },
+    "savedPlaces": {
+      "where": "151:450, 158:983 — the \"Saved Places\" section",
+      "missing": "A saved-places model (no home/work address on User) and a frame for the add flow behind the drawn + icon.",
+      "status": "drawn and wired to the two hubs nearest the origin as placeholder data - needs a model and an add-flow frame"
+    },
+    "searchResultsEmptyState": {
+      "where": "247:433 Available rides",
+      "missing": "An empty state. The frame draws one result row and never the no-results case.",
+      "status": "a single centred line is rendered as a stopgap - needs a frame"
+    },
+    "searchResultsFilters": {
+      "where": "247:433 Available rides",
+      "missing": "Sort and filter controls. The pre-Figma screen had Recommended/Price/Departure/Seats chips; no frame specifies them, so the rebuild does not carry them.",
+      "status": "dropped in favour of the frame - confirm with the designer whether they return"
+    },
+    "riderTimeWheel": {
+      "where": "163:1151 — the specific-time wheel",
+      "missing": "The scroll range. The frame shows 5:00 AM to 7:00 AM inside a 150px clip and two leftover duplicate rows.",
+      "status": "built as 5:00 AM to 11:30 PM in half hours - confirm the intended range"
     }
   }
 }

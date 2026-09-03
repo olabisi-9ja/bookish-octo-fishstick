@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { FloatingTabBar, TAB_BAR_CLEARANCE } from '../../components/figma/TabBar';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { Clock, Star, ChevronRight } from 'lucide-react-native';
 import { colors, fontFamily, fontSize, spacing, radii, shadows } from '../../constants/theme';
@@ -125,6 +126,7 @@ export default function TripsScreen() {
           })
         )}
       </ScrollView>
+          <FloatingTabBar />
     </SafeAreaView>
   );
 }
@@ -137,7 +139,7 @@ const styles = StyleSheet.create({
   tabActive: { backgroundColor: colors.white, ...shadows.soft },
   tabText: { fontFamily: fontFamily.medium, fontSize: fontSize.bodySmall, color: colors.muted },
   tabTextActive: { color: colors.forest[900] },
-  listContent: { paddingHorizontal: spacing[5], paddingBottom: spacing[10] },
+  listContent: { paddingHorizontal: spacing[5], paddingBottom: TAB_BAR_CLEARANCE},
   tripCard: { backgroundColor: colors.white, borderRadius: radii.xl, padding: spacing[5], marginBottom: spacing[3], ...shadows.soft },
   tripCardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing[2] },
   tripDate: { fontFamily: fontFamily.semibold, fontSize: fontSize.bodySmall, color: colors.onsurface },

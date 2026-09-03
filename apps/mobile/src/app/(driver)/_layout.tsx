@@ -28,9 +28,9 @@ export default function DriverLayout() {
         },
       }}
     >
-      <Tabs.Screen name="home" options={{ title: 'Home', tabBarIcon: ({ color, size }) => <Home size={size} color={color} /> }} />
+      <Tabs.Screen name="drive" options={{ title: 'Home', tabBarIcon: ({ color, size }) => <Home size={size} color={color} /> }} />
       <Tabs.Screen name="routes" options={{ title: 'Routes', tabBarIcon: ({ color, size }) => <MapPin size={size} color={color} /> }} />
-      <Tabs.Screen name="trips" options={{ title: 'Trips', tabBarIcon: ({ color, size }) => <Clock size={size} color={color} /> }} />
+      <Tabs.Screen name="drive-trips" options={{ title: 'Trips', tabBarIcon: ({ color, size }) => <Clock size={size} color={color} /> }} />
       <Tabs.Screen name="earnings" options={{ title: 'Earnings', tabBarIcon: ({ color, size }) => <DollarSign size={size} color={color} /> }} />
     </Tabs>
   );

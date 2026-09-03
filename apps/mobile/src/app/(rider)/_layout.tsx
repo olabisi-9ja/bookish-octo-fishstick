@@ -23,11 +23,12 @@ export default function RiderLayout() {
         animation: SCREEN_ANIMATION,
       }}
     >
-      <Stack.Screen name="home" />
+      <Stack.Screen name="ride" />
       <Stack.Screen name="trips" />
       <Stack.Screen name="pricing" />
       <Stack.Screen name="account" />
-      <Stack.Screen name="hub-select" />
+      <Stack.Screen name="location-search" />
+      <Stack.Screen name="date-time" />
       <Stack.Screen name="search-results" />
       <Stack.Screen name="booking-confirm" />
     </Stack>

@@ -73,13 +73,13 @@ export const VEHICLES: Vehicle[] = [
 ];
 
 export const DRIVER_PROFILES: Record<string, DriverProfile> = {
-  [T.driver]: { userId: T.driver, licenceNumber: 'LAG-20491832', vehicleId: 'veh_ade', completedTrips: 214, completionRate: 98, onTimeRate: 97, lateCancellations: 1, noShows: 0, monthlyTrips: 12, monthlyPassengers: 31, monthlyRecovered: 18500 },
-  [T.musa]: { userId: T.musa, licenceNumber: 'LAG-11820344', vehicleId: 'veh_musa', completedTrips: 168, completionRate: 99, onTimeRate: 98, lateCancellations: 0, noShows: 0, monthlyTrips: 10, monthlyPassengers: 26, monthlyRecovered: 14200 },
-  [T.ifeoma]: { userId: T.ifeoma, licenceNumber: 'LAG-90331120', vehicleId: 'veh_ifeoma', completedTrips: 142, completionRate: 97, onTimeRate: 96, lateCancellations: 2, noShows: 1, monthlyTrips: 9, monthlyPassengers: 22, monthlyRecovered: 12800 },
-  [T.dami]: { userId: T.dami, licenceNumber: 'LAG-22110984', vehicleId: 'veh_dami', completedTrips: 89, completionRate: 96, onTimeRate: 95, lateCancellations: 1, noShows: 1, monthlyTrips: 7, monthlyPassengers: 30, monthlyRecovered: 11900 },
-  [T.amaka]: { userId: T.amaka, licenceNumber: 'LAG-77341022', vehicleId: 'veh_amaka', completedTrips: 121, completionRate: 98, onTimeRate: 97, lateCancellations: 0, noShows: 0, monthlyTrips: 11, monthlyPassengers: 28, monthlyRecovered: 15600 },
-  [T.chidi]: { userId: T.chidi, licenceNumber: 'LAG-55883311', vehicleId: 'veh_chidi', completedTrips: 64, completionRate: 97, onTimeRate: 96, lateCancellations: 1, noShows: 0, monthlyTrips: 8, monthlyPassengers: 19, monthlyRecovered: 9600 },
-  [T.tobi]: { userId: T.tobi, licenceNumber: 'LAG-11024455', vehicleId: 'veh_tobi', completedTrips: 41, completionRate: 99, onTimeRate: 98, lateCancellations: 0, noShows: 0, monthlyTrips: 6, monthlyPassengers: 14, monthlyRecovered: 7800 },
+  [T.driver]: { userId: T.driver, licenceNumber: 'LAG-20491832', rating: 4.8, vehicleId: 'veh_ade', completedTrips: 214, completionRate: 98, onTimeRate: 97, lateCancellations: 1, noShows: 0, monthlyTrips: 12, monthlyPassengers: 31, monthlyRecovered: 18500 },
+  [T.musa]: { userId: T.musa, licenceNumber: 'LAG-11820344', rating: 4.9, vehicleId: 'veh_musa', completedTrips: 168, completionRate: 99, onTimeRate: 98, lateCancellations: 0, noShows: 0, monthlyTrips: 10, monthlyPassengers: 26, monthlyRecovered: 14200 },
+  [T.ifeoma]: { userId: T.ifeoma, licenceNumber: 'LAG-90331120', rating: 4.7, vehicleId: 'veh_ifeoma', completedTrips: 142, completionRate: 97, onTimeRate: 96, lateCancellations: 2, noShows: 1, monthlyTrips: 9, monthlyPassengers: 22, monthlyRecovered: 12800 },
+  [T.dami]: { userId: T.dami, licenceNumber: 'LAG-22110984', rating: 4.6, vehicleId: 'veh_dami', completedTrips: 89, completionRate: 96, onTimeRate: 95, lateCancellations: 1, noShows: 1, monthlyTrips: 7, monthlyPassengers: 30, monthlyRecovered: 11900 },
+  [T.amaka]: { userId: T.amaka, licenceNumber: 'LAG-77341022', rating: 4.9, vehicleId: 'veh_amaka', completedTrips: 121, completionRate: 98, onTimeRate: 97, lateCancellations: 0, noShows: 0, monthlyTrips: 11, monthlyPassengers: 28, monthlyRecovered: 15600 },
+  [T.chidi]: { userId: T.chidi, licenceNumber: 'LAG-55883311', rating: 4.7, vehicleId: 'veh_chidi', completedTrips: 64, completionRate: 97, onTimeRate: 96, lateCancellations: 1, noShows: 0, monthlyTrips: 8, monthlyPassengers: 19, monthlyRecovered: 9600 },
+  [T.tobi]: { userId: T.tobi, licenceNumber: 'LAG-11024455', rating: 4.8, vehicleId: 'veh_tobi', completedTrips: 41, completionRate: 99, onTimeRate: 98, lateCancellations: 0, noShows: 0, monthlyTrips: 6, monthlyPassengers: 14, monthlyRecovered: 7800 },
 };
 
 function makeTrip(

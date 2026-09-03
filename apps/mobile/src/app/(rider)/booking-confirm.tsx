@@ -55,7 +55,7 @@ export default function BookingConfirm() {
   const handleConfirm = () => {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     Alert.alert('Booking confirmed!', 'Your seat has been reserved. Check your Activity tab for details.', [
-      { text: 'Great', onPress: () => router.replace('/(rider)/home') },
+      { text: 'Great', onPress: () => router.replace('/(rider)/ride') },
     ]);
   };
 

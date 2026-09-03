@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { FloatingTabBar, TAB_BAR_CLEARANCE } from '../../components/figma/TabBar';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { User, ChevronRight, CreditCard, Shield, Bell, HelpCircle, Settings, LogOut, ArrowLeftRight, CheckCircle } from 'lucide-react-native';
 import { colors, fontFamily, fontSize, spacing, radii, shadows } from '../../constants/theme';
@@ -29,7 +30,7 @@ export default function AccountScreen() {
   const handleSwitchToDriver = () => {
     if (session?.driverOnboarded) {
       authService.switchMode('driver');
-      router.replace('/(driver)/home');
+      router.replace('/(driver)/drive');
     } else {
       router.push('/(auth)/driver-onboarding');
     }
@@ -116,13 +117,14 @@ export default function AccountScreen() {
 
         <Text style={styles.version}>Comuta v0.1.0 · Lagos</Text>
       </ScrollView>
+          <FloatingTabBar />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.surface },
-  scrollContent: { paddingHorizontal: spacing[5], paddingBottom: spacing[10] },
+  scrollContent: { paddingHorizontal: spacing[5], paddingBottom: TAB_BAR_CLEARANCE},
   screenTitle: { fontFamily: fontFamily.bold, fontSize: fontSize.headlineLarge, color: colors.onsurface, paddingTop: spacing[4], marginBottom: spacing[5] },
   profileCard: { flexDirection: 'row', alignItems: 'center', gap: spacing[4], padding: spacing[5], backgroundColor: colors.white, borderRadius: radii.xl, ...shadows.soft, marginBottom: spacing[4] },
   avatar: { width: 56, height: 56, borderRadius: 28, alignItems: 'center', justifyContent: 'center' },

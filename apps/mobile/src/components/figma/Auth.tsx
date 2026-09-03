@@ -24,6 +24,7 @@ import { Image } from 'react-native';
 import { COLUMN_MAX_WIDTH, semantic, palette, radii, spacing } from '@comuta/tokens';
 import { Type } from './Type';
 import { useBreakpoint } from '../layout/Responsive';
+import { NO_FOCUS_RING } from '../../constants/web';
 
 /** Figma: 20px gutter, 362px content width, 60px top/bottom padding. */
 export const GUTTER = 20;
@@ -152,7 +153,7 @@ export const Field = forwardRef<TextInput, FieldProps>(function Field(
       <View style={[styles.inputBox, error ? styles.inputBoxError : null]}>
         <TextInput
           ref={ref}
-          style={[styles.input, style]}
+          style={[styles.input, NO_FOCUS_RING, style]}
           placeholderTextColor={semantic.onSurfaceVariant}
           {...rest}
         />
@@ -292,7 +293,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: semantic.primary,
   },
-  buttonLargePressed: { backgroundColor: palette.primary[20] },
+  // `buttonLarge` 77:450 Variant2 — primary-colors/primary-color-30, #21785b.
+  buttonLargePressed: { backgroundColor: palette.primary[30] },
   buttonLargeDisabled: { backgroundColor: palette.nv[80] },
   centered: { textAlign: 'center' },
   footerRow: {

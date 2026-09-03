@@ -61,6 +61,8 @@ export interface DriverProfile {
   userId: string;
   licenceNumber: string;
   vehicleId: string;
+  /** Mean rider rating out of 5 — Figma 247:433 draws "4.8 " on each result. */
+  rating: number;
   completedTrips: number;
   completionRate: number; // 0-100
   onTimeRate: number; // 0-100

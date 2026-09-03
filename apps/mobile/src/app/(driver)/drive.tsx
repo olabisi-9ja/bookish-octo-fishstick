@@ -110,7 +110,7 @@ export default function DriverHome() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       {/* ── Header ── */}
-      <View>
+      <View style={styles.header}>
         <View style={styles.logoRow}>
           <Svg width={32} height={32} viewBox="0 0 100 100">
             <Circle cx="50" cy="50" r="48" fill={colors.forest[900]} />

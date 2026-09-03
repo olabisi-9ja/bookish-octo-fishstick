@@ -121,5 +121,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: semantic.primary,
   },
-  buttonPressed: { backgroundColor: palette.primary[20] },
+  // `onboarding button` 204:515 Variant2 — primary-colors/primary-color-30.
+  buttonPressed: { backgroundColor: palette.primary[30] },
 });
