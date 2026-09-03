@@ -1,0 +1,60 @@
+{
+  "expo": {
+    "name": "Comuta",
+    "slug": "comuta-mobile",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "comuta",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "bundleIdentifier": "app.comuta.mobile",
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Comuta needs your location to find nearby hubs and show your position during trips.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Comuta uses background location during active trips so passengers can track the ride.",
+        "NSCameraUsageDescription": "Comuta needs camera access to capture your ID documents and selfie for verification."
+      },
+      "usesAppleSignIn": true
+    },
+    "android": {
+      "package": "app.comuta.mobile",
+      "adaptiveIcon": {
+        "backgroundColor": "#0a251c",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "backgroundImage": "./assets/images/android-icon-background.png",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "CAMERA",
+        "VIBRATE"
+      ]
+    },
+    "web": {
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#0a251c",
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 120
+        }
+      ],
+      "expo-font",
+      "expo-apple-authentication",
+      "@react-native-google-signin/google-signin"
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}

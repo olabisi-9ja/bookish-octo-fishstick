@@ -1,63 +1,195 @@
 {
   "$source": {
     "fileKey": "tGWQGJbGogndVTvpVjzxYa",
-    "page": { "id": "39:456", "name": "app design" },
-    "designSystemNodes": { "colors": "22:52", "typography": "29:422" },
-    "verifiedOn": "2026-09-01",
-    "verification": "get_metadata on 39:456 returned exactly these 38 top-level frames, all 402x874. Frame names below are Figma's, verbatim. No screens added or removed since the plan was written.",
+    "page": {
+      "id": "39:456",
+      "name": "app design"
+    },
+    "designSystemNodes": {
+      "colors": "22:52",
+      "typography": "29:422"
+    },
+    "verifiedOn": "2026-09-02",
+    "verification": "get_metadata on 39:456 returned 40 top-level frames, all 402x874, on 2026-09-02. Frame names below are Figma's, verbatim. Two frames were added since the 2026-09-01 pull: 247:365 (rider homepage) and 247:433 (date and time picker) — both are now listed.",
     "warning": "get_metadata with no nodeId lists only '0:1 Components' — the 'app design' page does NOT appear in the page listing. Address 39:456 directly. Re-run this verification at the start of every phase; the designer is still adding screens."
   },
-  "screenSize": { "width": 402, "height": 874 },
+  "screenSize": {
+    "width": 402,
+    "height": 874
+  },
   "screens": {
     "onboarding": [
-      { "id": "42:3",    "name": "onboarding" },
-      { "id": "42:5",    "name": "Splash screen 1" },
-      { "id": "191:429", "name": "Splash screen 2" },
-      { "id": "198:446", "name": "Splash screen 3" },
-      { "id": "200:463", "name": "Splash screen 4" }
+      {
+        "id": "42:3",
+        "name": "onboarding"
+      },
+      {
+        "id": "42:5",
+        "name": "Splash screen 1"
+      },
+      {
+        "id": "191:429",
+        "name": "Splash screen 2"
+      },
+      {
+        "id": "198:446",
+        "name": "Splash screen 3"
+      },
+      {
+        "id": "200:463",
+        "name": "Splash screen 4"
+      }
     ],
     "auth": [
-      { "id": "46:9",    "name": "Create an Account - Email" },
-      { "id": "58:197",  "name": "Create an Account - Email" },
-      { "id": "58:256",  "name": "Login - Phone Number" },
-      { "id": "62:314",  "name": "Login - Phone Number" },
-      { "id": "65:76",   "name": "OTP verification - Email" },
-      { "id": "65:185",  "name": "OTP verification - Email" },
-      { "id": "65:157",  "name": "OTP verification - phone number" },
-      { "id": "65:213",  "name": "OTP verification - Phone number" },
-      { "id": "62:368",  "name": "Reset Password - Email" },
-      { "id": "65:48",   "name": "Reset Password - Phone" },
-      { "id": "65:241",  "name": "Reset Password - Phone" },
-      { "id": "69:269",  "name": "Reset Password - Phone" },
-      { "id": "228:264", "name": "Reset Password - Phone" },
-      { "id": "103:708", "name": "Reset Password - Phone", "note": "the plan treats this as the reset-success screen; the frame name is not distinct — confirm intent against the screenshot before building" }
+      {
+        "id": "46:9",
+        "name": "Create an Account - Email"
+      },
+      {
+        "id": "58:197",
+        "name": "Create an Account - Email"
+      },
+      {
+        "id": "58:256",
+        "name": "Login - Phone Number"
+      },
+      {
+        "id": "62:314",
+        "name": "Login - Phone Number"
+      },
+      {
+        "id": "65:76",
+        "name": "OTP verification - Email"
+      },
+      {
+        "id": "65:185",
+        "name": "OTP verification - Email"
+      },
+      {
+        "id": "65:157",
+        "name": "OTP verification - phone number"
+      },
+      {
+        "id": "65:213",
+        "name": "OTP verification - Phone number"
+      },
+      {
+        "id": "62:368",
+        "name": "Reset Password - Email"
+      },
+      {
+        "id": "65:48",
+        "name": "Reset Password - Phone"
+      },
+      {
+        "id": "65:241",
+        "name": "Reset Password - Phone"
+      },
+      {
+        "id": "69:269",
+        "name": "Reset Password - Phone"
+      },
+      {
+        "id": "228:264",
+        "name": "Reset Password - Phone"
+      },
+      {
+        "id": "103:708",
+        "name": "Reset Password - Phone",
+        "note": "the plan treats this as the reset-success screen; the frame name is not distinct — confirm intent against the screenshot before building"
+      }
     ],
     "kyc": [
-      { "id": "73:303", "name": "Verify your identity" },
-      { "id": "91:222", "name": "Verify your identity - NIN" },
-      { "id": "99:255", "name": "Verify your identity - Driver's Licence" },
-      { "id": "99:327", "name": "Verify your identity - Driver's Licence" },
-      { "id": "99:397", "name": "Verify your identity - Driver's Licence" }
+      {
+        "id": "73:303",
+        "name": "Verify your identity"
+      },
+      {
+        "id": "91:222",
+        "name": "Verify your identity - NIN"
+      },
+      {
+        "id": "99:255",
+        "name": "Verify your identity - Driver's Licence"
+      },
+      {
+        "id": "99:327",
+        "name": "Verify your identity - Driver's Licence"
+      },
+      {
+        "id": "99:397",
+        "name": "Verify your identity - Driver's Licence"
+      }
     ],
     "roleSelect": [
-      { "id": "99:437", "name": "role selection" }
+      {
+        "id": "99:437",
+        "name": "role selection"
+      }
     ],
     "driverOnboarding": [
-      { "id": "103:497", "name": "Driver's license upload" },
-      { "id": "103:534", "name": "Tell us about your vehicle" },
-      { "id": "103:584", "name": "Confirm your vehicle documents" },
-      { "id": "103:609", "name": "Selfie capture" },
-      { "id": "103:679", "name": "Where should we send your earnings?" }
+      {
+        "id": "103:497",
+        "name": "Driver's license upload"
+      },
+      {
+        "id": "103:534",
+        "name": "Tell us about your vehicle"
+      },
+      {
+        "id": "103:584",
+        "name": "Confirm your vehicle documents"
+      },
+      {
+        "id": "103:609",
+        "name": "Selfie capture"
+      },
+      {
+        "id": "103:679",
+        "name": "Where should we send your earnings?"
+      }
     ],
     "rider": [
-      { "id": "118:137",  "name": "rider homepage" },
-      { "id": "158:908",  "name": "rider homepage" },
-      { "id": "162:1076", "name": "rider homepage" },
-      { "id": "163:1151", "name": "date and time picker" },
-      { "id": "151:450",  "name": "rider pickup search" },
-      { "id": "153:670",  "name": "rider pickup search" },
-      { "id": "158:983",  "name": "rider drop off search" },
-      { "id": "158:1028", "name": "rider drop off search" }
+      {
+        "id": "118:137",
+        "name": "rider homepage"
+      },
+      {
+        "id": "158:908",
+        "name": "rider homepage"
+      },
+      {
+        "id": "162:1076",
+        "name": "rider homepage"
+      },
+      {
+        "id": "163:1151",
+        "name": "date and time picker"
+      },
+      {
+        "id": "151:450",
+        "name": "rider pickup search"
+      },
+      {
+        "id": "153:670",
+        "name": "rider pickup search"
+      },
+      {
+        "id": "158:983",
+        "name": "rider drop off search"
+      },
+      {
+        "id": "158:1028",
+        "name": "rider drop off search"
+      },
+      {
+        "id": "247:365",
+        "name": "rider homepage"
+      },
+      {
+        "id": "247:433",
+        "name": "date and time picker"
+      }
     ]
   },
   "components": {
@@ -73,5 +205,46 @@
     "locationRow": "158:772",
     "logo": "21:3"
   },
-  "fidelityRule": "Build every screen from get_design_context on its node id and verify against get_screenshot. Never reconstruct a screen from a screenshot alone."
+  "fidelityRule": "Build every screen from get_design_context on its node id and verify against get_screenshot. Never reconstruct a screen from a screenshot alone.",
+  "frameNameCorrections": {
+    "$note": "Frames whose Figma layer name does not describe their content. The name is Figma's, verbatim; the screen was built for what the frame actually shows.",
+    "228:264": {
+      "figmaName": "Reset Password - Phone",
+      "actually": "post-signup confirmation, \"You're in!\"",
+      "builtAs": "(auth)/welcome"
+    },
+    "103:708": {
+      "figmaName": "Reset Password - Phone",
+      "actually": "KYC pending, \"We're reviewing your documents\"",
+      "builtAs": "(auth)/documents-review"
+    },
+    "191:417": {
+      "figmaName": "Continue with Google",
+      "actually": "onboarding pager dots",
+      "builtAs": "PagerDots in components/figma/Onboarding.tsx"
+    },
+    "58:142": {
+      "figmaName": "Continue with Google",
+      "actually": "bordered text input row",
+      "builtAs": "Field in components/figma/Auth.tsx"
+    },
+    "103:679": {
+      "figmaName": "Where should we send your earnings?",
+      "issue": "Bank-details form carries two fields copy-pasted from the vehicle screen: the first is labelled 'Vehicle make and model' (placeholder 'e.g. Toyota Corolla') where it should be the bank, and 'Account holder name' is placeheld 'e.g. LND-234-AB', a licence plate.",
+      "builtAs": "(auth)/payout — labels and placeholders describe the field actually being collected"
+    },
+    "103:584": {
+      "figmaName": "Confirm your vehicle documents",
+      "issue": "Heading text still reads \"Upload your driver's license\" from the previous step; subtitle and both tiles are about vehicle registration.",
+      "builtAs": "(auth)/vehicle-documents — heading follows the frame name and the fields"
+    }
+  },
+  "gaps": {
+    "$note": "Screens or fields the product needs that no Figma frame specifies. Not invented in code — they need frames.",
+    "vehicleSeatCapacity": {
+      "where": "103:534 Tell us about your vehicle",
+      "missing": "Seat capacity. A driver publishes seats, so capacity bounds every trip they can post; the PRD and screen inventory both require it.",
+      "status": "not built - needs a frame"
+    }
+  }
 }
